@@ -1,0 +1,70 @@
+<%- contentFor('body') %>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-users text-3xl text-blue-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Total Pendaftar</h3>
+        <p class="text-2xl font-bold text-blue-600">0</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-check-circle text-3xl text-green-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Sudah Wawancara</h3>
+        <p class="text-2xl font-bold text-green-600">0</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-clock text-3xl text-yellow-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Belum Wawancara</h3>
+        <p class="text-2xl font-bold text-yellow-600">0</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-money-bill-wave text-3xl text-purple-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Total Pembayaran</h3>
+        <p class="text-2xl font-bold text-purple-600">Rp 0</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-96 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Pendaftar Terbaru</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Nama</th>
+                        <th scope="col" class="px-6 py-3">Asal SMP</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4" colspan="3">Belum ada data</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-96 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Pembayaran Terbaru</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Nama</th>
+                        <th scope="col" class="px-6 py-3">Jumlah</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4" colspan="3">Belum ada data</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="border-2 border-dashed rounded-lg border-gray-300 h-96 mb-4 p-4 bg-white">
+    <h3 class="text-xl font-semibold mb-4">Grafik Pendaftaran</h3>
+    <p class="text-center text-gray-500 mt-20">Grafik akan ditampilkan di sini</p>
+</div>

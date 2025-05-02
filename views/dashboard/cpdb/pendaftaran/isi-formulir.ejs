@@ -1,0 +1,79 @@
+<div class="max-w-7xl mx-auto py-8">
+    <!-- Step Indicator Cards with Integrated Progress Bar -->
+    <div class="flex flex-wrap justify-center mb-12 px-4">
+        <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-6xl">
+            <div class="relative">
+                <% 
+                const sections = ['data-pribadi', 'data-ayah', 'data-ibu', 'data-wali', 'data-periodik', 'registrasi-peserta-didik'];
+                const currentIndex = sections.indexOf(currentSection || 'data-pribadi');
+                const progress = ((currentIndex + 1) / sections.length) * 100;
+                %>
+                
+                <!-- Modern Progress Bar -->
+                <div class="absolute top-8 left-0 right-0 h-1 z-0">
+                    <!-- Background Track -->
+                    <div class="absolute w-full h-full bg-gray-200 rounded-full"></div>
+                    <!-- Progress Fill -->
+                    <div class="absolute h-full rounded-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 transition-all duration-500" style="width:<%= progress %>%;">
+                        <!-- Progress Dot -->
+                        <div class="absolute -right-1.5 -top-1 w-3 h-3 bg-green-600 rounded-full shadow-md"></div>
+                    </div>
+                </div>
+
+                <!-- Steps Container -->
+                <div class="flex items-center justify-between relative z-10">
+                    <% 
+                    const steps = [
+                        { id: 'data-pribadi', icon: 'user', label: 'Data Pribadi' },
+                        { id: 'data-ayah', icon: 'male', label: 'Data Ayah' },
+                        { id: 'data-ibu', icon: 'female', label: 'Data Ibu' },
+                        { id: 'data-wali', icon: 'users', label: 'Data Wali' },
+                        { id: 'data-periodik', icon: 'clock', label: 'Data Periodik' },
+                        { id: 'registrasi-peserta-didik', icon: 'check', label: 'Registrasi' }
+                    ];
+
+                    steps.forEach((step, index) => {
+                        const isActive = !currentSection && index === 0 || currentSection === step.id;
+                        const isPast = sections.indexOf(currentSection || 'data-pribadi') > index;
+                    %>
+                        <div class="flex flex-col items-center relative">
+                            <!-- Step Circle -->
+                            <div 
+                                class="w-16 h-16 flex items-center justify-center rounded-full transition-all duration-300 transform hover:scale-105 cursor-pointer shadow-sm <%= isActive ? 'bg-gradient-to-br from-green-400 to-green-600 text-white ring-4 ring-green-100' : isPast ? 'bg-green-50 text-green-600 ring-2 ring-green-400' : 'bg-white text-gray-400 ring-2 ring-gray-200' %>"
+                                onclick="navigateToSection('<%= step.id %>')"
+                            >
+                                <i class="fas fa-<%= step.icon %> <%= isActive ? 'text-2xl' : 'text-xl' %>"></i>
+                                <% if (isPast && !isActive) { %>
+                                    <div class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
+                                        <i class="fas fa-check text-xs"></i>
+                                    </div>
+                                <% } %>
+                            </div>
+                            
+                            <!-- Step Label -->
+                            <span class="mt-4 text-sm font-medium <%= isActive ? 'text-green-600' : isPast ? 'text-green-500' : 'text-gray-400' %>">
+                                <%= step.label %>
+                            </span>
+                            
+                            <!-- Active Indicator -->
+                            <% if (isActive) { %>
+                                <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-green-400 to-green-600 rounded-full"></div>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="mt-8">
+        <%- include(`./formulir/${currentSection || 'data-pribadi'}`) %>
+    </div>
+</div>
+
+<script>
+function navigateToSection(section) {
+    window.location.href = `/dashboard/cpdb/pendaftaran/isi-formulir/${section}`;
+}
+</script>

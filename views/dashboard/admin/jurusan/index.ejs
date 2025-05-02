@@ -1,0 +1,361 @@
+<!-- Page Title -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Data Jurusan</h1>
+    <p class="mt-2 text-gray-600">Kelola data jurusan PPDB</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    <!-- Total Jurusan -->
+    <div class="bg-white rounded-lg shadow-sm border border-green-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-green-50">
+                <i class="fas fa-graduation-cap text-lg text-green-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Jurusan</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="totalJurusan">-</h3>
+                    <p class="ml-2 text-xs text-gray-400">jurusan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Total Kapasitas -->
+    <div class="bg-white rounded-lg shadow-sm border border-blue-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-blue-50">
+                <i class="fas fa-users text-lg text-blue-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Kapasitas</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="totalKapasitas">-</h3>
+                    <p class="ml-2 text-xs text-gray-400">siswa</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Add Button -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Search -->
+    <div class="relative flex-1 group">
+        <input type="text" 
+               id="searchInput" 
+               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+               placeholder="Cari berdasarkan nama jurusan atau kode...">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <!-- Clear search button -->
+        <button id="clearSearch" 
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Add Button -->
+    <button type="button"
+            onclick="openAddModal()"
+            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Jurusan
+    </button>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Jurusan
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Kode
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Kapasitas
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Sisa Kapasitas
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="jurusanTableBody">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="jurusanModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah Jurusan
+                </h3>
+                <button type="button" onclick="closeModal('jurusanModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="jurusanForm" onsubmit="handleSubmit(event)" class="p-6">
+                <input type="hidden" id="jurusanId" name="id_jurusan">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="jurusan" class="block mb-2 text-sm font-medium text-gray-900">Nama Jurusan</label>
+                        <input type="text" name="jurusan" id="jurusan" placeholder="Masukkan nama jurusan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="kode" class="block mb-2 text-sm font-medium text-gray-900">Kode Jurusan</label>
+                        <input type="text" name="kode" id="kode" placeholder="Masukkan kode jurusan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="kapasitas" class="block mb-2 text-sm font-medium text-gray-900">Kapasitas</label>
+                        <input type="number" 
+                               id="kapasitas" 
+                               name="kapasitas" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" 
+                               required 
+                               min="1">
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('jurusanModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin menghapus jurusan ini?
+                </h3>
+                <button type="button" onclick="confirmDelete()" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedId = null;
+let allData = [];
+
+// Initialize DataTable
+$(document).ready(function() {
+    loadJurusanData();
+    
+    // Enhanced search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+    
+    // Add loading animation
+    searchInput.on('focus', function() {
+        $(this).parent().addClass('ring-2 ring-green-200');
+    }).on('blur', function() {
+        $(this).parent().removeClass('ring-2 ring-green-200');
+    });
+});
+
+function loadJurusanData() {
+    $.get('/api/admin/jurusan', function(data) {
+        allData = data;
+        updateStats();
+        filterData();
+    }).fail(function() {
+        showToast('Gagal memuat data jurusan', 'error');
+    });
+}
+
+function updateStats() {
+    const totalJurusan = allData.length;
+    const totalKapasitas = allData.reduce((sum, jurusan) => sum + parseInt(jurusan.kapasitas), 0);
+    
+    $('#totalJurusan').text(totalJurusan);
+    $('#totalKapasitas').text(totalKapasitas);
+}
+
+function filterData() {
+    const searchValue = $('#searchInput').val().toLowerCase();
+    let filteredData = allData;
+    
+    if (searchValue) {
+        filteredData = filteredData.filter(jurusan => 
+            jurusan.jurusan.toLowerCase().includes(searchValue) ||
+            jurusan.kode.toLowerCase().includes(searchValue)
+        );
+    }
+    
+    renderTable(filteredData);
+}
+
+function renderTable(data) {
+    const tbody = $('#jurusanTableBody');
+    tbody.fadeOut(150, function() {
+        tbody.empty();
+        
+        data.forEach(function(jurusan) {
+            const row = `
+                <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${jurusan.jurusan}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${jurusan.kode}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${jurusan.kapasitas}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${jurusan.sisa_kapasitas}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="editJurusan(${jurusan.id_jurusan})" 
+                                class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteJurusan(${jurusan.id_jurusan})" 
+                                class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            tbody.append(row);
+        });
+        tbody.fadeIn(150);
+    });
+}
+
+function openAddModal() {
+    $('#modalTitle').text('Tambah Jurusan');
+    $('#jurusanForm')[0].reset();
+    $('#jurusanId').val('');
+    openModal('jurusanModal');
+}
+
+function editJurusan(id) {
+    selectedId = id;
+    $('#modalTitle').text('Edit Jurusan');
+    
+    $.get(`/api/admin/jurusan/${id}`, function(data) {
+        $('#jurusanId').val(data.id_jurusan);
+        $('#jurusan').val(data.jurusan);
+        $('#kode').val(data.kode);
+        $('#kapasitas').val(data.kapasitas);
+        
+        openModal('jurusanModal');
+    });
+}
+
+function deleteJurusan(id) {
+    selectedId = id;
+    openModal('deleteModal');
+}
+
+function confirmDelete() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/jurusan/${selectedId}`,
+            type: 'DELETE',
+            success: function() {
+                closeModal('deleteModal');
+                loadJurusanData();
+                showToast('Jurusan berhasil dihapus');
+            },
+            error: function() {
+                showToast('Gagal menghapus jurusan', 'error');
+            }
+        });
+    }
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = {
+        jurusan: $('#jurusan').val(),
+        kode: $('#kode').val(),
+        kapasitas: parseInt($('#kapasitas').val())
+    };
+    
+    const url = $('#jurusanId').val() ? 
+        `/api/admin/jurusan/${$('#jurusanId').val()}` : 
+        '/api/admin/jurusan';
+    const method = $('#jurusanId').val() ? 'PUT' : 'POST';
+    
+    $.ajax({
+        url: url,
+        type: method,
+        data: formData,
+        success: function() {
+            closeModal('jurusanModal');
+            loadJurusanData();
+            showToast(`Jurusan berhasil ${$('#jurusanId').val() ? 'diperbarui' : 'ditambahkan'}`);
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+    });
+}
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function closeModal(modalId) {
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#16a34a" : "#ef4444",
+        className: "rounded-lg shadow-lg",
+    }).showToast();
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

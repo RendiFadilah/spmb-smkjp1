@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - SPMB SMK Jakarta Pusat 1</title>
+    <link rel="icon" type="image/png" href="/images/logo-jp1.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Select2 Custom Styling */
+        .select2-container--default .select2-selection--single {
+            height: 42px;
+            padding: 7px;
+            border-color: rgb(209, 213, 219);
+            border-radius: 0.5rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 40px;
+        }
+        .select2-dropdown {
+            border-color: rgb(209, 213, 219);
+            border-radius: 0.5rem;
+        }
+        .select2-search__field {
+            border-radius: 0.375rem !important;
+            padding: 0.5rem !important;
+        }
+        .select2-results__option {
+            padding: 0.5rem !important;
+        }
+        .dashboard-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Profile dropdown container */
+        .dropdown-container {
+            position: relative;
+        }
+
+        /* Dropdown menu styling */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            width: 240px;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95);
+            transform-origin: top right;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Active dropdown state */
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
+        <div class="px-3 py-3 lg:px-5 lg:pl-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start">
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                        <span class="sr-only">Open sidebar</span>
+                        <i class="fas fa-bars w-6 h-6"></i>
+                    </button>
+                    <a href="/" class="flex items-center ml-2 md:mr-24">
+                        <img src="/images/logo-jp1.png" class="h-8 mr-3" alt="SMK JT 1 Logo">
+                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">SPMB SMK Jakarta Pusat 1</span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center ml-3">
+                        <div class="dropdown-container">
+                            <button type="button" 
+                                    class="flex items-center text-sm bg-gray-50 rounded-lg p-2 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 transition-all duration-200" 
+                                    id="profile-button">
+                                <span class="sr-only">Open user menu</span>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-medium mr-2">
+                                        <%= (user.nama_lengkap || user.nama).split(' ')[0].charAt(0).toUpperCase() %>
+                                    </div>
+                                    <div class="hidden md:block text-left mr-2">
+                                        <div class="text-sm font-medium text-gray-900"><%= user.nama_lengkap || user.nama %></div>
+                                        <div class="text-xs text-gray-500"><%= user.roles %></div>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-gray-400 ml-2 transition-transform duration-200"></i>
+                                </div>
+                            </button>
+
+                            <div class="dropdown-menu divide-y divide-gray-100" id="profile-dropdown">
+                                <div class="px-4 py-3" role="none">
+                                    <p class="text-sm text-gray-900 font-medium" role="none">
+                                        <%= user.nama_lengkap || user.nama %>
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate" role="none">
+                                        <%= user.roles %>
+                                    </p>
+                                </div>
+                                <ul class="py-1" role="none">
+                            
+                                    <li>
+                                        <a href="/dashboard/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                            <i class="fas fa-cog mr-2 text-gray-400"></i>Pengaturan
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form action="/auth/logout" method="POST">
+                                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem">
+                                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
+            <ul class="space-y-2 font-medium">
+                <% if (user.roles === 'Petugas' || user.roles === 'Admin' || user.roles === 'Bendahara') { %>
+                    <%- include('../partials/sidebar-admin', { currentPath }) %>
+                <% } else { %>
+                    <%- include('../partials/sidebar-' + user.roles.toLowerCase(), { currentPath }) %>
+                <% } %>
+            </ul>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 mt-14">
+            <div class="dashboard-content">
+                <%- body %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script>
+        // Profile dropdown functionality
+        const profileButton = document.getElementById('profile-button');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const chevronIcon = profileButton.querySelector('.fa-chevron-down');
+
+        profileButton.addEventListener('click', () => {
+            profileDropdown.classList.toggle('active');
+            chevronIcon.style.transform = profileDropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+                chevronIcon.style.transform = 'rotate(0)';
+            }
+        });
+    </script>
+</body>
+</html>

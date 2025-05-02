@@ -1,0 +1,842 @@
+<!-- Page Title with gradient background -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Data Pembayaran</h1>
+    <p class="mt-2 text-gray-600">Kelola data pembayaran PPDB</p>
+</div>
+
+<!-- Tabs -->
+<div class="mb-6 bg-white rounded-xl border border-gray-100 p-2">
+    <div class="flex space-x-2">
+        <button type="button" 
+                onclick="switchTab('today')" 
+                id="todayTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-green-100 text-green-800">
+            Hari Ini
+        </button>
+        <button type="button" 
+                onclick="switchTab('all')" 
+                id="allTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-100">
+            Keseluruhan
+        </button>
+        <button type="button" 
+                onclick="switchTab('lunas')" 
+                id="lunasTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-100">
+            Lunas
+        </button>
+        <button type="button" 
+                onclick="switchTab('belum-lunas')" 
+                id="belumLunasTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-100">
+            Belum Lunas
+        </button>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+    <!-- Total Pembayaran -->
+    <div class="bg-white rounded-lg shadow-sm border border-green-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-green-50">
+                <i class="fas fa-file-invoice-dollar text-lg text-green-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Pembayaran</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800 total-pembayaran"><%= payments.length %></h3>
+                    <p class="ml-2 text-xs text-gray-400">pembayaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pembayaran Lunas -->
+    <div class="bg-white rounded-lg shadow-sm border border-blue-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-blue-50">
+                <i class="fas fa-check-circle text-lg text-blue-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lunas</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800 total-lunas">
+                        <%= payments.filter(p => p.status_pelunasan === 'LUNAS').length %>
+                    </h3>
+                    <p class="ml-2 text-xs text-gray-400">pembayaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pembayaran Belum Lunas -->
+    <div class="bg-white rounded-lg shadow-sm border border-yellow-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-yellow-50">
+                <i class="fas fa-clock text-lg text-yellow-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Belum Lunas</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800 total-belum-lunas">
+                        <%= payments.filter(p => p.status_pelunasan === 'BELUM_LUNAS').length %>
+                    </h3>
+                    <p class="ml-2 text-xs text-gray-400">pembayaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Total Uang -->
+    <div class="bg-white rounded-lg shadow-sm border border-emerald-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-emerald-50">
+                <i class="fas fa-money-bill-wave text-lg text-emerald-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Uang</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800 total-uang">
+                        Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(
+                            payments.reduce((sum, p) => sum + (parseFloat(p.total_verified) || 0), 0)
+                        ) %>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search, Export and Add Buttons -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex flex-col sm:flex-row gap-4 flex-1">
+        <!-- Search -->
+        <div class="relative flex-1 group">
+            <input type="text" 
+                   id="searchInput" 
+                   class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+                   placeholder="Cari berdasarkan nama atau nomor formulir...">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+                <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <button id="clearSearch" 
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <!-- Export Buttons -->
+        <div class="flex gap-2">
+            <button onclick="exportData('today')"
+                    class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-file-excel mr-2"></i>
+                Export Hari Ini
+            </button>
+            <button onclick="exportData('all')"
+                    class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-file-excel mr-2"></i>
+                Export Semua
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Button -->
+<div class="mb-6 flex justify-end">
+    <button type="button"
+            onclick="openAddModal()"
+            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Pembayaran
+    </button>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="paymentModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah Pembayaran
+                </h3>
+                <button type="button" onclick="closeModal('paymentModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="paymentForm" onsubmit="handleSubmit(event)" class="p-6" enctype="multipart/form-data">
+                <input type="hidden" id="paymentId" name="id_pembayaran">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="id_user" class="block mb-2 text-sm font-medium text-gray-900">Pilih CPDB</label>
+                        <select id="id_user" 
+                                name="id_user" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200"
+                                required>
+                            <option value="">Pilih CPDB</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="total_biaya" class="block mb-2 text-sm font-medium text-gray-900">Total Biaya</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="total_biaya" 
+                                   name="total_biaya" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   readonly>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="metode_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Metode Pembayaran</label>
+                        <select id="metode_pembayaran" 
+                                name="metode_pembayaran" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200"
+                                required
+                                onchange="toggleNamaPengirim()">
+                            <option value="">Pilih Metode Pembayaran</option>
+                            <option value="TUNAI">Tunai</option>
+                            <option value="TRANSFER">Transfer</option>
+                        </select>
+                    </div>
+                    <div id="nama_pengirim_container" style="display: none;">
+                        <label for="nama_pengirim" class="block mb-2 text-sm font-medium text-gray-900">Nama Pengirim</label>
+                        <input type="text" 
+                               id="nama_pengirim" 
+                               name="nama_pengirim" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="nominal_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Nominal Pembayaran</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="nominal_pembayaran" 
+                                   name="nominal_pembayaran" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   onkeyup="formatNominal(this)"
+                                   onchange="formatNominal(this)">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="bukti_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Bukti Pembayaran (Opsional)</label>
+                        <input type="file" id="bukti_pembayaran" name="bukti_pembayaran" accept="image/*" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
+                        <p class="mt-1 text-sm text-gray-500">Format: JPG, JPEG, PNG (Max. 5MB) - Opsional</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('paymentModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No. Formulir</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Lengkap</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jurusan</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Biaya</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Dibayar</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sisa</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Verifikator</th>
+                    <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="paymentTableBody">
+                <% payments.forEach(payment => { %>
+                    <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <%= payment.no_formulir %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <%= payment.nama_lengkap %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <%= payment.jurusan %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_biaya) %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_verified) %>
+                            <% if (payment.total_pending > 0) { %>
+                                <br>
+                                <span class="text-xs text-gray-500">
+                                    (Pending: Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_pending) %>)
+                                </span>
+                            <% } %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.sisa_pembayaran) %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <% if (payment.status_pelunasan === 'LUNAS') { %>
+                                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Lunas
+                                </span>
+                            <% } else { %>
+                                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Belum Lunas
+                                </span>
+                            <% } %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <%= payment.nama_verifikator || '-' %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex justify-end space-x-2">
+                                <a href="/dashboard/admin/pembayaran/<%= payment.id_pembayaran %>" 
+                                   class="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <% if (payment.total_verified > 0) { %>
+                                    <a href="/dashboard/admin/pembayaran/cetak-kuitansi/<%= payment.id_pembayaran %>" 
+                                       target="_blank"
+                                       class="text-green-600 hover:text-green-800 transition-colors duration-200">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                <% } %>
+                                <button onclick="confirmDelete('<%= payment.id_pembayaran %>')"
+                                        class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+// Initialize payments data from server
+const allPayments = JSON.parse('<%- JSON.stringify(payments) %>').map(payment => ({
+    ...payment,
+    created_at: payment.created_at ? new Date(payment.created_at) : null
+}));
+let activeTab = 'today';
+
+function switchTab(tab) {
+    activeTab = tab;
+    
+    // Update tab styles
+    const tabs = {
+        'today': 'todayTab',
+        'all': 'allTab',
+        'lunas': 'lunasTab',
+        'belum-lunas': 'belumLunasTab'
+    };
+    
+    Object.values(tabs).forEach(tabId => {
+        const element = document.getElementById(tabId);
+        if (tabId === tabs[tab]) {
+            element.classList.add('bg-green-100', 'text-green-800');
+            element.classList.remove('text-gray-600', 'hover:bg-gray-100');
+        } else {
+            element.classList.remove('bg-green-100', 'text-green-800');
+            element.classList.add('text-gray-600', 'hover:bg-gray-100');
+        }
+    });
+    
+    filterData();
+}
+
+function filterData() {
+    const searchText = $('#searchInput').val().toLowerCase();
+    let filteredData = [...allPayments];
+    
+    // Filter based on active tab
+    switch (activeTab) {
+        case 'today':
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set to start of day
+            
+            // Filter payments made today based on detail_pembayaran_pendaftaran
+            filteredData = filteredData.filter(payment => {
+                if (!payment.detail_pembayaran || !payment.detail_pembayaran.length) return false;
+                
+                // Check if any payment detail is from today
+                return payment.detail_pembayaran.some(detail => {
+                    if (!detail.tanggal_pembayaran) return false;
+                    const paymentDate = new Date(detail.tanggal_pembayaran);
+                    paymentDate.setHours(0, 0, 0, 0); // Set to start of day
+                    return paymentDate.getTime() === today.getTime();
+                });
+            });
+
+            // Update nominal_pembayaran to show only today's payments
+            filteredData = filteredData.map(payment => {
+                const todayPayments = payment.detail_pembayaran.filter(detail => {
+                    if (!detail.tanggal_pembayaran) return false;
+                    const paymentDate = new Date(detail.tanggal_pembayaran);
+                    paymentDate.setHours(0, 0, 0, 0);
+                    return paymentDate.getTime() === today.getTime();
+                });
+
+                return {
+                    ...payment,
+                    total_verified: todayPayments.reduce((sum, detail) => 
+                        sum + (parseFloat(detail.nominal_pembayaran) || 0), 0)
+                };
+            });
+            break;
+        case 'lunas':
+            filteredData = filteredData.filter(payment => 
+                payment.status_pelunasan === 'LUNAS'
+            );
+            break;
+        case 'belum-lunas':
+            filteredData = filteredData.filter(payment => 
+                payment.status_pelunasan === 'BELUM_LUNAS'
+            );
+            break;
+        // 'all' tab shows everything, so no additional filtering needed
+    }
+    
+    // Apply search filter if there's search text
+    if (searchText) {
+        filteredData = filteredData.filter(payment => 
+            payment.nama_lengkap.toLowerCase().includes(searchText) ||
+            payment.no_formulir.toString().includes(searchText)
+        );
+    }
+    
+    renderTable(filteredData);
+    updateStats(filteredData);
+}
+
+function renderTable(data) {
+    const tbody = $('#paymentTableBody');
+    tbody.empty();
+    
+    data.forEach(payment => {
+        const row = `
+            <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    ${payment.no_formulir}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ${payment.nama_lengkap}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ${payment.jurusan}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_biaya)}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_verified)}
+                    ${payment.total_pending > 0 ? `
+                        <br>
+                        <span class="text-xs text-gray-500">
+                            (Pending: Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_pending)})
+                        </span>
+                    ` : ''}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.sisa_pembayaran)}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        payment.status_pelunasan === 'LUNAS' 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-yellow-100 text-yellow-800'
+                    }">
+                        ${payment.status_pelunasan === 'LUNAS' ? 'Lunas' : 'Belum Lunas'}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ${payment.nama_verifikator || '-'}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                        <a href="/dashboard/admin/pembayaran/${payment.id_pembayaran}" 
+                           class="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        ${payment.total_verified > 0 ? `
+                            <a href="/dashboard/admin/pembayaran/cetak-kuitansi/${payment.id_pembayaran}" 
+                               target="_blank"
+                               class="text-green-600 hover:text-green-800 transition-colors duration-200">
+                                <i class="fas fa-print"></i>
+                            </a>
+                        ` : ''}
+                        <button onclick="confirmDelete(${payment.id_pembayaran})"
+                                class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tbody.append(row);
+    });
+}
+
+function updateStats(data) {
+    const totalPembayaran = data.length;
+    const totalLunas = data.filter(p => p.status_pelunasan === 'LUNAS').length;
+    const totalBelumLunas = data.filter(p => p.status_pelunasan === 'BELUM_LUNAS').length;
+    
+    // Calculate total uang from total_verified
+    const totalUang = data.reduce((sum, payment) => sum + (parseFloat(payment.total_verified) || 0), 0);
+
+    // Update statistics cards
+    $('.total-pembayaran').text(totalPembayaran);
+    $('.total-lunas').text(totalLunas);
+    $('.total-belum-lunas').text(totalBelumLunas);
+    $('.total-uang').text(`Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(totalUang)}`);
+}
+
+$(document).ready(function() {
+    // Initial load
+    filterData();
+    
+    // Search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+});
+
+    function openAddModal() {
+        $('#modalTitle').text('Tambah Pembayaran');
+        $('#paymentForm')[0].reset();
+        $('#paymentId').val('');
+        
+        // Destroy existing Select2 if it exists
+        if ($('#id_user').data('select2')) {
+            $('#id_user').select2('destroy');
+        }
+        
+        // Load eligible CPDB
+        $.get('/api/admin/pembayaran/data/eligible-cpdb', function(data) {
+            const select = $('#id_user');
+            select.empty().append('<option value="">Pilih CPDB</option>');
+            
+            if (data.length === 0) {
+                select.append('<option value="" disabled>Tidak ada CPDB yang eligible untuk pembayaran</option>');
+            } else {
+                data.forEach(cpdb => {
+                    select.append(`<option value="${cpdb.id_user}" data-biaya="${cpdb.total_biaya}">${cpdb.display_name}</option>`);
+                });
+            }
+
+            // Initialize Select2
+            select.select2({
+                dropdownParent: $('#paymentModal'),
+                placeholder: 'Ketik untuk mencari nama CPDB...',
+                width: '100%',
+                allowClear: true
+            });
+
+            // Add change event handler for id_user select
+            select.on('change', function() {
+                const selectedOption = $(this).find('option:selected');
+                const totalBiaya = selectedOption.data('biaya');
+                if (totalBiaya) {
+                    $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(totalBiaya));
+                } else {
+                    $('#total_biaya').val('');
+                }
+            });
+    }).fail(function(xhr) {
+        const select = $('#id_user');
+        select.empty().append('<option value="">Error loading CPDB</option>');
+        console.error('Error loading CPDB:', xhr);
+    });
+
+    openModal('paymentModal');
+}
+
+function closeModal(modalId) {
+    // Destroy Select2 before closing modal
+    if ($('#id_user').data('select2')) {
+        $('#id_user').select2('destroy');
+    }
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function formatNominal(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/\D/g, '');
+    
+    // Format with thousand separator
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    // Update input value
+    input.value = value;
+}
+
+function unformatNominal(value) {
+    // Remove all non-digit characters
+    return value.replace(/\D/g, '');
+}
+
+// Add toast container to body
+$('body').append(`
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full">
+            <div class="flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
+`);
+
+function showToast(message, type = 'success') {
+    const toast = $('#toast');
+    const toastContent = toast.find('div').first();
+    const bgClass = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    
+    toastContent.removeClass('bg-green-500 bg-red-500').addClass(bgClass);
+    toast.find('i').removeClass('fa-check-circle fa-exclamation-circle').addClass(icon);
+    $('#toastMessage').text(message);
+    
+    // Show toast
+    toast.removeClass('hidden');
+    setTimeout(() => {
+        toastContent.removeClass('translate-x-full');
+    }, 100);
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        toastContent.addClass('translate-x-full');
+        setTimeout(() => {
+            toast.addClass('hidden');
+        }, 300);
+    }, 3000);
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    
+    // Get selected CPDB's total biaya
+    const selectedOption = $('#id_user option:selected');
+    const totalBiaya = selectedOption.data('biaya');
+    
+    // Get nominal pembayaran and remove formatting
+    const nominalPembayaran = unformatNominal($('#nominal_pembayaran').val());
+    
+    // Validate nominal pembayaran
+    if (!nominalPembayaran) {
+        showToast('Nominal pembayaran harus diisi', 'error');
+        return;
+    }
+    
+    if (parseInt(nominalPembayaran) > parseInt(totalBiaya)) {
+        showToast('Nominal pembayaran tidak boleh melebihi total biaya', 'error');
+        return;
+    }
+    
+    // Get metode_pembayaran
+    const metodePembayaran = $('#metode_pembayaran').val();
+    if (!metodePembayaran) {
+        showToast('Metode pembayaran harus dipilih', 'error');
+        return;
+    }
+
+    // Get nama_pengirim if metode_pembayaran is TRANSFER
+    const namaPengirim = $('#nama_pengirim').val();
+    if (metodePembayaran === 'TRANSFER' && !namaPengirim) {
+        showToast('Nama pengirim harus diisi untuk pembayaran transfer', 'error');
+        return;
+    }
+
+    // Set values in formData
+    formData.set('id_user', selectedOption.val());
+    formData.set('total_biaya', totalBiaya);
+    formData.set('nominal_pembayaran', nominalPembayaran);
+    formData.set('metode_pembayaran', metodePembayaran);
+    formData.set('nama_pengirim', namaPengirim || '');
+    
+    // If no file is selected, remove bukti_pembayaran from formData
+    if (!$('#bukti_pembayaran')[0].files[0]) {
+        formData.delete('bukti_pembayaran');
+    }
+    
+    $.ajax({
+        url: '/api/admin/pembayaran',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            closeModal('paymentModal');
+            showToast('Pembayaran berhasil ditambahkan');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan saat menambahkan pembayaran', 'error');
+        }
+    });
+}
+
+function toggleNamaPengirim() {
+    const metodePembayaran = $('#metode_pembayaran').val();
+    const namaPengirimContainer = $('#nama_pengirim_container');
+    const namaPengirimInput = $('#nama_pengirim');
+    
+    if (metodePembayaran === 'TRANSFER') {
+        namaPengirimContainer.show();
+        namaPengirimInput.prop('required', true);
+    } else {
+        namaPengirimContainer.hide();
+        namaPengirimInput.prop('required', false);
+        namaPengirimInput.val(''); // Clear the value when hidden
+    }
+}
+
+function exportData(type) {
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Mengekspor...`;
+    button.disabled = true;
+
+    // Create a hidden iframe for download
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    // Set iframe source to trigger download
+    iframe.src = `/api/admin/pembayaran/export/${type}`;
+
+    // Handle download completion or error
+    const checkDownload = setInterval(() => {
+        try {
+            // Check if iframe has loaded
+            if (iframe.contentWindow.document.readyState === 'complete') {
+                clearInterval(checkDownload);
+                document.body.removeChild(iframe);
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        } catch (e) {
+            // If we can't access iframe content, assume download started
+            clearInterval(checkDownload);
+            document.body.removeChild(iframe);
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    }, 1000);
+
+    // Timeout after 10 seconds
+    setTimeout(() => {
+        clearInterval(checkDownload);
+        if (document.body.contains(iframe)) {
+            document.body.removeChild(iframe);
+        }
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }, 10000);
+}
+</script>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-5xl text-red-500 mb-4"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-800">
+                    Apakah anda yakin ingin menghapus pembayaran ini?
+                </h3>
+                <input type="hidden" id="deletePaymentId">
+                <button type="button" onclick="handleDelete()"
+                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, Hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')"
+                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete(id) {
+    $('#deletePaymentId').val(id);
+    openModal('deleteModal');
+}
+
+function handleDelete() {
+    const id = $('#deletePaymentId').val();
+    
+    // Show loading state
+    const deleteButton = $('#deleteModal button:first');
+    const originalText = deleteButton.html();
+    deleteButton.html('<i class="fas fa-spinner fa-spin mr-2"></i>Menghapus...');
+    deleteButton.prop('disabled', true);
+    
+    $.ajax({
+        url: `/api/admin/pembayaran/${id}`,
+        type: 'DELETE',
+        success: function(response) {
+            closeModal('deleteModal');
+            showToast('Pembayaran berhasil dihapus');
+            
+            // Remove the row from the table
+            const filteredPayments = allPayments.filter(p => p.id_pembayaran != id);
+            allPayments.length = 0;
+            allPayments.push(...filteredPayments);
+            filterData();
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan saat menghapus pembayaran', 'error');
+            
+            // Reset button state
+            deleteButton.html(originalText);
+            deleteButton.prop('disabled', false);
+        }
+    });
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

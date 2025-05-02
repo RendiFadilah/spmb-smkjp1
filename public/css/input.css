@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none transition-colors duration-200;
+  }
+
+  .form-input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 transition-colors duration-200;
+  }
+
+  .form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900;
+  }
+
+  .card {
+    @apply bg-white rounded-lg border border-gray-200 shadow-md p-6 transition-all duration-200 hover:shadow-lg;
+  }
+}
+
+/* Custom animations */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+/* Form validation styles */
+.form-input.error {
+  @apply border-red-500 focus:ring-red-500 focus:border-red-500;
+}
+
+.error-message {
+  @apply text-sm text-red-600 mt-1;
+}
+
+/* Dashboard specific styles */
+.dashboard-stat-card {
+  @apply flex flex-col items-center justify-center p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200;
+}
+
+.dashboard-stat-icon {
+  @apply text-3xl mb-2;
+}
+
+.dashboard-stat-label {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.dashboard-stat-value {
+  @apply text-2xl font-bold text-blue-600;
+}

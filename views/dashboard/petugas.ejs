@@ -1,0 +1,84 @@
+<%- contentFor('body') %>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-users text-3xl text-blue-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Total Pendaftar</h3>
+        <p class="text-2xl font-bold text-blue-600">0</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-file-alt text-3xl text-green-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Berkas Terverifikasi</h3>
+        <p class="text-2xl font-bold text-green-600">0</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-comments text-3xl text-purple-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Wawancara Hari Ini</h3>
+        <p class="text-2xl font-bold text-purple-600">0</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-clock text-3xl text-yellow-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Menunggu Verifikasi</h3>
+        <p class="text-2xl font-bold text-yellow-600">0</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-96 p-4 bg-white">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Jadwal Wawancara Hari Ini</h3>
+            <div class="flex space-x-2">
+                <button type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-calendar-alt mr-2"></i>Atur Jadwal
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Waktu</th>
+                        <th scope="col" class="px-6 py-3">Nama</th>
+                        <th scope="col" class="px-6 py-3">Asal SMP</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                        <th scope="col" class="px-6 py-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4" colspan="5">Tidak ada jadwal wawancara hari ini</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-96 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Berkas Terbaru</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Tanggal</th>
+                        <th scope="col" class="px-6 py-3">Nama</th>
+                        <th scope="col" class="px-6 py-3">Jenis Berkas</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4" colspan="4">Belum ada berkas yang diupload</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-96 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Pengumuman Terbaru</h3>
+        <div class="space-y-4">
+            <p class="text-center text-gray-500 mt-20">Belum ada pengumuman</p>
+        </div>
+    </div>
+</div>

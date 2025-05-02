@@ -1,0 +1,397 @@
+<!-- Page Title -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Master Biaya Jurusan</h1>
+    <p class="mt-2 text-gray-600">Kelola data biaya per jurusan</p>
+</div>
+
+<!-- Search and Add Button -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Search -->
+    <div class="relative flex-1 group">
+        <input type="text" 
+               id="searchInput" 
+               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+               placeholder="Cari berdasarkan tahun ajaran atau jurusan...">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <!-- Clear search button -->
+        <button id="clearSearch" 
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Add Button -->
+    <button type="button"
+            onclick="openAddModal()"
+            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Biaya
+    </button>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Tahun Ajaran
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Jurusan
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Total Biaya
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Minimal Pembayaran
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Keterangan
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="biayaTableBody">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="biayaModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah Biaya
+                </h3>
+                <button type="button" onclick="closeModal('biayaModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="biayaForm" onsubmit="handleSubmit(event)" class="p-6">
+                <input type="hidden" id="biayaId" name="id_biaya">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="id_jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan</label>
+                        <select id="id_jurusan" name="id_jurusan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                            <option value="">Pilih Jurusan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tahun_ajaran" class="block mb-2 text-sm font-medium text-gray-900">Tahun Ajaran</label>
+                        <input type="text" 
+                               id="tahun_ajaran" 
+                               name="tahun_ajaran" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" 
+                               placeholder="2025/2026"
+                               required>
+                    </div>
+                    <div>
+                        <label for="total_biaya" class="block mb-2 text-sm font-medium text-gray-900">Total Biaya</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="total_biaya" 
+                                   name="total_biaya" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   onkeyup="formatNominal(this)"
+                                   onchange="formatNominal(this)">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="minimal_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Minimal Pembayaran</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="minimal_pembayaran" 
+                                   name="minimal_pembayaran" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   onkeyup="formatNominal(this)"
+                                   onchange="formatNominal(this)">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="keterangan" class="block mb-2 text-sm font-medium text-gray-900">Keterangan</label>
+                        <textarea id="keterangan" 
+                                 name="keterangan" 
+                                 rows="3" 
+                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200"></textarea>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('biayaModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin menghapus data biaya ini?
+                </h3>
+                <button type="button" onclick="confirmDelete()" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedId = null;
+let allData = [];
+
+// Initialize DataTable
+$(document).ready(function() {
+    loadBiayaData();
+    
+    // Enhanced search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+    
+    // Add loading animation
+    searchInput.on('focus', function() {
+        $(this).parent().addClass('ring-2 ring-green-200');
+    }).on('blur', function() {
+        $(this).parent().removeClass('ring-2 ring-green-200');
+    });
+});
+
+function loadBiayaData() {
+    $.get('/api/admin/biaya', function(data) {
+        allData = data;
+        filterData();
+    }).fail(function(xhr) {
+        showToast('Gagal memuat data biaya', 'error');
+    });
+}
+
+function filterData() {
+    const searchValue = $('#searchInput').val().toLowerCase();
+    let filteredData = allData;
+    
+    if (searchValue) {
+        filteredData = filteredData.filter(biaya => 
+            biaya.tahun_ajaran.toLowerCase().includes(searchValue) ||
+            biaya.nama_jurusan.toLowerCase().includes(searchValue)
+        );
+    }
+    
+    renderTable(filteredData);
+}
+
+function renderTable(data) {
+    const tbody = $('#biayaTableBody');
+    tbody.fadeOut(150, function() {
+        tbody.empty();
+        
+        data.forEach(function(biaya) {
+            const row = `
+                <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${biaya.tahun_ajaran}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${biaya.nama_jurusan}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${parseInt(biaya.total_biaya).toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${parseInt(biaya.minimal_pembayaran).toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${biaya.keterangan || '-'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="editBiaya(${biaya.id_biaya})" 
+                                class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteBiaya(${biaya.id_biaya})" 
+                                class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            tbody.append(row);
+        });
+        tbody.fadeIn(150);
+    });
+}
+
+function openAddModal() {
+    $('#modalTitle').text('Tambah Biaya');
+    $('#biayaForm')[0].reset();
+    $('#biayaId').val('');
+    
+    // Load jurusan
+    $.get('/api/admin/biaya/data/jurusan', function(data) {
+        const select = $('#id_jurusan');
+        select.empty().append('<option value="">Pilih Jurusan</option>');
+        data.forEach(jurusan => {
+            select.append(`<option value="${jurusan.id_jurusan}">${jurusan.nama_jurusan}</option>`);
+        });
+    });
+    
+    openModal('biayaModal');
+}
+
+function editBiaya(id) {
+    selectedId = id;
+    $('#modalTitle').text('Edit Biaya');
+    
+    // Load jurusan first
+    $.get('/api/admin/biaya/data/jurusan', function(jurusanData) {
+        const select = $('#id_jurusan');
+        select.empty().append('<option value="">Pilih Jurusan</option>');
+        jurusanData.forEach(jurusan => {
+            select.append(`<option value="${jurusan.id_jurusan}">${jurusan.nama_jurusan}</option>`);
+        });
+        
+        // Then load biaya data
+        $.get(`/api/admin/biaya/${id}`, function(data) {
+            $('#biayaId').val(data.id_biaya);
+            $('#id_jurusan').val(data.id_jurusan);
+            $('#tahun_ajaran').val(data.tahun_ajaran);
+            $('#total_biaya').val(parseInt(data.total_biaya).toLocaleString('id-ID'));
+            $('#minimal_pembayaran').val(parseInt(data.minimal_pembayaran).toLocaleString('id-ID'));
+            $('#keterangan').val(data.keterangan);
+            
+            openModal('biayaModal');
+        });
+    });
+}
+
+function deleteBiaya(id) {
+    selectedId = id;
+    openModal('deleteModal');
+}
+
+function confirmDelete() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/biaya/${selectedId}`,
+            type: 'DELETE',
+            success: function() {
+                closeModal('deleteModal');
+                loadBiayaData();
+                showToast('Data biaya berhasil dihapus');
+            },
+            error: function() {
+                showToast('Gagal menghapus data biaya', 'error');
+            }
+        });
+    }
+}
+
+function formatNominal(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/\D/g, '');
+    
+    // Format with thousand separator
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    // Update input value
+    input.value = value;
+}
+
+function unformatNominal(value) {
+    // Remove all non-digit characters
+    return value.replace(/\D/g, '');
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const data = {};
+    
+    // Convert FormData to object and unformat nominal values
+    formData.forEach((value, key) => {
+        if (key === 'total_biaya' || key === 'minimal_pembayaran') {
+            data[key] = unformatNominal(value);
+        } else {
+            data[key] = value;
+        }
+    });
+    
+    const url = data.id_biaya ? 
+        `/api/admin/biaya/${data.id_biaya}` : 
+        '/api/admin/biaya';
+    const method = data.id_biaya ? 'PUT' : 'POST';
+    
+    $.ajax({
+        url: url,
+        type: method,
+        data: data,
+        success: function() {
+            closeModal('biayaModal');
+            loadBiayaData();
+            showToast(`Data biaya berhasil ${data.id_biaya ? 'diperbarui' : 'ditambahkan'}`);
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+    });
+}
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function closeModal(modalId) {
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#16a34a" : "#ef4444",
+        className: "rounded-lg shadow-lg",
+    }).showToast();
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

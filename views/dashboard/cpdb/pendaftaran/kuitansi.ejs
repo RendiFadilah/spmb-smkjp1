@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuitansi Pembayaran Formulir SPMB</title>
+    <link rel="icon" type="image/png" href="/images/logo-jp1.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+        
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 100px;
+            color: rgba(75, 85, 99, 0.07);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            width: 100%;
+            text-align: center;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 0;
+            background-color: transparent !important;
+        }
+        
+        @media print {
+            body {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                background: transparent;
+            }
+            .print-landscape {
+                width: 297mm;
+                height: 210mm;
+                padding: 20px;
+                overflow: hidden;
+                background: transparent !important;
+            }
+            .watermark {
+                display: block !important;
+                color: rgba(75, 85, 99, 0.07) !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .content-wrapper {
+                background: transparent !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-transparent min-h-screen">
+    <!-- Watermark -->
+    <div class="watermark">SMK Jakarta Pusat 1</div>
+
+    <div class="print-landscape max-w-[1100px] mx-auto rounded-lg overflow-hidden my-8 print:my-0 content-wrapper">
+        <!-- Main Content -->
+        <div class="p-8">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 pb-6 mb-6">
+                <div class="flex items-center gap-4">
+                    <img src="/images/logo-jp1.png" alt="Logo SMK JT1" class="w-16 h-16 object-contain">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">SMK Jakarta Pusat 1</h1>
+                        <p class="text-sm text-gray-600">Jl. Cipinang Muara I No.1, Jakarta Timur | Telp: (021) 8194466</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <h2 class="text-2xl font-bold text-gray-900">KUITANSI PEMBAYARAN</h2>
+                    <p class="text-lg text-gray-600">FORMULIR SPMB 2025/2026</p>
+                </div>
+            </div>
+
+            <!-- Receipt Content -->
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Nomor Kuitansi</p>
+                        <p class="text-lg font-semibold text-gray-900" id="noFormulir"></p>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Telah Terima Dari</p>
+                        <p class="text-lg font-semibold text-gray-900" id="namaCPDB"></p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Untuk Pembayaran</p>
+                        <p class="text-lg font-semibold text-gray-900">Formulir SPMB SMK Jakarta Pusat 1 Tahun 2025/2026</p>
+                    </div>
+
+                    <!-- Amount Box -->
+                    <div class="bg-gradient-to-r from-green-50/80 to-green-100/80 rounded-xl p-6">
+                        <div class="flex justify-between items-center">
+                            <div class="space-y-2">
+                                <p class="text-sm font-medium text-gray-500">Nominal Pembayaran</p>
+                                <p class="text-3xl font-bold text-gray-900" id="nominal">Rp </p>
+                                <p class="text-base text-gray-600 italic" id="terbilang"></p>
+                            </div>
+                            <div class="h-16 w-16 rounded-full bg-green-100/80 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature -->
+                <div class="flex justify-end mt-6">
+                    <div class="text-center">
+                        <p class="text-sm text-gray-600" id="tanggalTTD">Jakarta, </p>
+                        <p class="text-sm font-medium text-gray-500 mt-6 mb-14">Petugas</p>
+                        <p class="text-base font-semibold text-gray-900" id="namaPetugas"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script>
+        function numberToWords(num) {
+            const units = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan'];
+            const teens = ['Sepuluh', 'Sebelas', 'Dua Belas', 'Tiga Belas', 'Empat Belas', 'Lima Belas', 'Enam Belas', 'Tujuh Belas', 'Delapan Belas', 'Sembilan Belas'];
+            const tens = ['', '', 'Dua Puluh', 'Tiga Puluh', 'Empat Puluh', 'Lima Puluh', 'Enam Puluh', 'Tujuh Puluh', 'Delapan Puluh', 'Sembilan Puluh'];
+            
+            if (num === 0) return 'Nol';
+            
+            function convertLessThanOneThousand(n) {
+                if (n === 0) return '';
+                if (n < 10) return units[n];
+                if (n < 20) return teens[n - 10];
+                if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + units[n % 10] : '');
+                return units[Math.floor(n / 100)] + ' Ratus' + (n % 100 !== 0 ? ' ' + convertLessThanOneThousand(n % 100) : '');
+            }
+            
+            let words = '';
+            let billions = Math.floor(num / 1000000000);
+            let millions = Math.floor((num % 1000000000) / 1000000);
+            let thousands = Math.floor((num % 1000000) / 1000);
+            let remainder = num % 1000;
+            
+            if (billions) words += convertLessThanOneThousand(billions) + ' Milyar ';
+            if (millions) words += convertLessThanOneThousand(millions) + ' Juta ';
+            if (thousands) words += convertLessThanOneThousand(thousands) + ' Ribu ';
+            if (remainder) words += convertLessThanOneThousand(remainder);
+            
+            return words.trim();
+        }
+
+        // Get data from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const data = JSON.parse(decodeURIComponent(urlParams.get('data')));
+        
+        // Format date for signature
+        function formatDate(date) {
+            const d = new Date(date);
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `Jakarta, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+        
+        // Fill in the receipt details
+        document.getElementById('noFormulir').textContent = data.no_formulir;
+        document.getElementById('namaCPDB').textContent = `${data.nama_lengkap} - ${data.asal_smp}`;
+        document.getElementById('nominal').textContent = 'Rp ' + parseInt(data.nominal_formulir).toLocaleString('id-ID');
+        document.getElementById('terbilang').textContent = numberToWords(parseInt(data.nominal_formulir)) + ' Rupiah';
+        document.getElementById('tanggalTTD').textContent = formatDate(data.tanggal);
+        document.getElementById('namaPetugas').textContent = data.verifikator;
+
+        // Auto print when loaded
+        window.onload = function() {
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        };
+    </script>
+</body>
+</html>

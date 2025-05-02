@@ -1,0 +1,101 @@
+<nav class="bg-white/95 backdrop-blur-md  border-gray-200 fixed w-full z-20 top-0 start-0">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2 md:py-3">
+    <a href="/" class="flex items-center space-x-2 md:space-x-3 rtl:space-x-reverse">
+      <img src="/images/logo-jp1.png" class="h-8 md:h-10 w-auto" alt="SMK Jakarta Pusat 1 Logo">
+      <span class="self-center text-sm md:text-lg font-semibold text-gray-800">SPMB SMK Jakarta Pusat 1</span>
+    </a>
+    <div class="flex md:order-2">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div class="relative">
+          <button type="button" class="flex items-center text-sm bg-white/90 border border-gray-200 rounded-full md:me-0 focus:ring-2 focus:ring-primary-100 hover:border-primary-300 transition-all duration-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+            <span class="sr-only">Open user menu</span>
+            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
+              <i class="fas fa-user-circle absolute w-12 h-12 text-gray-400 -left-1"></i>
+            </div>
+          </button>
+          <!-- Dropdown menu -->
+          <div class="hidden z-50 my-4 w-60 text-base list-none bg-white/95 backdrop-blur-md rounded-xl border border-gray-100 shadow-lg" id="user-dropdown">
+            <div class="py-4 px-5">
+              <span class="block text-base font-semibold text-gray-900"><%= user.nama %></span>
+              <span class="block text-sm text-gray-500 truncate mt-0.5"><%= user.roles %></span>
+            </div>
+            <ul class="py-2" aria-labelledby="user-menu-button">
+              <li class="relative group px-2">
+                <a href="/<%= user.roles.toLowerCase() %>/dashboard" class="flex items-center py-2.5 px-4 text-sm text-gray-700 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-all duration-300">
+                  <i class="fas fa-gauge-high mr-3 w-4"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="relative group px-2">
+                <form action="/auth/logout" method="POST" class="block">
+                  <button type="submit" class="flex w-full items-center py-2.5 px-4 text-sm text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-300">
+                    <i class="fas fa-right-from-bracket mr-3 w-4"></i>
+                    Logout
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      <% } else { %>
+        <a href="/auth" class="hidden md:flex text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center transition-all duration-300 transform hover:scale-105">
+          Login
+        </a>
+      <% } %>
+      <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex flex-col gap-1 p-1.5 w-9 h-9 justify-center items-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-primary-50 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-300 transition-all duration-300" aria-controls="navbar-sticky" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <span class="w-6 h-0.5 bg-current rounded-full"></span>
+        <span class="w-6 h-0.5 bg-current rounded-full"></span>
+        <span class="w-6 h-0.5 bg-current rounded-full"></span>
+      </button>
+    </div>
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+      <ul class="flex flex-col p-3 md:p-0 mt-3 font-medium border border-gray-100 rounded-xl bg-white/90 backdrop-blur-sm md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
+        <!-- Mobile Menu -->
+        <div class="block md:hidden border-b border-gray-100 pb-2 mb-2">
+          <span class="text-sm text-gray-500 px-4">Menu</span>
+        </div>
+        <li class="relative group">
+          <a href="/" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
+            <span class="relative">
+              Beranda
+              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+            </span>
+          </a>
+        </li>
+        <li class="relative group">
+          <a href="#program-keahlian" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
+            <span class="relative">
+              Jurusan
+              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+            </span>
+          </a>
+        </li>
+        <li class="relative group">
+          <a href="#alur-pendaftaran" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
+            <span class="relative">
+              Alur Pendaftaran
+              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+            </span>
+          </a>
+        </li>
+        <li class="relative group">
+          <a href="#hubungi-kami" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
+            <span class="relative">
+              Kontak
+              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+            </span>
+          </a>
+        </li>
+        <% if (typeof user === 'undefined' || !user) { %>
+        <li class="block md:hidden border-t border-gray-100 mt-2">
+          <a href="/auth" class="flex items-center py-2 px-3 mt-2 text-white bg-primary-500 hover:bg-primary-600 rounded-lg transition-all duration-300">
+            <i class="fas fa-sign-in-alt mr-2"></i>
+            Login
+          </a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

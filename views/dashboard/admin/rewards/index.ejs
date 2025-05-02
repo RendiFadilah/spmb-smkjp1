@@ -1,0 +1,517 @@
+<!-- Page Title with gradient background -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Data Reward SPMB</h1>
+    <p class="mt-2 text-gray-600">Kelola data reward SPMB</p>
+</div>
+
+<!-- Tabs -->
+<div class="mb-6 bg-white rounded-xl border border-gray-100 p-2">
+    <div class="flex space-x-2">
+        <button type="button" 
+                onclick="switchTab('today')" 
+                id="todayTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-green-100 text-green-800">
+            Hari Ini
+        </button>
+        <button type="button" 
+                onclick="switchTab('all')" 
+                id="allTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-100">
+            Keseluruhan
+        </button>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="statsCards">
+    <!-- Total Reward -->
+    <div class="bg-white rounded-lg shadow-sm border border-green-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-green-50">
+                <i class="fas fa-gift text-lg text-green-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Reward</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="totalReward">-</h3>
+                    <p class="ml-2 text-xs text-gray-400">reward</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Total Nominal -->
+    <div class="bg-white rounded-lg shadow-sm border border-emerald-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-emerald-50">
+                <i class="fas fa-money-bill-wave text-lg text-emerald-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Nominal</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="totalNominal">-</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search, Export and Add Buttons -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Search -->
+    <div class="relative flex-1 group">
+        <input type="text" 
+               id="searchInput" 
+               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+               placeholder="Cari berdasarkan nama CPDB atau nama pembawa...">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <!-- Clear search button -->
+        <button id="clearSearch" 
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Export and Add Buttons -->
+    <div class="flex gap-2">
+        <!-- Export Today Button -->
+        <a href="/api/admin/rewards/export/today" 
+           class="inline-flex items-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <i class="fas fa-file-excel mr-2"></i>
+            Export Hari Ini
+        </a>
+        <!-- Export All Button -->
+        <a href="/api/admin/rewards/export/all" 
+           class="inline-flex items-center px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <i class="fas fa-file-excel mr-2"></i>
+            Export Semua
+        </a>
+        <!-- Add Button -->
+        <button type="button"
+                onclick="openAddModal()"
+                class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <i class="fas fa-plus mr-2"></i>
+            Tambah Reward
+        </button>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        No. Formulir
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nama CPDB
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nama Pembawa
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Keterangan
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        No. WA
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nominal
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Petugas
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Tanggal
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="rewardTableBody">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="rewardModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah Reward
+                </h3>
+                <button type="button" onclick="closeModal('rewardModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="rewardForm" onsubmit="handleSubmit(event)" class="p-6">
+                <input type="hidden" id="rewardId" name="id_reward">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="id_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Pembayaran</label>
+                        <select id="id_pembayaran" name="id_pembayaran" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                            <option value="">Pilih Pembayaran</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="nama_pembawa" class="block mb-2 text-sm font-medium text-gray-900">Nama Pembawa</label>
+                        <input type="text" 
+                               id="nama_pembawa" 
+                               name="nama_pembawa" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" 
+                               required>
+                    </div>
+                    <div>
+                        <label for="keterangan_pembawa" class="block mb-2 text-sm font-medium text-gray-900">Keterangan</label>
+                        <input type="text" 
+                               id="keterangan_pembawa" 
+                               name="keterangan_pembawa" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" 
+                               required>
+                    </div>
+                    <div>
+                        <label for="no_wa_pembawa" class="block mb-2 text-sm font-medium text-gray-900">No. WhatsApp</label>
+                        <input type="text" 
+                               id="no_wa_pembawa" 
+                               name="no_wa_pembawa" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" 
+                               required>
+                    </div>
+                    <div>
+                        <label for="nominal" class="block mb-2 text-sm font-medium text-gray-900">Nominal</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="nominal" 
+                                   name="nominal" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   onkeyup="formatNominal(this)"
+                                   onchange="formatNominal(this)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('rewardModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin menghapus reward ini?
+                </h3>
+                <button type="button" onclick="confirmDelete()" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedId = null;
+let allData = [];
+let activeTab = 'today'; // Default active tab
+
+// Initialize DataTable
+$(document).ready(function() {
+    loadRewardData(activeTab);
+    
+    // Enhanced search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+    
+    // Add loading animation
+    searchInput.on('focus', function() {
+        $(this).parent().addClass('ring-2 ring-green-200');
+    }).on('blur', function() {
+        $(this).parent().removeClass('ring-2 ring-green-200');
+    });
+});
+
+function loadRewardData(tab = 'today') {
+    const endpoint = tab === 'today' ? '/api/admin/rewards/today' : '/api/admin/rewards';
+    $.get(endpoint, function(data) {
+        allData = data;
+        updateStats(tab);
+        filterData();
+    }).fail(function(xhr) {
+        if (tab === 'today') {
+            // If today's data fails, fallback to all data
+            loadRewardData('all');
+        } else {
+            showToast('Gagal memuat data reward', 'error');
+        }
+    });
+}
+
+function updateStats(tab = 'today') {
+    const endpoint = tab === 'today' ? '/api/admin/rewards/stats/today' : '/api/admin/rewards/stats';
+    $.get(endpoint, function(stats) {
+        $('#totalReward').text(stats.total);
+        $('#totalNominal').text(`Rp ${parseInt(stats.total_nominal || 0).toLocaleString('id-ID')}`);
+    }).fail(function(xhr) {
+        if (tab === 'today') {
+            // If today's stats fail, fallback to all stats
+            updateStats('all');
+        } else {
+            $('#totalReward').text('0');
+            $('#totalNominal').text('Rp 0');
+        }
+    });
+}
+
+function switchTab(tab) {
+    // Clear existing data
+    allData = [];
+    $('#rewardTableBody').empty();
+    $('#totalReward').text('-');
+    $('#totalNominal').text('-');
+    
+    activeTab = tab;
+    
+    // Update tab styles
+    if (tab === 'today') {
+        $('#todayTab').addClass('bg-green-100 text-green-800').removeClass('text-gray-600 hover:bg-gray-100');
+        $('#allTab').removeClass('bg-green-100 text-green-800').addClass('text-gray-600 hover:bg-gray-100');
+    } else {
+        $('#allTab').addClass('bg-green-100 text-green-800').removeClass('text-gray-600 hover:bg-gray-100');
+        $('#todayTab').removeClass('bg-green-100 text-green-800').addClass('text-gray-600 hover:bg-gray-100');
+    }
+    
+    // Show loading state
+    $('#rewardTableBody').html('<tr><td colspan="9" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>');
+    
+    // Load data for selected tab
+    loadRewardData(tab);
+}
+
+function filterData() {
+    const searchValue = $('#searchInput').val().toLowerCase();
+    let filteredData = allData;
+    
+    if (searchValue) {
+        filteredData = filteredData.filter(reward => 
+            reward.nama_cpdb?.toLowerCase().includes(searchValue) ||
+            reward.nama_pembawa?.toLowerCase().includes(searchValue)
+        );
+    }
+    
+    renderTable(filteredData);
+}
+
+function renderTable(data) {
+    const tbody = $('#rewardTableBody');
+    tbody.fadeOut(150, function() {
+        tbody.empty();
+        
+        data.forEach(function(reward) {
+            const row = `
+                <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${reward.no_formulir || '-'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${reward.nama_cpdb || '-'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${reward.nama_pembawa}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${reward.keterangan_pembawa}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        ${reward.no_wa_pembawa ? 
+                            `<a href="https://wa.me/62${reward.no_wa_pembawa.toString().replace(/\D/g, '')}" 
+                                target="_blank"
+                                class="inline-flex items-center px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200">
+                                <i class="fab fa-whatsapp mr-2"></i>
+                                ${reward.no_wa_pembawa}
+                            </a>` : 
+                            '<span class="text-gray-500">-</span>'
+                        }
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${parseInt(reward.nominal).toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${reward.nama_petugas}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(reward.tanggal_reward).toLocaleDateString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="editReward(${reward.id_reward})" 
+                                class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteReward(${reward.id_reward})" 
+                                class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            tbody.append(row);
+        });
+        tbody.fadeIn(150);
+    });
+}
+
+function openAddModal() {
+    $('#modalTitle').text('Tambah Reward');
+    $('#rewardForm')[0].reset();
+    $('#rewardId').val('');
+    
+    // Load eligible payments
+    $.get('/api/admin/rewards/eligible-payments', function(data) {
+        const select = $('#id_pembayaran');
+        select.empty().append('<option value="">Pilih Pembayaran</option>');
+        data.forEach(payment => {
+            select.append(`<option value="${payment.id_pembayaran}">${payment.no_formulir} - ${payment.nama_cpdb}</option>`);
+        });
+    });
+    
+    openModal('rewardModal');
+}
+
+function editReward(id) {
+    selectedId = id;
+    $('#modalTitle').text('Edit Reward');
+    
+    $.get(`/api/admin/rewards/${id}`, function(data) {
+        $('#rewardId').val(data.id_reward);
+        $('#nama_pembawa').val(data.nama_pembawa);
+        $('#keterangan_pembawa').val(data.keterangan_pembawa);
+        $('#no_wa_pembawa').val(data.no_wa_pembawa);
+        $('#nominal').val(parseInt(data.nominal).toLocaleString('id-ID'));
+        
+        // Load and select current payment
+        const select = $('#id_pembayaran');
+        select.empty().append(`<option value="${data.id_pembayaran}">${data.no_formulir} - ${data.nama_cpdb}</option>`);
+        select.prop('disabled', true);
+        
+        openModal('rewardModal');
+    });
+}
+
+function deleteReward(id) {
+    selectedId = id;
+    openModal('deleteModal');
+}
+
+function confirmDelete() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/rewards/${selectedId}`,
+            type: 'DELETE',
+            success: function() {
+                closeModal('deleteModal');
+                loadRewardData(activeTab);
+                showToast('Reward berhasil dihapus');
+            },
+            error: function() {
+                showToast('Gagal menghapus reward', 'error');
+            }
+        });
+    }
+}
+
+function formatNominal(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/\D/g, '');
+    
+    // Format with thousand separator
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    // Update input value
+    input.value = value;
+}
+
+function unformatNominal(value) {
+    // Remove all non-digit characters
+    return value.replace(/\D/g, '');
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Unformat nominal before sending
+    data.nominal = unformatNominal(data.nominal);
+    
+    const url = data.id_reward ? 
+        `/api/admin/rewards/${data.id_reward}` : 
+        '/api/admin/rewards';
+    const method = data.id_reward ? 'PUT' : 'POST';
+    
+    $.ajax({
+        url: url,
+        type: method,
+        data: data,
+        success: function() {
+            closeModal('rewardModal');
+            loadRewardData(activeTab);
+            showToast(`Reward berhasil ${data.id_reward ? 'diperbarui' : 'ditambahkan'}`);
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+    });
+}
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function closeModal(modalId) {
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#16a34a" : "#ef4444",
+        className: "rounded-lg shadow-lg",
+    }).showToast();
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

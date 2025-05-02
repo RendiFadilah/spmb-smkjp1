@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuitansi Pembayaran SPMB</title>
+    <link rel="icon" type="image/png" href="/images/logo-jp1.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        @page {
+            size: A5 landscape;
+            margin: 0;
+        }
+        
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px; /* Reduced from 100px */
+            color: rgba(75, 85, 99, 0.05); /* Slightly more transparent */
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            width: 100%;
+            text-align: center;
+            font-weight: 700; /* Slightly reduced from 800 */
+            line-height: 1;
+            letter-spacing: -1px; /* Added to make text more compact */
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 0;
+            background-color: transparent !important;
+        }
+        
+        @media print {
+            body {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                background: transparent;
+            }
+            .print-landscape {
+                width: 210mm;  /* A5 width */
+                height: 148mm; /* A5 height */
+                padding: 12px;
+                overflow: hidden;
+                background: transparent !important;
+            }
+            .watermark {
+                display: block !important;
+                color: rgba(75, 85, 99, 0.07) !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .content-wrapper {
+                background: transparent !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-transparent min-h-screen">
+    <!-- Watermark -->
+    <div class="watermark">SMK Jakarta Pusat 1</div>
+
+    <div class="print-landscape max-w-[800px] mx-auto rounded-lg overflow-hidden my-8 print:my-0 content-wrapper">
+        <!-- Main Content -->
+        <div class="p-4">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 pb-2 mb-3">
+                <div class="flex items-center gap-2">
+                    <img src="/images/logo-jp1.png" alt="Logo SMK JT1" class="w-10 h-10 object-contain">
+                    <div>
+                        <h1 class="text-base font-bold text-gray-900 leading-tight">SMK Jakarta Pusat 1</h1>
+                        <p class="text-[10px] text-gray-600 leading-tight">Jl. Cawang Baru No. 543 / No. 71 Otista - Jakarta Timur | WhatsApp : 6285159998772</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <h2 class="text-lg font-bold text-gray-900 leading-tight">KUITANSI PEMBAYARAN</h2>
+                    <p class="text-xs text-gray-600">SPMB 2025/2026</p>
+                </div>
+            </div>
+
+            <!-- Receipt Content -->
+            <div class="space-y-2">
+                <div class="grid grid-cols-1 gap-2">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs font-medium text-gray-500">No. Formulir</p>
+                            <p class="text-sm font-semibold text-gray-900" id="noFormulir"></p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-gray-500">Telah terima dari</p>
+                            <p class="text-sm font-semibold text-gray-900" id="namaCPDB"></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-medium text-gray-500">Untuk Pembayaran</p>
+                        <p class="text-sm font-semibold text-gray-900">Pendaftaran Peserta Didik Baru SMK Jakarta Pusat 1 Tahun 2025/2026</p>
+                    </div>
+
+                    <!-- Amount Box -->
+                    <div class="bg-gradient-to-r from-green-50/80 to-green-100/80 rounded-lg p-3">
+                        <div class="flex justify-between items-center">
+                            <div class="space-y-0.5">
+                                <p class="text-xs font-medium text-gray-500">Nominal Pembayaran</p>
+                                <p class="text-xl font-bold text-gray-900" id="nominal">Rp </p>
+                                <p class="text-xs text-gray-600 italic" id="terbilang"></p>
+                            </div>
+                            <div id="statusBadge"></div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Details -->
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 mb-1">Rincian Pembayaran:</p>
+                        <div id="paymentDetails" class="space-y-1">
+                            <p class="text-xs text-gray-600">Total Biaya: <span id="totalBiaya" class="font-medium"></span></p>
+                            <div id="paymentList" class="space-y-0.5">
+                                <!-- Payment details will be inserted here -->
+                            </div>
+                            <div class="mt-2">
+                                <p class="text-xs text-gray-600">Status Pembayaran: <span id="statusPelunasan" class="font-medium"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature -->
+                <div class="flex justify-end mt-2">
+                    <div class="text-center">
+                        <p class="text-xs text-gray-600" id="tanggalTTD">Jakarta, </p>
+                        <p class="text-xs font-medium text-gray-500 mt-2 mb-8">Petugas</p>
+                        <p class="text-xs font-semibold text-gray-900" id="namaPetugas"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script>
+        function numberToWords(num) {
+            const units = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan'];
+            const teens = ['Sepuluh', 'Sebelas', 'Dua Belas', 'Tiga Belas', 'Empat Belas', 'Lima Belas', 'Enam Belas', 'Tujuh Belas', 'Delapan Belas', 'Sembilan Belas'];
+            const tens = ['', '', 'Dua Puluh', 'Tiga Puluh', 'Empat Puluh', 'Lima Puluh', 'Enam Puluh', 'Tujuh Puluh', 'Delapan Puluh', 'Sembilan Puluh'];
+            
+            if (num === 0) return 'Nol';
+            
+            function convertLessThanOneThousand(n) {
+                if (n === 0) return '';
+                if (n < 10) return units[n];
+                if (n < 20) return teens[n - 10];
+                if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + units[n % 10] : '');
+                return units[Math.floor(n / 100)] + ' Ratus' + (n % 100 !== 0 ? ' ' + convertLessThanOneThousand(n % 100) : '');
+            }
+            
+            let words = '';
+            let billions = Math.floor(num / 1000000000);
+            let millions = Math.floor((num % 1000000000) / 1000000);
+            let thousands = Math.floor((num % 1000000) / 1000);
+            let remainder = num % 1000;
+            
+            if (billions) words += convertLessThanOneThousand(billions) + ' Milyar ';
+            if (millions) words += convertLessThanOneThousand(millions) + ' Juta ';
+            if (thousands) words += convertLessThanOneThousand(thousands) + ' Ribu ';
+            if (remainder) words += convertLessThanOneThousand(remainder);
+            
+            return words.trim();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('id-ID', options);
+        }
+
+        // Fetch kuitansi data from API
+        async function fetchKuitansiData() {
+            try {
+                const id_pembayaran = window.location.pathname.split('/').pop();
+                const response = await fetch(`/api/admin/pembayaran/kuitansi/${id_pembayaran}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch kuitansi data');
+                }
+                const data = await response.json();
+                
+                // Fill in the receipt details
+                document.getElementById('noFormulir').textContent = data.no_formulir;
+                document.getElementById('namaCPDB').textContent = `${data.nama_lengkap} - ${data.nama_jurusan}`;
+                document.getElementById('nominal').textContent = 'Rp ' + parseInt(data.total_pembayaran).toLocaleString('id-ID');
+                document.getElementById('terbilang').textContent = numberToWords(parseInt(data.total_pembayaran)) + ' Rupiah';
+                document.getElementById('tanggalTTD').textContent = 'Jakarta, ' + formatDate(new Date());
+                document.getElementById('namaPetugas').textContent = data.verifikator;
+
+                // Fill in payment details
+                const totalBiaya = parseInt(data.total_biaya);
+                document.getElementById('totalBiaya').textContent = `Rp ${totalBiaya.toLocaleString('id-ID')}`;
+                
+                let runningTotal = 0;
+                const paymentList = document.getElementById('paymentList');
+                
+                if (data.detail_pembayaran && data.detail_pembayaran.length > 0) {
+                    data.detail_pembayaran.forEach((payment, index) => {
+                        const paymentAmount = parseInt(payment.nominal_pembayaran);
+                        runningTotal += paymentAmount;
+                        const remainingBalance = totalBiaya - runningTotal;
+                        
+                        const paymentElement = document.createElement('p');
+                        paymentElement.className = 'text-xs text-gray-600';
+                        paymentElement.innerHTML = `Pembayaran ${index + 1} (${formatDate(payment.tanggal_pembayaran)}): Rp ${paymentAmount.toLocaleString('id-ID')} (Diverifikasi oleh: ${payment.nama_verifikator || '-'}) - Sisa: Rp ${remainingBalance.toLocaleString('id-ID')}`;
+                        paymentList.appendChild(paymentElement);
+                    });
+                } else {
+                    const noPaymentElement = document.createElement('p');
+                    noPaymentElement.className = 'text-xs text-gray-500 italic';
+                    noPaymentElement.textContent = 'Belum ada pembayaran';
+                    paymentList.appendChild(noPaymentElement);
+                }
+
+                // Set payment status
+                const statusElement = document.getElementById('statusPelunasan');
+                const statusBadge = document.getElementById('statusBadge');
+                
+                if (runningTotal >= totalBiaya) {
+                    statusElement.textContent = 'LUNAS';
+                    statusElement.className = 'font-medium text-green-600';
+                    statusBadge.innerHTML = `
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 blur opacity-50 rounded-xl"></div>
+                            <div class="relative px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center gap-2 border border-white/20">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-sm font-extrabold text-white tracking-wider">LUNAS</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    statusElement.textContent = 'BELUM LUNAS';
+                    statusElement.className = 'font-medium text-red-600';
+                    statusBadge.innerHTML = `
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-red-400 to-red-500 blur opacity-50 rounded-xl"></div>
+                            <div class="relative px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-lg flex items-center gap-2 border border-white/20">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-sm font-extrabold text-white tracking-wider">BELUM LUNAS</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Auto print after data is loaded
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            } catch (error) {
+                console.error('Error fetching kuitansi data:', error);
+                alert('Terjadi kesalahan saat mengambil data kuitansi');
+            }
+        }
+
+        // Load data when page loads
+        window.onload = fetchKuitansiData;
+    </script>
+</body>
+</html>

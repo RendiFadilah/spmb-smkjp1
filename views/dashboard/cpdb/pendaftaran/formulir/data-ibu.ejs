@@ -1,0 +1,248 @@
+<!-- Toast Container -->
+<div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
+<div class="space-y-8">
+  <div class="bg-white rounded-2xl shadow-xl p-8">
+    <form id="dataIbuForm" class="space-y-8">
+      <!-- Mother Information -->
+      <div class="relative">
+        <div class="flex items-center mb-6">
+          <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+            <i class="fas fa-user text-xl"></i>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-xl font-bold text-gray-800">Data Ibu</h3>
+            <p class="text-sm text-gray-500">Informasi data ibu kandung</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Ibu</label>
+            <div class="relative">
+              <input type="text" 
+                     name="nama_ibu" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">NIK Ibu</label>
+            <div class="relative">
+              <input type="text" 
+                     name="nik_ibu" 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Lahir</label>
+            <div class="relative">
+              <input type="text" 
+                     name="tempat_lahir_ibu" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
+            <div class="relative">
+              <input type="date" 
+                     name="tanggal_lahir_ibu" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
+            <div class="relative">
+              <input type="tel" 
+                     name="nomor_telepon_ibu" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Pendidikan Terakhir</label>
+            <div class="relative">
+              <select name="pendidikan_terakhir_ibu" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih Pendidikan Terakhir</option>
+                <option value="Tidak Sekolah">Tidak Sekolah</option>
+                <option value="Putus SD">Putus SD</option>
+                <option value="SD /Sederajat">SD /Sederajat</option>
+                <option value="SMP / Sederajat">SMP / Sederajat</option>
+                <option value="SMA / Sederajat">SMA / Sederajat</option>
+                <option value="D1">D1</option>
+                <option value="D3">D3</option>
+                <option value="D4">D4</option>
+                <option value="S1">S1</option>
+                <option value="S2">S2</option>
+                <option value="S3">S3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Pekerjaan</label>
+            <div class="relative">
+              <select name="pekerjaan_ibu" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih Pekerjaan</option>
+                <option value="Buruh">Buruh</option>
+                <option value="Karyawan Swasta">Karyawan Swasta</option>
+                <option value="Pedagang Besar">Pedagang Besar</option>
+                <option value="Pedagang Kecil">Pedagang Kecil</option>
+                <option value="Petani">Petani</option>
+                <option value="PNS/TNI/Polri">PNS/TNI/Polri</option>
+                <option value="Sudah Meninggal">Sudah Meninggal</option>
+                <option value="Wiraswasta">Wiraswasta</option>
+                <option value="Wirausaha">Wirausaha</option>
+                <option value="Tidak Bekerja">Tidak Bekerja</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Penghasilan per Bulan</label>
+            <div class="relative">
+              <select name="penghasilan_perbulan_ibu" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih Penghasilan</option>
+                <option value="Kurang dari Rp. 500,000">Kurang dari Rp. 500,000</option>
+                <option value="Rp. 500,000 - Rp. 999,999">Rp. 500,000 - Rp. 999,999</option>
+                <option value="Rp. 1,000,000 - Rp. 1,999,999">Rp. 1,000,000 - Rp. 1,999,999</option>
+                <option value="Rp. 2,000,000 - Rp. 4,999,999">Rp. 2,000,000 - Rp. 4,999,999</option>
+                <option value="Rp. 5,000,000 - Rp 20,000,000">Rp. 5,000,000 - Rp 20,000,000</option>
+                <option value="Tidak Berpenghasilan">Tidak Berpenghasilan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Berkebutuhan Khusus</label>
+            <div class="relative">
+              <select name="berkebutuhan_khusus_ibu" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih</option>
+                <option value="Iya">Iya</option>
+                <option value="Tidak">Tidak</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex justify-end space-x-4 pt-6">
+        <button type="submit" id="submitBtn" class="px-6 py-3 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          Simpan & Lanjutkan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    
+    toast.className = `${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3 mb-4 transform translate-x-full transition-transform duration-300`;
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            container.removeChild(toast);
+        }, 300);
+    }, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Load existing data if available
+  fetch('/api/cpdb/formulir/data-ibu')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && data.data) {
+        const form = document.getElementById('dataIbuForm');
+        Object.keys(data.data).forEach(key => {
+          const input = form.elements[key];
+          if (input) {
+            if (key === 'tanggal_lahir_ibu') {
+              input.value = new Date(data.data[key]).toISOString().split('T')[0];
+            } else {
+              input.value = data.data[key];
+            }
+          }
+        });
+        // Update button text if data exists
+        document.getElementById('submitBtn').textContent = 'Update & Lanjutkan';
+      }
+    })
+    .catch(error => {
+      console.error('Error loading data:', error);
+      showToast('Gagal memuat data', 'error');
+    });
+
+  // Handle form submission
+  document.getElementById('dataIbuForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+    
+    try {
+      const response = await fetch('/api/cpdb/formulir/data-ibu', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast('Data berhasil disimpan');
+        setTimeout(() => {
+          window.location.href = '/dashboard/cpdb/pendaftaran/isi-formulir/data-wali';
+        }, 1000);
+      } else {
+        showToast(result.message || 'Terjadi kesalahan saat menyimpan data', 'error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast('Terjadi kesalahan saat menyimpan data', 'error');
+    }
+  });
+});
+</script>

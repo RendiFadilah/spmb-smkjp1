@@ -1,0 +1,760 @@
+<!-- Page Title with gradient background -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Data Formulir</h1>
+    <p class="mt-2 text-gray-600">Kelola data formulir PPDB</p>
+</div>
+
+<!-- Tabs -->
+<div class="mb-6 bg-white rounded-xl border border-gray-100 p-2">
+    <div class="flex space-x-2">
+        <button type="button" 
+                onclick="switchTab('today')" 
+                id="todayTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-green-100 text-green-800">
+            Hari Ini
+        </button>
+        <button type="button" 
+                onclick="switchTab('all')" 
+                id="allTab"
+                class="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-100">
+            Keseluruhan
+        </button>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8" id="statsCards">
+    <!-- Total Formulir -->
+    <div class="bg-white rounded-lg shadow-sm border border-green-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-green-50">
+                <i class="fas fa-file-alt text-lg text-green-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Formulir</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="totalFormulir">-</h3>
+                    <p class="ml-2 text-xs text-gray-400">formulir</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Formulir Proses -->
+    <div class="bg-white rounded-lg shadow-sm border border-yellow-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-yellow-50">
+                <i class="fas fa-clock text-lg text-yellow-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Proses</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="formulirProses">-</h3>
+                    <p class="ml-2 text-xs text-gray-400">formulir</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Formulir Terverifikasi -->
+    <div class="bg-white rounded-lg shadow-sm border border-blue-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-blue-50">
+                <i class="fas fa-check-circle text-lg text-blue-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Terverifikasi</p>
+                <div class="flex items-baseline mt-1">
+                    <h3 class="text-xl font-semibold text-gray-800" id="formulirTerverifikasi">-</h3>
+                    <p class="ml-2 text-xs text-gray-400">formulir</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Total Uang -->
+    <div class="bg-white rounded-lg shadow-sm border border-emerald-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+        <div class="flex items-center space-x-3">
+            <div class="p-3 rounded-lg bg-emerald-50">
+                <i class="fas fa-money-bill-wave text-lg text-emerald-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Uang</p>
+                <div class="flex items-baseline mt-1">
+                    <% if (user.roles === 'Admin' || user.roles === 'Bendahara') { %>
+                        <h3 class="text-xl font-semibold text-gray-800" id="totalUang">-</h3>
+                    <% } else { %>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-lock mr-2"></i>
+                            <span class="text-sm">Admin & Bendahara Only</span>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search, Export and Add Buttons -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Search and Export -->
+    <div class="flex flex-col sm:flex-row gap-4 flex-1">
+        <!-- Search -->
+        <div class="relative flex-1 group">
+        <input type="text" 
+               id="searchInput" 
+               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+               placeholder="Cari berdasarkan nama CPDB atau nomor formulir...">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <!-- Clear search button -->
+        <button id="clearSearch" 
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+            <i class="fas fa-times"></i>
+        </button>
+        </div>
+        <!-- Export Buttons -->
+        <div class="flex gap-2">
+            <a href="/api/admin/formulir/export/today" 
+               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-file-excel mr-2"></i>
+                Export Hari Ini
+            </a>
+            <a href="/api/admin/formulir/export/all" 
+               class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-file-excel mr-2"></i>
+                Export Semua
+            </a>
+        </div>
+    </div>
+    <!-- Add Button -->
+    <button type="button"
+            onclick="openAddModal()"
+            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Formulir
+    </button>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        No. Formulir
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nama CPDB
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nominal
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Metode Pembayaran
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nama Pengirim
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Status
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Verifikator
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Tanggal
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Kuitansi
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="formulirTableBody">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+
+           
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="formulirModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah Formulir
+                </h3>
+                <button type="button" onclick="closeModal('formulirModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="formulirForm" onsubmit="handleSubmit(event)" class="p-6" enctype="multipart/form-data">
+                <input type="hidden" id="formulirId" name="id_formulir">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="id_user" class="block mb-2 text-sm font-medium text-gray-900">Nama CPDB</label>
+                        <select id="id_user" name="id_user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                            <option value="">Pilih CPDB</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="id_kode_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Kode Pembayaran</label>
+                        <select id="id_kode_pembayaran" name="id_kode_pembayaran" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                            <option value="">Pilih Kode Pembayaran</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="metode_pembayaran" class="block mb-2 text-sm font-medium text-gray-900">Metode Pembayaran</label>
+                        <select id="metode_pembayaran" 
+                                name="metode_pembayaran" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200"
+                                onchange="toggleNamaPengirim()"
+                                required>
+                            <option value="">Pilih Metode Pembayaran</option>
+                            <option value="Tunai">Tunai</option>
+                            <option value="Transfer">Transfer</option>
+                        </select>
+                    </div>
+                    <div id="nama_pengirim_container" style="display: none;">
+                        <label for="nama_pengirim" class="block mb-2 text-sm font-medium text-gray-900">Nama Pengirim</label>
+                        <input type="text" 
+                               id="nama_pengirim" 
+                               name="nama_pengirim" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200"
+                               placeholder="Masukkan nama pengirim">
+                    </div>
+                    <div>
+                        <label for="nominal_formulir" class="block mb-2 text-sm font-medium text-gray-900">Nominal</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="nominal_formulir" 
+                                   name="nominal_formulir" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   onkeyup="formatNominal(this)"
+                                   onchange="formatNominal(this)">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="bukti_bayar" class="block mb-2 text-sm font-medium text-gray-900">Bukti Pembayaran</label>
+                        <input type="file" id="bukti_bayar" name="bukti_bayar" accept="image/*" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
+                        <p class="mt-1 text-sm text-gray-500">Format: JPG, JPEG, PNG (Max. 5MB)</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('formulirModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div id="detailModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900">Detail Formulir</h3>
+                <button type="button" onclick="closeModal('detailModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">No. Formulir</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_no_formulir">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Tanggal</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_tanggal">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Nama CPDB</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_nama_cpdb">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Kode Bayar</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_kode_bayar">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Nominal</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_nominal">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Status</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_status">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Verifikator</p>
+                        <p class="text-base font-semibold text-gray-900" id="detail_verifikator">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Bukti Bayar</p>
+                        <img id="detail_bukti_bayar" src="" alt="Bukti Pembayaran" class="mt-2 max-w-full h-auto rounded-lg hidden">
+                        <p id="detail_no_bukti" class="text-sm text-gray-500 hidden">Tidak ada bukti pembayaran</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin menghapus formulir ini?
+                </h3>
+                <button type="button" onclick="confirmDelete()" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Verify Confirmation Modal -->
+<div id="verifyModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-check-circle text-6xl text-green-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin memverifikasi formulir ini?
+                </h3>
+                <button type="button" onclick="confirmVerify()" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, verifikasi
+                </button>
+                <button type="button" onclick="closeModal('verifyModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedId = null;
+let allData = [];
+let activeTab = 'today'; // Default active tab
+
+// Initialize DataTable
+$(document).ready(function() {
+    loadFormulirData(activeTab);
+    
+    // Enhanced search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+    
+    // Add loading animation
+    searchInput.on('focus', function() {
+        $(this).parent().addClass('ring-2 ring-green-200');
+    }).on('blur', function() {
+        $(this).parent().removeClass('ring-2 ring-green-200');
+    });
+});
+
+function loadFormulirData(tab = 'today') {
+    const endpoint = tab === 'today' ? '/api/admin/formulir/today' : '/api/admin/formulir';
+    $.get(endpoint, function(data) {
+        allData = data;
+        updateStats(tab);
+        filterData();
+    }).fail(function(xhr) {
+        if (tab === 'today') {
+            // If today's data fails, fallback to all data
+            loadFormulirData('all');
+        } else {
+            showToast('Gagal memuat data formulir', 'error');
+        }
+    });
+}
+
+function updateStats(tab = 'today') {
+    const endpoint = tab === 'today' ? '/api/admin/formulir/data/stats/today' : '/api/admin/formulir/data/stats';
+    $.get(endpoint, function(stats) {
+        $('#totalFormulir').text(stats.total);
+        $('#formulirProses').text(stats.proses);
+        $('#formulirTerverifikasi').text(stats.terverifikasi);
+        if ($('#totalUang').length) {
+            $('#totalUang').text(`Rp ${parseInt(stats.totalUang || 0).toLocaleString('id-ID')}`);
+        }
+    }).fail(function(xhr) {
+        if (tab === 'today') {
+            // If today's stats fail, fallback to all stats
+            updateStats('all');
+        } else {
+            $('#totalFormulir').text('0');
+            $('#formulirProses').text('0');
+            $('#formulirTerverifikasi').text('0');
+            $('#totalUang').text('Rp 0');
+        }
+    });
+}
+
+function switchTab(tab) {
+    activeTab = tab;
+    
+    // Update tab styles
+    if (tab === 'today') {
+        $('#todayTab').addClass('bg-green-100 text-green-800').removeClass('text-gray-600 hover:bg-gray-100');
+        $('#allTab').removeClass('bg-green-100 text-green-800').addClass('text-gray-600 hover:bg-gray-100');
+    } else {
+        $('#allTab').addClass('bg-green-100 text-green-800').removeClass('text-gray-600 hover:bg-gray-100');
+        $('#todayTab').removeClass('bg-green-100 text-green-800').addClass('text-gray-600 hover:bg-gray-100');
+    }
+    
+    // Load data for selected tab
+    loadFormulirData(tab);
+}
+
+function filterData() {
+    const searchValue = $('#searchInput').val().toLowerCase();
+    let filteredData = allData;
+    
+    if (searchValue) {
+        filteredData = filteredData.filter(form => 
+            form.nama_lengkap.toLowerCase().includes(searchValue) ||
+            form.no_formulir.toString().includes(searchValue)
+        );
+    }
+    
+    renderTable(filteredData);
+}
+
+function renderTable(data) {
+    const tbody = $('#formulirTableBody');
+    tbody.fadeOut(150, function() {
+        tbody.empty();
+        
+        data.forEach(function(form) {
+            const statusClass = form.status === 'Terverifikasi' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-yellow-100 text-yellow-800';
+            
+            const row = `
+                <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${form.no_formulir}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${form.nama_lengkap}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${parseInt(form.nominal_formulir).toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        ${form.metode_pembayaran ? 
+                            `<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                form.metode_pembayaran === 'Transfer' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                            }">
+                                ${form.metode_pembayaran}
+                            </span>` 
+                            : '-'
+                        }
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${form.nama_pengirim || '-'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${form.status} 
+                        </span>
+                         ${form.status === 'Proses' ? `
+                        <button onclick="verifyFormulir(${form.id_formulir})" 
+                                class="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 rounded-lg px-2 py-1"
+                                title="Verifikasi Formulir">
+                            <i class="fas fa-check-circle"></i> Verifikasi
+                        </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${form.verifikator}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(form.tanggal).toLocaleDateString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                        <button onclick="printKuitansi(${form.id_formulir})" 
+                                class="text-purple-600 hover:text-purple-800 transition-colors duration-200"
+                                title="Cetak Kuitansi">
+                            <i class="fas fa-print"></i>
+                        </button>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="showDetail(${form.id_formulir})" 
+                                class="text-blue-600 hover:text-blue-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="editFormulir(${form.id_formulir})" 
+                                class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                       
+                        <button onclick="deleteFormulir(${form.id_formulir})" 
+                                class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            tbody.append(row);
+        });
+        tbody.fadeIn(150);
+    });
+}
+
+function openAddModal() {
+    $('#modalTitle').text('Tambah Formulir');
+    $('#formulirForm')[0].reset();
+    $('#formulirId').val('');
+    
+    // Load eligible CPDB
+    $.get('/api/admin/formulir/data/eligible-cpdb', function(data) {
+        const select = $('#id_user');
+        select.empty().append('<option value="">Pilih CPDB</option>');
+        data.forEach(cpdb => {
+            select.append(`<option value="${cpdb.id_user}">${cpdb.nama_lengkap} (${cpdb.nisn}) - ${cpdb.asal_smp}</option>`);
+        });
+    });
+    
+    // Load available payment codes
+    $.get('/api/admin/formulir/data/available-codes', function(data) {
+        const select = $('#id_kode_pembayaran');
+        select.empty().append('<option value="">Pilih Kode Pembayaran</option>');
+        data.forEach(code => {
+            select.append(`<option value="${code.id_kode_pembayaran}">${code.kode_bayar}</option>`);
+        });
+    });
+    
+    openModal('formulirModal');
+}
+
+function showDetail(id) {
+    $.get(`/api/admin/formulir/${id}`, function(data) {
+        $('#detail_no_formulir').text(data.no_formulir);
+        $('#detail_tanggal').text(new Date(data.tanggal).toLocaleDateString('id-ID'));
+        $('#detail_nama_cpdb').text(data.nama_lengkap);
+        $('#detail_kode_bayar').text(data.kode_bayar);
+        $('#detail_nominal').text(`Rp ${parseInt(data.nominal_formulir).toLocaleString('id-ID')}`);
+        $('#detail_status').text(data.status);
+        $('#detail_verifikator').text(data.verifikator);
+        
+        if (data.bukti_bayar) {
+            $('#detail_bukti_bayar').attr('src', data.bukti_bayar).removeClass('hidden');
+            $('#detail_no_bukti').addClass('hidden');
+        } else {
+            $('#detail_bukti_bayar').addClass('hidden');
+            $('#detail_no_bukti').removeClass('hidden');
+        }
+        
+        openModal('detailModal');
+    });
+}
+
+function editFormulir(id) {
+    selectedId = id;
+    $('#modalTitle').text('Edit Formulir');
+    
+    $.get(`/api/admin/formulir/${id}`, function(data) {
+        $('#formulirId').val(data.id_formulir);
+        // Format nominal when editing
+        $('#nominal_formulir').val(parseInt(data.nominal_formulir).toLocaleString('id-ID'));
+        
+        // Load current CPDB
+        const userSelect = $('#id_user');
+        userSelect.empty().append(`<option value="${data.id_user}">${data.nama_lengkap}</option>`);
+        userSelect.prop('disabled', true);
+        
+        // Load current payment code
+        const codeSelect = $('#id_kode_pembayaran');
+        codeSelect.empty().append(`<option value="${data.id_kode_pembayaran}">${data.kode_bayar}</option>`);
+        codeSelect.prop('disabled', true);
+        
+        openModal('formulirModal');
+    });
+}
+
+function deleteFormulir(id) {
+    selectedId = id;
+    openModal('deleteModal');
+}
+
+function confirmDelete() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/formulir/${selectedId}`,
+            type: 'DELETE',
+            success: function() {
+                closeModal('deleteModal');
+                loadFormulirData(activeTab);
+                showToast('Formulir berhasil dihapus');
+            },
+            error: function() {
+                showToast('Gagal menghapus formulir', 'error');
+            }
+        });
+    }
+}
+
+function formatNominal(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/\D/g, '');
+    
+    // Format with thousand separator
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    // Update input value
+    input.value = value;
+}
+
+function unformatNominal(value) {
+    // Remove all non-digit characters
+    return value.replace(/\D/g, '');
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    
+    // Unformat nominal before sending
+    const nominal = unformatNominal(formData.get('nominal_formulir'));
+    formData.set('nominal_formulir', nominal);
+    
+    const url = formData.get('id_formulir') ? 
+        `/api/admin/formulir/${formData.get('id_formulir')}` : 
+        '/api/admin/formulir';
+    const method = formData.get('id_formulir') ? 'PUT' : 'POST';
+    
+    $.ajax({
+        url: url,
+        type: method,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function() {
+            closeModal('formulirModal');
+            loadFormulirData(activeTab);
+            showToast(`Formulir berhasil ${formData.get('id_formulir') ? 'diperbarui' : 'ditambahkan'}`);
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+    });
+}
+
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function closeModal(modalId) {
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function toggleNamaPengirim() {
+    const metodePembayaran = document.getElementById('metode_pembayaran').value;
+    const namaPengirimContainer = document.getElementById('nama_pengirim_container');
+    const namaPengirimInput = document.getElementById('nama_pengirim');
+    
+    if (metodePembayaran === 'Transfer') {
+        namaPengirimContainer.style.display = 'block';
+        namaPengirimInput.required = true;
+    } else {
+        namaPengirimContainer.style.display = 'none';
+        namaPengirimInput.required = false;
+        namaPengirimInput.value = ''; // Clear the value when hidden
+    }
+}
+
+// Call toggleNamaPengirim on page load to set initial state
+document.addEventListener('DOMContentLoaded', function() {
+    toggleNamaPengirim();
+});
+
+function printKuitansi(id) {
+    // Get form data first
+    $.get(`/api/admin/formulir/${id}`, function(data) {
+        // Open receipt in new window
+        const receiptWindow = window.open('/dashboard/admin/formulir/cetak-kuitansi?data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
+        
+        // Print automatically when loaded
+        if (receiptWindow) {
+            receiptWindow.onload = function() {
+                setTimeout(() => {
+                    receiptWindow.print();
+                }, 500);
+            };
+        }
+    });
+}
+
+
+
+function verifyFormulir(id) {
+    selectedId = id;
+    openModal('verifyModal');
+}
+
+function confirmVerify() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/formulir/${selectedId}/verify`,
+            type: 'PUT',
+            success: function() {
+                closeModal('verifyModal');
+                loadFormulirData(activeTab);
+                showToast('Formulir berhasil diverifikasi', 'success');
+            },
+            error: function(xhr) {
+                showToast(xhr.responseJSON?.message || 'Gagal memverifikasi formulir', 'error');
+            }
+        });
+    }
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#16a34a" : "#ef4444",
+        className: "rounded-lg shadow-lg",
+    }).showToast();
+}
+
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

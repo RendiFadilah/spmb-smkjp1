@@ -1,0 +1,253 @@
+<div class="max-w-7xl mx-auto">
+    <!-- Registration Flow -->
+    <div class="bg-white rounded-lg shadow-2xl p-6 my-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-800">Alur Pendaftaran</h2>
+            <div class="text-sm text-gray-500">
+                Progress: <span class="text-green-600 font-medium">
+            <%= currentStep === 'beli-formulir' ? '1' : 
+                currentStep === 'isi-formulir' ? '2' :
+                currentStep === 'upload-berkas' ? '3' : 
+                currentStep === 'preview-formulir' ? '4' :
+                currentStep === 'pembayaran' ? '5' : '1' %>/5
+        </span>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="w-full h-2 bg-gray-200 rounded-full mb-6">
+            <div class="h-full bg-green-500 rounded-full transition-all duration-300 
+                <%= currentStep === 'beli-formulir' ? 'w-1/5' : 
+                    currentStep === 'isi-formulir' ? 'w-2/5' :
+                    currentStep === 'upload-berkas' ? 'w-3/5' : 
+                    currentStep === 'preview-formulir' ? 'w-4/5' :
+                    currentStep === 'pembayaran' ? 'w-full' : 'w-1/5' %>">
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <!-- Step 1: Beli Formulir -->
+            <a href="/dashboard/cpdb/pendaftaran/beli-formulir" 
+               class="group">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 transition-all duration-300 group-hover:border-green-500 group-hover:shadow-lg transform group-hover:-translate-y-1 <%= currentStep === 'beli-formulir' ? 'border-green-500 shadow-lg -translate-y-1' : 'border-gray-200' %>">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-green-600">Langkah 1</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-file-alt text-xl text-green-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Beli Formulir</h3>
+                        <p class="text-sm text-gray-600 mt-1">Beli formulir pendaftaran</p>
+                        <% if (user.formulir && user.formulir.status === 'Terverifikasi') { %>
+                        <div class="mt-2 text-xs text-green-600">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Terverifikasi
+                        </div>
+                        <% } else if (user.formulir) { %>
+                        <div class="mt-2 text-xs text-yellow-600">
+                            <i class="fas fa-clock mr-1"></i>
+                            Menunggu Verifikasi
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Step 2: Isi Formulir -->
+            <% if (!user.formulir || user.formulir.status !== 'Terverifikasi') { %>
+            <!-- Disabled State -->
+            <div class="group cursor-not-allowed opacity-60">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 border-gray-200">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-gray-400">Langkah 2</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-edit text-xl text-gray-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-400">Isi Formulir</h3>
+                        <p class="text-sm text-gray-400 mt-1">Lengkapi data diri</p>
+                        <div class="mt-2 text-xs text-gray-500">
+                            <i class="fas fa-lock mr-1"></i>
+                            Selesaikan pembelian formulir terlebih dahulu
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <!-- Active State -->
+            <a href="/dashboard/cpdb/pendaftaran/isi-formulir" 
+               class="group">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 transition-all duration-300 group-hover:border-green-500 group-hover:shadow-lg transform group-hover:-translate-y-1 <%= currentStep === 'isi-formulir' ? 'border-green-500 shadow-lg -translate-y-1' : 'border-gray-200' %>">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-green-600">Langkah 2</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-edit text-xl text-green-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Isi Formulir</h3>
+                        <p class="text-sm text-gray-600 mt-1">Lengkapi data diri</p>
+                        <span class="mt-2 text-xs <%= user.formulir && user.formulir.status_formulir === 'Sudah Lengkap' ? 'text-green-600' : 'text-red-600' %>">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            <%= user.formulir && user.formulir.status_formulir === 'Sudah Lengkap' ? 'Sudah Lengkap' : 'Belum Lengkap' %>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            <% } %>
+
+            <!-- Step 3: Upload Berkas -->
+            <% if (!user.formulir || user.formulir.status_formulir !== 'Sudah Lengkap') { %>
+            <!-- Disabled State -->
+            <div class="group cursor-not-allowed opacity-60">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 border-gray-200">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-gray-400">Langkah 3</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-file text-xl text-gray-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-400">Upload Berkas</h3>
+                        <p class="text-sm text-gray-400 mt-1">Lengkapi berkas</p>
+                        <div class="mt-2 text-xs text-gray-500">
+                            <i class="fas fa-lock mr-1"></i>
+                            Selesaikan pengisian formulir terlebih dahulu
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <!-- Active State -->
+            <a href="/dashboard/cpdb/pendaftaran/upload-berkas" 
+               class="group">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 transition-all duration-300 group-hover:border-green-500 group-hover:shadow-lg transform group-hover:-translate-y-1 <%= currentStep === 'upload-berkas' ? 'border-green-500 shadow-lg -translate-y-1' : 'border-gray-200' %>">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-green-600">Langkah 3</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-file text-xl text-green-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Upload Berkas</h3>
+                        <p class="text-sm text-gray-600 mt-1">Lengkapi berkas</p>
+                        <% if (berkasData) { %>
+                            <% if (berkasData.nama_file) { %>
+                            <div class="mt-2 text-xs text-green-600">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                Sudah Upload Berkas
+                            </div>
+                            <% } else { %>
+                            <div class="mt-2 text-xs text-green-600">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                Berkas Diserahkan Langsung
+                            </div>
+                            <% } %>
+                        <% } else { %>
+                            <div class="mt-2 text-xs text-red-600">
+                                <i class="fas fa-times-circle mr-1"></i>
+                                Belum Upload
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+            <% } %>
+
+            <!-- Step 4: Preview Formulir -->
+            <% if (!user.formulir || user.formulir.status_formulir !== 'Sudah Lengkap' || !berkasData) { %>
+            <!-- Disabled State -->
+            <div class="group cursor-not-allowed opacity-60">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 border-gray-200">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-gray-400">Langkah 4</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-eye text-xl text-gray-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-400">Preview Formulir</h3>
+                        <p class="text-sm text-gray-400 mt-1">Lihat formulir pendaftaran</p>
+                        <div class="mt-2 text-xs text-gray-500">
+                            <i class="fas fa-lock mr-1"></i>
+                            Selesaikan pengisian formulir dan upload berkas terlebih dahulu
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <!-- Active State -->
+            <a href="/dashboard/cpdb/pendaftaran/preview-formulir" 
+               class="group">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 transition-all duration-300 group-hover:border-green-500 group-hover:shadow-lg transform group-hover:-translate-y-1 <%= currentStep === 'preview-formulir' ? 'border-green-500 shadow-lg -translate-y-1' : 'border-gray-200' %>">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-green-600">Langkah 4</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-eye text-xl text-green-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Preview Formulir</h3>
+                        <p class="text-sm text-gray-600 mt-1">Lihat formulir pendaftaran</p>
+                        <div class="mt-2 text-xs text-green-600">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Siap untuk dilihat
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <% } %>
+
+            <!-- Step 5: Pembayaran -->
+            <% if (!user.formulir || user.formulir.status_formulir !== 'Sudah Lengkap' || !berkasData) { %>
+            <!-- Disabled State -->
+            <div class="group cursor-not-allowed opacity-60">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 border-gray-200">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-gray-400">Langkah 5</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-money-bill text-xl text-gray-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-400">Pembayaran</h3>
+                        <p class="text-sm text-gray-400 mt-1">Lakukan pembayaran</p>
+                        <div class="mt-2 text-xs text-gray-500">
+                            <i class="fas fa-lock mr-1"></i>
+                            Selesaikan pengisian formulir dan upload berkas terlebih dahulu
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <!-- Active State -->
+            <a href="/dashboard/cpdb/pendaftaran/pembayaran" 
+               class="group">
+                <div class="relative h-full bg-white border-2 rounded-xl p-4 transition-all duration-300 group-hover:border-green-500 group-hover:shadow-lg transform group-hover:-translate-y-1 <%= currentStep === 'pembayaran' ? 'border-green-500 shadow-lg -translate-y-1' : 'border-gray-200' %>">
+                    <div class="absolute -top-3 left-3 bg-white px-2">
+                        <span class="text-sm font-medium text-green-600">Langkah 5</span>
+                    </div>
+                    <div class="flex flex-col items-center text-center pt-2">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                            <i class="fas fa-money-bill text-xl text-green-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Pembayaran</h3>
+                        <p class="text-sm text-gray-600 mt-1">Lakukan pembayaran</p>
+                        <div class="mt-2 text-xs text-green-600">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Siap untuk pembayaran
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="bg-white rounded-lg shadow-2xl p-6">
+        <%- include(`./pendaftaran/${currentStep}`) %>
+    </div>
+</div>

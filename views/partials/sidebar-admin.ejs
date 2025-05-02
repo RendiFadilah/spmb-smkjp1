@@ -1,0 +1,196 @@
+<!-- Navigation Menu -->
+<div class="py-2">
+    <!-- Dashboard -->
+    <a href="/dashboard/admin" 
+       class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+        <i class="fas fa-tachometer-alt w-5 h-5 <%= currentPath === '/dashboard/admin' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+        <span class="ml-3">Dashboard</span>
+    </a>
+
+    <!-- Data Management Section -->
+    <div class="mt-6">
+        <span class="px-4 text-xs font-semibold tracking-wider text-gray-400 uppercase">Data Management</span>
+        <div class="mt-3 space-y-1">
+            <% if (user.roles === 'Admin') { %>
+            <!-- Manajemen Petugas (Admin Only) -->
+            <a href="/dashboard/admin/petugas" 
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/petugas' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-user-tie w-5 h-5 <%= currentPath === '/dashboard/admin/petugas' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Manajemen Petugas</span>
+            </a>
+            <a href="/dashboard/admin/jurusan" 
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/jurusan' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-graduation-cap w-5 h-5 <%= currentPath === '/dashboard/admin/jurusan' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Manajemen Jurusan</span>
+            </a>
+            <a href="/dashboard/admin/biaya"
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/biaya' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-money-bill-wave w-5 h-5 <%= currentPath === '/dashboard/admin/biaya' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Biaya Pendaftaran</span>
+            </a>
+            <% } %>
+
+            <!-- Manajemen CPDB Dropdown -->
+            <% if (user.roles === 'Admin' || user.roles === 'Petugas') { %>
+            <div class="menu-dropdown">
+                <button type="button" 
+                        class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium transition duration-200 <%= currentPath.startsWith('/dashboard/admin/cpdb') ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg group"
+                        onclick="toggleDropdown('cpdb-dropdown')">
+                    <div class="flex items-center">
+                        <i class="fas fa-users w-5 h-5 <%= currentPath.startsWith('/dashboard/admin/cpdb') ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                        <span class="ml-3">Manajemen CPDB</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform duration-200"></i>
+                </button>
+                <div id="cpdb-dropdown" class="hidden pl-11 pr-3 mt-1 space-y-1">
+                    <a href="/dashboard/admin/cpdb-awal" 
+                       class="flex items-center px-4 py-2 text-sm font-medium transition duration-200 <%= currentPath === '/dashboard/admin/cpdb-awal' ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                        CPDB Awal
+                    </a>
+                    <a href="/dashboard/admin/cpdb-tetap" 
+                       class="flex items-center px-4 py-2 text-sm font-medium transition duration-200 <%= currentPath === '/dashboard/admin/cpdb-tetap' ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                        CPDB Tetap
+                    </a>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Manajemen Formulir Dropdown -->
+            <% if (user.roles === 'Admin' || user.roles === 'Petugas' || user.roles === 'Bendahara') { %>
+            <div class="menu-dropdown">
+                <button type="button" 
+                        class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium transition duration-200 <%= currentPath.startsWith('/dashboard/admin/formulir') ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg group"
+                        onclick="toggleDropdown('formulir-dropdown')">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-alt w-5 h-5 <%= currentPath.startsWith('/dashboard/admin/formulir') ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                        <span class="ml-3">Manajemen Formulir</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform duration-200"></i>
+                </button>
+                <div id="formulir-dropdown" class="hidden pl-11 pr-3 mt-1 space-y-1">
+                    <% if (user.roles === 'Admin') { %>
+                    <a href="/dashboard/admin/formulir/kode-pembayaran" 
+                       class="flex items-center px-4 py-2 text-sm font-medium transition duration-200 <%= currentPath === '/dashboard/admin/formulir/kode-pembayaran' ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                        Kode Pembayaran
+                    </a>
+                    <% } %>
+                    <a href="/dashboard/admin/formulir" 
+                       class="flex items-center px-4 py-2 text-sm font-medium transition duration-200 <%= currentPath === '/dashboard/admin/formulir' ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                        Formulir
+                    </a>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Data Pembayaran -->
+            <% if (user.roles === 'Admin' || user.roles === 'Bendahara') { %>
+            <a href="/dashboard/admin/pembayaran" 
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/pembayaran' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-money-bill-wave w-5 h-5 <%= currentPath === '/dashboard/admin/pembayaran' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Data Pembayaran</span>
+            </a>
+            <% } %>
+
+            <!-- Reward SPMB -->
+            <% if (user.roles === 'Admin' || user.roles === 'Bendahara') { %>
+            <a href="/dashboard/admin/reward-spmb" 
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/reward-spmb' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-gift w-5 h-5 <%= currentPath === '/dashboard/admin/reward-spmb' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Reward SPMB</span>
+            </a>
+            <% } %>
+
+            <!-- Manajemen Seragam -->
+            <% if (user.roles === 'Admin' || user.roles === 'Petugas') { %>
+            <a href="/dashboard/admin/seragam" 
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/seragam' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-tshirt w-5 h-5 <%= currentPath === '/dashboard/admin/seragam' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Manajemen Seragam</span>
+            </a>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Reports & Settings Section -->
+    <div class="mt-6">
+        <span class="px-4 text-xs font-semibold tracking-wider text-gray-400 uppercase">Settings</span>
+        <div class="mt-3 space-y-1">
+            <% if (user.roles === 'Admin') { %>
+            <a href="/dashboard/admin/settings" 
+               class="flex items-center px-4 py-2.5 text-sm font-medium transition duration-200 group <%= currentPath === '/dashboard/admin/settings' ? 'bg-green-50 text-green-600' : 'text-gray-600 hover:bg-gray-50' %> rounded-lg">
+                <i class="fas fa-cog w-5 h-5 <%= currentPath === '/dashboard/admin/settings' ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500' %>"></i>
+                <span class="ml-3">Pengaturan</span>
+            </a>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Logout Button -->
+    <div class="mt-2">
+        <form id="logoutForm" action="/auth/logout" method="POST" style="margin:0">
+            <button type="button" 
+                   onclick="confirmLogout()"
+                   class="flex items-center w-full px-4 py-2.5 text-sm font-medium transition duration-200 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg group">
+                <i class="fas fa-sign-out-alt w-5 h-5 text-red-500"></i>
+                <span class="ml-3">Logout</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const button = dropdown.previousElementSibling;
+    const icon = button.querySelector('.fa-chevron-down');
+    
+    // Close all other dropdowns
+    document.querySelectorAll('.menu-dropdown > div').forEach(d => {
+        if (d.id !== dropdownId && d.classList.contains('block')) {
+            d.classList.replace('block', 'hidden');
+            d.previousElementSibling.querySelector('.fa-chevron-down').style.transform = 'rotate(0)';
+        }
+    });
+
+    // Toggle current dropdown
+    if (dropdown.classList.contains('hidden')) {
+        dropdown.classList.replace('hidden', 'block');
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        dropdown.classList.replace('block', 'hidden');
+        icon.style.transform = 'rotate(0)';
+    }
+}
+
+// Set active dropdown based on current path
+document.addEventListener('DOMContentLoaded', () => {
+    const currentPath = window.location.pathname;
+    
+    if (currentPath.startsWith('/dashboard/admin/cpdb')) {
+        document.getElementById('cpdb-dropdown').classList.replace('hidden', 'block');
+        document.querySelector('#cpdb-dropdown').previousElementSibling.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+    }
+    if (currentPath.startsWith('/dashboard/admin/formulir')) {
+        document.getElementById('formulir-dropdown').classList.replace('hidden', 'block');
+        document.querySelector('#formulir-dropdown').previousElementSibling.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+    }
+});
+
+function confirmLogout() {
+    Swal.fire({
+        title: 'Konfirmasi Logout',
+        text: 'Apakah Anda yakin ingin keluar?',
+        icon: 'warning',
+        position: 'center',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('logoutForm').submit();
+        }
+    });
+}
+</script>

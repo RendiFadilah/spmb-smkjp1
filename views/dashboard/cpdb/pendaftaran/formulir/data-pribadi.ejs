@@ -1,0 +1,319 @@
+<!-- Toast Container -->
+<div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
+<div class="space-y-8">
+  <div class="bg-white rounded-2xl shadow-xl p-8">
+    <form id="dataPribadiForm" class="space-y-8">
+      <!-- Personal Information -->
+      <div class="relative">
+        <div class="flex items-center mb-6">
+          <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+            <i class="fas fa-user text-xl"></i>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-xl font-bold text-gray-800">Informasi Pribadi</h3>
+            <p class="text-sm text-gray-500">Data diri calon peserta didik</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+            <div class="relative">
+              <input type="text" 
+                     name="nama_lengkap" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none" value="<%= user.nama %>">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+        
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
+            <div class="relative">
+              <select name="jenis_kelamin" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih Jenis Kelamin</option>
+                <option value="Laki-laki" <%= user.jenis_kelamin === 'Laki-laki' ? 'selected' : '' %>>Laki-laki</option>
+                <option value="Perempuan" <%= user.jenis_kelamin === 'Perempuan' ? 'selected' : '' %>>Perempuan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">NISN</label>
+            <div class="relative">
+              <input type="text" 
+                     name="nisn" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none" value="<%= user.nisn %>">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">NIK</label>
+            <div class="relative">
+              <input type="text" 
+                     name="nik" 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none" value="<%= user.nik %>">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Lahir</label>
+            <div class="relative">
+              <input type="text" 
+                     name="tempat_lahir" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
+            <div class="relative">
+              <input type="date" 
+                     name="tanggal_lahir" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">No. Registrasi Akta Lahir</label>
+            <div class="relative">
+              <input type="text" 
+                     name="no_registrasi_akta_lahir" 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Agama</label>
+            <div class="relative">
+              <select name="agama" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih Agama</option>
+                <option value="Islam">Islam</option>
+                <option value="Kristen Protestan">Kristen Protestan</option>
+                <option value="Katolik">Katolik</option>
+                <option value="Buddha">Buddha</option>
+                <option value="Hindu">Hindu</option>
+                <option value="Konghucu">Konghucu</option>
+                <option value="Kepercayaan">Kepercayaan</option>
+              </select>
+          
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Kewarganegaraan</label>
+            <div class="relative">
+              <input type="text" 
+                     name="kewarganegaraan" 
+                     required 
+                     class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none" value="Indonesia">
+              <div class="absolute inset-0 rounded-xl transition-transform duration-300 group-focus-within:shadow-lg pointer-events-none"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Berkebutuhan Khusus</label>
+            <div class="relative">
+              <select name="berkebutuhan_khusus" 
+                      required 
+                      class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 outline-none appearance-none">
+                <option value="">Pilih</option>
+                <option value="Iya">Iya</option>
+                <option value="Tidak">Tidak</option>
+              </select>
+       
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="border-t pt-6">
+        <h4 class="text-lg font-semibold text-gray-800 mb-4">Informasi Alamat</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Jalan</label>
+            <input type="text" name="alamat_jalan" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">RT</label>
+            <input type="text" name="rt" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">RW</label>
+            <input type="text" name="rw" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Dusun</label>
+            <input type="text" name="nama_dusun" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Kelurahan</label>
+            <input type="text" name="nama_kelurahan" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Kecamatan</label>
+            <input type="text" name="kecamatan" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Kode Pos</label>
+            <input type="text" name="kode_pos" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="border-t pt-6">
+        <h4 class="text-lg font-semibold text-gray-800 mb-4">Informasi Kontak</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
+            <input type="tel" name="nomor_telepon" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500" value="<%= user.nomor_whatsapp %>">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input type="email" name="email" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="border-t pt-6">
+        <h4 class="text-lg font-semibold text-gray-800 mb-4">Informasi Tambahan</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Mode Transportasi</label>
+            <input type="text" name="mode_transportasi" class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor KKS</label>
+            <input type="text" name="nomor_kks" class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Anak Keberapa</label>
+            <input type="number" name="anak_keberapa" required class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:border-green-500 focus:ring-green-500">
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex justify-end space-x-4 pt-6">
+        <button type="submit" id="submitBtn" class="px-6 py-3 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+          Simpan & Lanjutkan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    
+    toast.className = `${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3 mb-4 transform translate-x-full transition-transform duration-300`;
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            container.removeChild(toast);
+        }, 300);
+    }, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Load existing data if available
+  fetch('/api/cpdb/formulir/data-pribadi')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && data.data) {
+        const form = document.getElementById('dataPribadiForm');
+        Object.keys(data.data).forEach(key => {
+          const input = form.elements[key];
+          if (input) {
+            if (key === 'tanggal_lahir') {
+              input.value = new Date(data.data[key]).toISOString().split('T')[0];
+            } else {
+              input.value = data.data[key];
+            }
+          }
+        });
+        // Update button text if data exists
+        document.getElementById('submitBtn').textContent = 'Update & Lanjutkan';
+      }
+    })
+    .catch(error => {
+      console.error('Error loading data:', error);
+      showToast('Gagal memuat data', 'error');
+    });
+
+  // Handle form submission
+  document.getElementById('dataPribadiForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+    
+    try {
+      const response = await fetch('/api/cpdb/formulir/data-pribadi', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast('Data berhasil disimpan');
+        setTimeout(() => {
+          window.location.href = '/dashboard/cpdb/pendaftaran/isi-formulir/data-ayah';
+        }, 1000);
+      } else {
+        showToast(result.message || 'Terjadi kesalahan saat menyimpan data', 'error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast('Terjadi kesalahan saat menyimpan data', 'error');
+    }
+  });
+});
+</script>

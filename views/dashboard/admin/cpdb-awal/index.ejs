@@ -1,0 +1,533 @@
+<!-- Page Title with gradient background -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Data CPDB Awal</h1>
+    <p class="mt-2 text-gray-600">Kelola data calon peserta didik baru</p>
+</div>
+
+<!-- Nav Tabs -->
+<div class="mb-6">
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            <button onclick="switchTab('today')" 
+                    class="tab-button border-green-500 text-green-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200"
+                    id="tab-today">
+                Hari Ini
+            </button>
+            <button onclick="switchTab('all')" 
+                    class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200"
+                    id="tab-all">
+                Keseluruhan
+            </button>
+        </nav>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Total CPDB -->
+    <div class="bg-white rounded-xl shadow-lg border border-green-100 p-6 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
+        <div class="flex items-center">
+            <div class="p-4 rounded-full bg-green-100 mr-4">
+                <i class="fas fa-users text-3xl text-green-600"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600">Total CPDB</p>
+                <h3 class="text-3xl font-bold text-gray-800" id="totalCPDB">-</h3>
+            </div>
+        </div>
+    </div>
+    <!-- Status Wawancara -->
+    <div class="bg-white rounded-xl shadow-lg border border-blue-100 p-6 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
+        <div class="flex items-center">
+            <div class="p-4 rounded-full bg-blue-100 mr-4">
+                <i class="fas fa-clipboard-check text-3xl text-blue-600"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600">Sudah Wawancara</p>
+                <h3 class="text-3xl font-bold text-gray-800" id="totalWawancara">-</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Add Button -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Search -->
+    <div class="relative flex-1 group">
+        <input type="text" 
+               id="searchInput" 
+               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+               placeholder="Cari berdasarkan nama, NISN, NIK, atau asal SMP...">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <!-- Clear search button -->
+        <button id="clearSearch" 
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Add Button -->
+    <button type="button" 
+            onclick="openAddModal()"
+            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah CPDB
+    </button>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nama Lengkap
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        NISN
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        NIK
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Asal SMP
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nomor WhatsApp
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Status Wawancara
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Tanggal Daftar
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="cpdbTableBody">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="cpdbModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah CPDB
+                </h3>
+                <button type="button" onclick="closeModal('cpdbModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="cpdbForm" onsubmit="handleSubmit(event)" class="p-6">
+                <input type="hidden" id="userId" name="id_user">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="nama_lengkap" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap</label>
+                        <input type="text" id="nama_lengkap" name="nama_lengkap" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                    </div>
+                    <div>
+                        <label for="nisn" class="block mb-2 text-sm font-medium text-gray-900">NISN</label>
+                        <input type="text" id="nisn" name="nisn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                    </div>
+                    <div>
+                        <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">NIK</label>
+                        <input type="text" id="nik" name="nik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                    </div>
+                    <div>
+                        <label for="asal_smp" class="block mb-2 text-sm font-medium text-gray-900">Asal SMP</label>
+                        <input type="text" id="asal_smp" name="asal_smp" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                    </div>
+                    <div>
+                        <label for="nomor_whatsapp" class="block mb-2 text-sm font-medium text-gray-900">Nomor WhatsApp</label>
+                        <input type="text" id="nomor_whatsapp" name="nomor_whatsapp" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required pattern="^(\+62|62|0)8[1-9][0-9]{6,9}$">
+                    </div>
+                    <div>
+                        <label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin</label>
+                        <select id="jenis_kelamin" name="jenis_kelamin" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status_wawancara" class="block mb-2 text-sm font-medium text-gray-900">Status Wawancara</label>
+                        <select id="status_wawancara" name="status_wawancara" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                            <option value="Belum">Belum</option>
+                            <option value="Sudah">Sudah</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('cpdbModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Verify Confirmation Modal -->
+<div id="verifyModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-clipboard-check text-6xl text-green-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin memverifikasi wawancara CPDB ini?
+                </h3>
+                <button type="button" onclick="confirmVerification()" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, verifikasi
+                </button>
+                <button type="button" onclick="closeModal('verifyModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin menghapus CPDB ini?
+                </h3>
+                <button type="button" onclick="confirmDelete()" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedId = null;
+let allData = [];
+let currentTab = 'today';
+
+// Initialize DataTable
+$(document).ready(function() {
+    loadCPDBData();
+    switchTab('today'); // Ensure today tab is active on page load
+    
+    // Enhanced search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+    
+    // Add loading animation
+    searchInput.on('focus', function() {
+        $(this).parent().addClass('ring-2 ring-green-200');
+    }).on('blur', function() {
+        $(this).parent().removeClass('ring-2 ring-green-200');
+    });
+});
+
+function loadCPDBData() {
+    $.get('/api/admin/cpdb-awal', function(data) {
+        allData = data;
+        updateStats(data);
+        filterData();
+    }).fail(function() {
+        showToast('Gagal memuat data CPDB', 'error');
+    });
+}
+
+function switchTab(tab) {
+    currentTab = tab;
+    $('.tab-button').removeClass('border-green-500 text-green-600').addClass('border-transparent text-gray-500');
+    $(`#tab-${tab}`).removeClass('border-transparent text-gray-500').addClass('border-green-500 text-green-600');
+    
+    // Update stats and filter table when switching tabs
+    updateStats(allData);
+    filterData();
+}
+
+function updateStats(data) {
+    let filteredData = data;
+    
+    // Filter data if on today's tab
+    if (currentTab === 'today') {
+        const today = new Date().toISOString().split('T')[0];
+        filteredData = data.filter(cpdb => 
+            cpdb.tanggal_daftar.split('T')[0] === today
+        );
+    }
+    
+    // Update stats based on filtered data
+    $('#totalCPDB').text(filteredData.length);
+    const sudahWawancara = filteredData.filter(cpdb => cpdb.status_wawancara === 'Sudah').length;
+    $('#totalWawancara').text(sudahWawancara);
+}
+
+function filterData() {
+    const searchValue = $('#searchInput').val().toLowerCase();
+    let filteredData = allData;
+    
+    // Filter by tab
+    if (currentTab === 'today') {
+        const today = new Date().toISOString().split('T')[0];
+        filteredData = filteredData.filter(cpdb => 
+            cpdb.tanggal_daftar.split('T')[0] === today
+        );
+    }
+    
+    // Filter by search
+    if (searchValue) {
+        filteredData = filteredData.filter(cpdb => 
+            cpdb.nama_lengkap.toLowerCase().includes(searchValue) ||
+            cpdb.nisn.toLowerCase().includes(searchValue) ||
+            cpdb.nik.toLowerCase().includes(searchValue) ||
+            cpdb.asal_smp.toLowerCase().includes(searchValue) ||
+            cpdb.nomor_whatsapp.toLowerCase().includes(searchValue)
+        );
+    }
+    
+    $('#noResults').toggleClass('hidden', filteredData.length > 0);
+    renderTable(filteredData);
+}
+
+let verifyButton = null;
+
+function verifyWawancara(id, button) {
+    selectedId = id;
+    verifyButton = button;
+    openModal('verifyModal');
+}
+
+function confirmVerification() {
+    // Disable button and show loading state
+    const $button = $(verifyButton);
+    const originalContent = $button.html();
+    $button.prop('disabled', true)
+          .html('<i class="fas fa-spinner fa-spin mr-2"></i> Memverifikasi...')
+          .addClass('opacity-75');
+
+    $.ajax({
+        url: `/api/admin/cpdb-awal/${selectedId}/status`,
+        type: 'PUT',
+        data: { status_wawancara: 'Sudah' },
+        success: function(response) {
+            closeModal('verifyModal');
+            if (response.status === 'Sudah') {
+                // Update the UI immediately
+                const $row = $button.closest('tr');
+                const $statusCell = $row.find('td:nth-child(5)');
+                $statusCell.html(`
+                    <div class="flex items-center">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Sudah
+                        </span>
+                    </div>
+                `);
+                
+                // Update stats
+                loadCPDBData();
+                showToast('Status wawancara berhasil diperbarui');
+            } else {
+                // Handle unexpected response
+                $button.prop('disabled', false)
+                       .html(originalContent)
+                       .removeClass('opacity-75');
+                showToast('Gagal memperbarui status wawancara', 'error');
+            }
+        },
+        error: function(xhr) {
+            closeModal('verifyModal');
+            // Restore button state on error
+            $button.prop('disabled', false)
+                   .html(originalContent)
+                   .removeClass('opacity-75');
+            showToast(xhr.responseJSON?.message || 'Gagal memperbarui status wawancara', 'error');
+        }
+    });
+}
+
+function renderTable(data) {
+    const tbody = $('#cpdbTableBody');
+    tbody.fadeOut(150, function() {
+        tbody.empty();
+        
+        data.forEach(function(cpdb) {
+            const statusClass = cpdb.status_wawancara === 'Sudah' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-yellow-100 text-yellow-800';
+            
+            const row = `
+                <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${cpdb.nama_lengkap}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${cpdb.nisn}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${cpdb.nik}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${cpdb.asal_smp}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <a href="https://wa.me/${cpdb.nomor_whatsapp.replace(/^0/, '62')}" 
+                           target="_blank"
+                           class="inline-flex items-center px-3 py-1 rounded-lg bg-green-50 hover:bg-green-100 transition-colors duration-200">
+                            <i class="fab fa-whatsapp text-green-600 mr-2"></i>
+                            <span class="text-sm text-green-700">${cpdb.nomor_whatsapp}</span>
+                        </a>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <div class="flex items-center">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                ${cpdb.status_wawancara}
+                            </span>
+                            ${cpdb.status_wawancara === 'Belum' ? 
+                              `<button onclick="verifyWawancara(${cpdb.id_user}, this)" 
+                                class="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 rounded-lg px-2 py-1">
+                                <i class="fas fa-check-circle"></i> Verifikasi
+                               </button>` : ''}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${new Date(cpdb.tanggal_daftar).toLocaleDateString('id-ID')}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="editCPDB(${cpdb.id_user})" class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteCPDB(${cpdb.id_user})" class="text-green-600 hover:text-green-800 transition-colors duration-200">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            tbody.append(row);
+        });
+        tbody.fadeIn(150);
+    });
+}
+
+function openAddModal() {
+    $('#modalTitle').text('Tambah CPDB');
+    $('#cpdbForm')[0].reset();
+    $('#userId').val('');
+    $('#status_wawancara').val('Belum');
+    openModal('cpdbModal');
+}
+
+function editCPDB(id) {
+    selectedId = id;
+    $('#modalTitle').text('Edit CPDB');
+    
+    $.get(`/api/admin/cpdb-awal/${id}`, function(data) {
+        $('#userId').val(data.id_user);
+        $('#nama_lengkap').val(data.nama_lengkap);
+        $('#nisn').val(data.nisn);
+        $('#nik').val(data.nik);
+        $('#asal_smp').val(data.asal_smp);
+        $('#nomor_whatsapp').val(data.nomor_whatsapp);
+        $('#jenis_kelamin').val(data.jenis_kelamin);
+        $('#status_wawancara').val(data.status_wawancara);
+        openModal('cpdbModal');
+    });
+}
+
+function deleteCPDB(id) {
+    selectedId = id;
+    openModal('deleteModal');
+}
+
+function confirmDelete() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/cpdb-awal/${selectedId}`,
+            type: 'DELETE',
+            success: function() {
+                closeModal('deleteModal');
+                loadCPDBData();
+                showToast('CPDB berhasil dihapus');
+            },
+            error: function() {
+                showToast('Gagal menghapus CPDB', 'error');
+            }
+        });
+    }
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    
+    const url = data.id_user ? `/api/admin/cpdb-awal/${data.id_user}` : '/api/admin/cpdb-awal';
+    const method = data.id_user ? 'PUT' : 'POST';
+    
+    $.ajax({
+        url: url,
+        type: method,
+        data: data,
+        success: function() {
+            closeModal('cpdbModal');
+            loadCPDBData();
+            showToast(`CPDB berhasil ${data.id_user ? 'diperbarui' : 'ditambahkan'}`);
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+    });
+}
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function closeModal(modalId) {
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#16a34a" : "#ef4444",
+        className: "rounded-lg shadow-lg",
+    }).showToast();
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

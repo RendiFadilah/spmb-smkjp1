@@ -1,0 +1,110 @@
+<%- contentFor('body') %>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-file-upload text-3xl text-blue-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Status Berkas</h3>
+        <p class="text-sm font-medium text-gray-600 mt-1">Belum Lengkap</p>
+        <div class="w-full px-4 mt-2">
+            <div class="bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-comments text-3xl text-yellow-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Status Wawancara</h3>
+        <p class="text-sm font-medium text-yellow-600 mt-1">Belum Dijadwalkan</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-money-bill-wave text-3xl text-green-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Status Pembayaran</h3>
+        <p class="text-sm font-medium text-gray-600 mt-1">Belum Bayar</p>
+    </div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 h-32 md:h-40 flex flex-col justify-center items-center bg-white hover:bg-gray-50 transition-all">
+        <i class="fas fa-check-circle text-3xl text-purple-500 mb-2"></i>
+        <h3 class="text-lg font-semibold">Status Pendaftaran</h3>
+        <p class="text-sm font-medium text-purple-600 mt-1">Dalam Proses</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Biodata</h3>
+        <div class="space-y-4">
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500">Nama Lengkap</span>
+                <span class="font-medium"><%= user.nama %></span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500">NISN</span>
+                <span class="font-medium">-</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500">Asal SMP</span>
+                <span class="font-medium">-</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500">Nomor WhatsApp</span>
+                <span class="font-medium">-</span>
+            </div>
+            <div class="mt-4">
+                <a href="/cpdb/biodata" class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-edit mr-2"></i>Edit Biodata
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="border-2 border-dashed rounded-lg border-gray-300 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Pengumuman</h3>
+        <div class="space-y-4">
+            <div class="p-4 text-sm text-blue-800 rounded-lg bg-blue-50">
+                <div class="flex">
+                    <i class="fas fa-info-circle flex-shrink-0 inline w-5 h-5 mr-3"></i>
+                    <span>
+                        Selamat datang di SPMB SMK Jakarta Pusat 1! Silakan lengkapi biodata dan upload berkas yang diperlukan.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 p-4 bg-white">
+        <h3 class="text-xl font-semibold mb-4">Berkas yang Diperlukan</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-file-alt text-gray-400 mr-2"></i>
+                    <h4 class="font-medium">Ijazah/SKL</h4>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">Format: PDF, JPG, PNG (Max 2MB)</p>
+                <button type="button" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-upload mr-2"></i>Upload
+                </button>
+            </div>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-file-alt text-gray-400 mr-2"></i>
+                    <h4 class="font-medium">Kartu Keluarga</h4>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">Format: PDF, JPG, PNG (Max 2MB)</p>
+                <button type="button" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-upload mr-2"></i>Upload
+                </button>
+            </div>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-file-alt text-gray-400 mr-2"></i>
+                    <h4 class="font-medium">Akta Kelahiran</h4>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">Format: PDF, JPG, PNG (Max 2MB)</p>
+                <button type="button" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-upload mr-2"></i>Upload
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

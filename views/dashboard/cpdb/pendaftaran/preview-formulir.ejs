@@ -1,0 +1,400 @@
+<div class="container mx-auto p-4">
+    <!-- Print Button -->
+    <div class="no-print mb-4 flex justify-end">
+        <button onclick="window.print()" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-print mr-2"></i>
+            Download PDF
+        </button>
+    </div>
+
+    <!-- Form Container -->
+    <div id="preview-formulir" class="bg-white shadow-xl rounded-xl p-8 max-w-[210mm] mx-auto">
+        <!-- Header with Logo -->
+        <div class="text-center border-b-2 border-gray-800 pb-6 mb-6">
+            <div class="flex justify-center items-center mb-4">
+                <img src="/images/logo-jp1.png" alt="Logo SMK JT 1" class="h-20">
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900">FORMULIR PENDAFTARAN PESERTA DIDIK BARU</h1>
+            <h2 class="text-xl font-semibold text-gray-800 mt-2">SMK Jakarta Pusat 1</h2>
+            <p class="text-gray-600 mt-1">Tahun Ajaran 2025/2026</p>
+            
+            <!-- Form Info -->
+            <div class="mt-4 flex justify-center gap-8">
+                <div class="bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
+                    <p class="text-sm text-gray-600">Nomor Formulir</p>
+                    <p class="font-semibold text-gray-800"><%= user.formulir.no_formulir %></p>
+                </div>
+                <div class="bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
+                    <p class="text-sm text-gray-600">Jurusan</p>
+                    <p class="font-semibold text-gray-800"><%= registrasiPesertaDidik.nama_jurusan %></p>
+                </div>
+            </div>
+        </div>
+
+          <!-- Data Pribadi -->
+          <% if (dataPribadi) { %>
+            <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">A</span>
+                    DATA PRIBADI
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-sm text-gray-600">Nama Lengkap</p>
+                        <p class="font-medium"><%= dataPribadi.nama_lengkap %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Jenis Kelamin</p>
+                        <p class="font-medium"><%= dataPribadi.jenis_kelamin %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">NISN</p>
+                        <p class="font-medium"><%= dataPribadi.nisn %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">NIK</p>
+                        <p class="font-medium"><%= dataPribadi.nik || '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">No. Registrasi Akta Lahir</p>
+                        <p class="font-medium"><%= dataPribadi.no_registrasi_akta_lahir || '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Tempat Lahir</p>
+                        <p class="font-medium"><%= dataPribadi.tempat_lahir %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Tanggal Lahir</p>
+                        <p class="font-medium"><%= dataPribadi.tanggal_lahir ? new Date(dataPribadi.tanggal_lahir).toLocaleDateString('id-ID') : '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Agama</p>
+                        <p class="font-medium"><%= dataPribadi.agama %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Kewarganegaraan</p>
+                        <p class="font-medium"><%= dataPribadi.kewarganegaraan %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Berkebutuhan Khusus</p>
+                        <p class="font-medium"><%= dataPribadi.berkebutuhan_khusus %></p>
+                    </div>
+                    <div class="col-span-2">
+                        <p class="text-sm text-gray-600">Alamat Lengkap</p>
+                        <p class="font-medium">
+                            <%= dataPribadi.alamat_jalan %>, 
+                            RT <%= dataPribadi.rt %> RW <%= dataPribadi.rw %>, 
+                            <%= dataPribadi.nama_dusun %>, 
+                            <%= dataPribadi.nama_kelurahan %>, 
+                            <%= dataPribadi.kecamatan %>, 
+                            <%= dataPribadi.kode_pos %>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Nomor Telepon</p>
+                        <p class="font-medium"><%= dataPribadi.nomor_telepon %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Email</p>
+                        <p class="font-medium"><%= dataPribadi.email %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Mode Transportasi</p>
+                        <p class="font-medium"><%= dataPribadi.mode_transportasi || '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Nomor KKS</p>
+                        <p class="font-medium"><%= dataPribadi.nomor_kks || '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Anak Ke-</p>
+                        <p class="font-medium"><%= dataPribadi.anak_keberapa %></p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+
+        <!-- Data Ayah -->
+        <% if (dataAyah) { %>
+        <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">B</span>
+                DATA AYAH
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-600">Nama Ayah</p>
+                    <p class="font-medium"><%= dataAyah.nama_ayah %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">NIK Ayah</p>
+                    <p class="font-medium"><%= dataAyah.nik_ayah || '-' %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tempat Lahir</p>
+                    <p class="font-medium"><%= dataAyah.tempat_lahir_ayah %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tanggal Lahir</p>
+                    <p class="font-medium"><%= dataAyah.tanggal_lahir_ayah ? new Date(dataAyah.tanggal_lahir_ayah).toLocaleDateString('id-ID') : '-' %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Nomor Telepon</p>
+                    <p class="font-medium"><%= dataAyah.nomor_telepon_ayah %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Pendidikan Terakhir</p>
+                    <p class="font-medium"><%= dataAyah.pendidikan_terakhir %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Pekerjaan</p>
+                    <p class="font-medium"><%= dataAyah.pekerjaan_ayah %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Penghasilan per Bulan</p>
+                    <p class="font-medium"><%= dataAyah.penghasilan_perbulan_ayah %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Berkebutuhan Khusus</p>
+                    <p class="font-medium"><%= dataAyah.berkebutuhan_khusus_ayah %></p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- Data Ibu -->
+        <% if (dataIbu) { %>
+        <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">C</span>
+                DATA IBU
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-600">Nama Ibu</p>
+                    <p class="font-medium"><%= dataIbu.nama_ibu %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">NIK Ibu</p>
+                    <p class="font-medium"><%= dataIbu.nik_ibu || '-' %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tempat Lahir</p>
+                    <p class="font-medium"><%= dataIbu.tempat_lahir_ibu %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tanggal Lahir</p>
+                    <p class="font-medium"><%= dataIbu.tanggal_lahir_ibu ? new Date(dataIbu.tanggal_lahir_ibu).toLocaleDateString('id-ID') : '-' %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Nomor Telepon</p>
+                    <p class="font-medium"><%= dataIbu.nomor_telepon_ibu %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Pendidikan Terakhir</p>
+                    <p class="font-medium"><%= dataIbu.pendidikan_terakhir_ibu %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Pekerjaan</p>
+                    <p class="font-medium"><%= dataIbu.pekerjaan_ibu %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Penghasilan per Bulan</p>
+                    <p class="font-medium"><%= dataIbu.penghasilan_perbulan_ibu %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Berkebutuhan Khusus</p>
+                    <p class="font-medium"><%= dataIbu.berkebutuhan_khusus_ibu %></p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- Data Wali -->
+        <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">D</span>
+                DATA WALI
+            </h3>
+            <% if (dataWali && dataWali.nama_wali) { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-600">Nama Wali</p>
+                    <p class="font-medium"><%= dataWali.nama_wali %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">NIK Wali</p>
+                    <p class="font-medium"><%= dataWali.nik_wali || '-' %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tempat Lahir</p>
+                    <p class="font-medium"><%= dataWali.tempat_lahir_wali %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Tanggal Lahir</p>
+                    <p class="font-medium"><%= dataWali.tanggal_lahir_wali ? new Date(dataWali.tanggal_lahir_wali).toLocaleDateString('id-ID') : '-' %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Nomor Telepon</p>
+                    <p class="font-medium"><%= dataWali.nomor_telepon_wali %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Pendidikan Terakhir</p>
+                    <p class="font-medium"><%= dataWali.pendidikan_terakhir_wali %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Pekerjaan</p>
+                    <p class="font-medium"><%= dataWali.pekerjaan_wali %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Penghasilan per Bulan</p>
+                    <p class="font-medium"><%= dataWali.penghasilan_perbulan_wali %></p>
+                </div>
+            </div>
+            <% } else { %>
+            <div class="text-center py-4 text-gray-500">
+                <i class="fas fa-info-circle text-xl mb-2"></i>
+                <p>Tidak ada data wali</p>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Data Periodik -->
+        <% if (dataPeriodik) { %>
+        <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">E</span>
+                DATA PERIODIK
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-600">Tinggi Badan</p>
+                    <p class="font-medium"><%= dataPeriodik.tinggi_badan %> cm</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Berat Badan</p>
+                    <p class="font-medium"><%= dataPeriodik.berat_badan %> kg</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Jarak ke Sekolah</p>
+                    <p class="font-medium"><%= dataPeriodik.jarak_ke_sekolah %> km</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Waktu Tempuh</p>
+                    <p class="font-medium"><%= dataPeriodik.waktu_tempuh_ke_sekolah %> menit</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Jumlah Saudara Kandung</p>
+                    <p class="font-medium"><%= dataPeriodik.jumlah_saudara_kandung %></p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        
+        <!-- Registrasi Peserta Didik -->
+        <% if (registrasiPesertaDidik) { %>
+            <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">F</span>
+                    REGISTRASI PESERTA DIDIK
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-sm text-gray-600">Jenis Pendaftaran</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.jenis_pendaftaran %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Jurusan</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.nama_jurusan %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Tanggal Masuk Sekolah</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.tanggal_masuk_sekolah ? new Date(registrasiPesertaDidik.tanggal_masuk_sekolah).toLocaleDateString('id-ID') : '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Asal Sekolah</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.asal_sekolah %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Nomor Peserta Ujian</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.nomor_peserta_ujian || '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">No. Seri Ijazah</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.no_seri_ijazah || '-' %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">No. Seri SKHUS</p>
+                        <p class="font-medium"><%= registrasiPesertaDidik.no_seri_skhus || '-' %></p>
+                    </div>
+                </div>
+    
+                <!-- Berkas Section -->
+                <% if (berkasData) { %>
+                <div class="mt-6 p-4 bg-white rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">Berkas Pendaftaran</h4>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 text-xl mr-2"></i>
+                            <span>Status Berkas: 
+                                <span class="text-green-600 font-medium">
+                                    <i class="fas fa-check-circle"></i> Lengkap
+                                </span>
+                            </span>
+                        </div>
+                        <% if (berkasData.nama_file) { %>
+                        <a href="/uploads/berkas/<%= berkasData.nama_file %>" 
+                           target="_blank"
+                           class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors inline-flex items-center">
+                            <i class="fas fa-eye mr-2"></i>
+                            Lihat Berkas
+                        </a>
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+            <% } %>
+
+      
+
+        <!-- Signature Section -->
+        <div class="mt-12 text-right">
+            <div class="inline-block text-center">
+                <p>Jakarta, <%= new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) %></p>
+                <p class="mt-2">Calon Peserta Didik</p>
+                <div class="mt-20 pt-2 border-t border-gray-400">
+                    <% if (dataPribadi) { %>
+                    <p class="font-bold"><%= dataPribadi.nama_lengkap %></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #preview-formulir, #preview-formulir * {
+            visibility: visible;
+        }
+        #preview-formulir {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .no-print {
+            display: none !important;
+        }
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+    }
+</style>

@@ -1,0 +1,179 @@
+<style>
+.stat-card {
+    animation: fadeInUp 0.5s ease-out;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+.stat-number {
+    animation: countUp 1.5s ease-out;
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<!-- CPDB Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <!-- CPDB Awal -->
+    <div class="stat-card bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+            <div class="bg-blue-50 rounded-lg p-3">
+                <i class="fas fa-user-plus text-blue-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium text-white bg-blue-600 rounded-full px-3 py-1">CPDB Awal</span>
+        </div>
+        <h3 class="stat-number text-2xl font-bold text-gray-700"><%= stats.cpdbAwal %></h3>
+        <p class="text-gray-500 text-sm mt-1">Total CPDB Awal</p>
+    </div>
+
+    <!-- CPDB Tetap -->
+    <div class="stat-card bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100" style="animation-delay: 0.2s">
+        <div class="flex items-center justify-between mb-4">
+            <div class="bg-green-50 rounded-lg p-3">
+                <i class="fas fa-user-check text-green-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium text-white bg-green-600 rounded-full px-3 py-1">CPDB Tetap</span>
+        </div>
+        <h3 class="stat-number text-2xl font-bold text-gray-700"><%= stats.cpdbTetap %></h3>
+        <p class="text-gray-500 text-sm mt-1">Total CPDB Tetap</p>
+    </div>
+
+    <!-- Formulir Reguler -->
+    <div class="stat-card bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100" style="animation-delay: 0.4s">
+        <div class="flex items-center justify-between mb-4">
+            <div class="bg-purple-50 rounded-lg p-3">
+                <i class="fas fa-file-alt text-purple-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium text-white bg-purple-600 rounded-full px-3 py-1">Formulir</span>
+        </div>
+        <h3 class="stat-number text-2xl font-bold text-gray-700"><%= stats.formulir %></h3>
+        <p class="text-gray-500 text-sm mt-1">Formulir Reguler</p>
+    </div>
+</div>
+
+<% if (user.roles === 'Admin' || user.roles === 'Bendahara') { %>
+<!-- Payment Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <!-- Today's Payment -->
+    <div class="stat-card bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100" style="animation-delay: 0.6s">
+        <div class="flex items-center justify-between mb-4">
+            <div class="bg-yellow-50 rounded-lg p-3">
+                <i class="fas fa-money-bill-wave text-yellow-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium text-white bg-yellow-600 rounded-full px-3 py-1">Hari Ini</span>
+        </div>
+        <h3 class="stat-number text-2xl font-bold text-gray-700"><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(stats.pembayaranHariIni) %></h3>
+        <p class="text-gray-500 text-sm mt-1">Pembayaran Hari Ini</p>
+    </div>
+
+    <!-- Total Payment -->
+    <div class="stat-card bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100" style="animation-delay: 0.8s">
+        <div class="flex items-center justify-between mb-4">
+            <div class="bg-indigo-50 rounded-lg p-3">
+                <i class="fas fa-wallet text-indigo-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium text-white bg-indigo-600 rounded-full px-3 py-1">Total</span>
+        </div>
+        <h3 class="stat-number text-2xl font-bold text-gray-700"><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(stats.pembayaranKeseluruhan) %></h3>
+        <p class="text-gray-500 text-sm mt-1">Total Pembayaran</p>
+    </div>
+</div>
+<% } %>
+
+<!-- Registration Statistics -->
+<div class="stat-card mb-6" style="animation-delay: 1s">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Statistik Pendaftaran</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Total Pendaftar -->
+        <div class="relative overflow-hidden bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] group">
+            <div class="absolute top-0 left-0 w-full h-full bg-white opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-white/20 rounded-lg p-3">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <div class="bg-white/20 rounded-full px-3 py-1">
+                        <span class="text-sm font-medium text-white">Total</span>
+                    </div>
+                </div>
+                <h4 class="stat-number text-3xl font-bold text-white mb-1"><%= stats.cpdbTetap %></h4>
+                <p class="text-green-100">Total Pendaftar</p>
+                <div class="absolute bottom-0 right-0 opacity-10 transform translate-x-4 translate-y-4">
+                    <i class="fas fa-users text-8xl text-white"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sisa Kuota -->
+        <div class="relative overflow-hidden bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] group">
+            <div class="absolute top-0 left-0 w-full h-full bg-white opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-white/20 rounded-lg p-3">
+                        <i class="fas fa-user-times text-white text-2xl"></i>
+                    </div>
+                    <div class="bg-white/20 rounded-full px-3 py-1">
+                        <span class="text-sm font-medium text-white">Sisa</span>
+                    </div>
+                </div>
+                <h4 class="stat-number text-3xl font-bold text-white mb-1"><%= stats.kuotaKeseluruhan %></h4>
+                <p class="text-red-100">Sisa Kuota Keseluruhan</p>
+                <div class="absolute bottom-0 right-0 opacity-10 transform translate-x-4 translate-y-4">
+                    <i class="fas fa-user-times text-8xl text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Program Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% for (const jurusan of stats.jurusan) { %>
+        <div class="stat-card bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100" style="animation-delay: 1.2s">
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="font-semibold text-gray-800"><%= jurusan.nama %></h4>
+                <span class="text-sm font-medium text-white bg-<%= jurusan.warna %>-600 rounded-full px-3 py-1"><%= jurusan.kode %></span>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Kuota</span>
+                    <span class="font-medium text-gray-800"><%= jurusan.kapasitas %></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Sisa</span>
+                    <span class="font-medium text-gray-800"><%= jurusan.sisa_kapasitas %></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                    <div class="progress-bar bg-<%= jurusan.warna %>-600 h-2.5 rounded-full" style="width: <%= Math.round(((jurusan.kapasitas - jurusan.sisa_kapasitas) / jurusan.kapasitas) * 100) %>%"></div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
