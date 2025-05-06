@@ -78,7 +78,7 @@
                     <img src="/images/logo-jp1.png" alt="Logo SMK JT1" class="w-16 h-16 object-contain">
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">SMK Jakarta Pusat 1</h1>
-                        <p class="text-sm text-gray-600 leading-tight">Jl. Cawang Baru No. 543 / No. 71 Otista - Jakarta Timur | WhatsApp : 6285159998772</p>
+                        <p class="text-sm text-gray-600 leading-tight">Jl. Abdul Muis No. 44, Jakarta Pusat | WhatsApp : 085213819519</p>
                     </div>
                 </div>
                 <div class="text-right">
@@ -180,6 +180,7 @@
                 if (n < 10) return units[n];
                 if (n < 20) return teens[n - 10];
                 if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + units[n % 10] : '');
+                if (n === 100) return 'Seratus';
                 return units[Math.floor(n / 100)] + ' Ratus' + (n % 100 !== 0 ? ' ' + convertLessThanOneThousand(n % 100) : '');
             }
             

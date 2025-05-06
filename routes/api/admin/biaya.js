@@ -6,10 +6,10 @@ const MasterBiayaJurusan = require('../../../models/MasterBiayaJurusan');
 router.get('/', async (req, res) => {
     try {
         const biaya = await MasterBiayaJurusan.getAll();
-        res.json(biaya);
+        res.json({ success: true, data: biaya });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data biaya' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengambil data biaya' });
     }
 });
 
@@ -17,10 +17,10 @@ router.get('/', async (req, res) => {
 router.get('/data/jurusan', async (req, res) => {
     try {
         const jurusan = await MasterBiayaJurusan.getJurusan();
-        res.json(jurusan);
+        res.json({ success: true, data: jurusan });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data jurusan' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengambil data jurusan' });
     }
 });
 
@@ -29,12 +29,12 @@ router.get('/:id', async (req, res) => {
     try {
         const biaya = await MasterBiayaJurusan.getById(req.params.id);
         if (!biaya) {
-            return res.status(404).json({ message: 'Data biaya tidak ditemukan' });
+            return res.status(404).json({ success: false, message: 'Data biaya tidak ditemukan' });
         }
-        res.json(biaya);
+        res.json({ success: true, data: biaya });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data biaya' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengambil data biaya' });
     }
 });
 
@@ -43,10 +43,10 @@ router.post('/', async (req, res) => {
     try {
         const id = await MasterBiayaJurusan.create(req.body);
         const biaya = await MasterBiayaJurusan.getById(id);
-        res.status(201).json(biaya);
+        res.status(201).json({ success: true, data: biaya });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat membuat data biaya' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat membuat data biaya' });
     }
 });
 
@@ -55,13 +55,13 @@ router.put('/:id', async (req, res) => {
     try {
         const success = await MasterBiayaJurusan.update(req.params.id, req.body);
         if (!success) {
-            return res.status(404).json({ message: 'Data biaya tidak ditemukan' });
+            return res.status(404).json({ success: false, message: 'Data biaya tidak ditemukan' });
         }
         const biaya = await MasterBiayaJurusan.getById(req.params.id);
-        res.json(biaya);
+        res.json({ success: true, data: biaya });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui data biaya' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat memperbarui data biaya' });
     }
 });
 
@@ -70,12 +70,12 @@ router.delete('/:id', async (req, res) => {
     try {
         const success = await MasterBiayaJurusan.delete(req.params.id);
         if (!success) {
-            return res.status(404).json({ message: 'Data biaya tidak ditemukan' });
+            return res.status(404).json({ success: false, message: 'Data biaya tidak ditemukan' });
         }
-        res.json({ message: 'Data biaya berhasil dihapus' });
+        res.json({ success: true, message: 'Data biaya berhasil dihapus' });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat menghapus data biaya' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat menghapus data biaya' });
     }
 });
 

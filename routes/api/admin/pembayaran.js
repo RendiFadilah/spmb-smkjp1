@@ -33,6 +33,7 @@ router.get('/export/:type', async (req, res) => {
                 f.no_formulir,
                 u.nama_lengkap,
                 j.jurusan,
+                per.nama_periode,
                 pp.total_biaya,
                 dpp.nominal_pembayaran,
                 pp.sisa_pembayaran,
@@ -46,6 +47,7 @@ router.get('/export/:type', async (req, res) => {
             JOIN formulir f ON pp.id_formulir = f.id_formulir
             JOIN users u ON f.id_user = u.id_user
             JOIN jurusan j ON pp.id_jurusan = j.id_jurusan
+            JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
             JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
         `;
 
@@ -155,15 +157,22 @@ router.get('/data/eligible-cpdb', async (req, res) => {
                 u.nama_lengkap,
                 f.no_formulir,
                 j.jurusan,
-                mbj.total_biaya,
+                j.id_jurusan,
+                mbj.total_biaya as base_biaya,
+                COALESCE(dp.nominal_diskon, 0) as nominal_diskon,
+                mbj.total_biaya as total_biaya,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_verified,
                 CONCAT(u.nama_lengkap, ' - ', f.no_formulir, ' (', j.jurusan, ')') as display_name,
-                CASE WHEN pp.id_pembayaran IS NOT NULL THEN 1 ELSE 0 END as has_payment
+                CASE WHEN pp.id_pembayaran IS NOT NULL THEN 1 ELSE 0 END as has_payment,
+                pp.sisa_pembayaran,
+                pp.status_pelunasan
             FROM users u
             JOIN formulir f ON u.id_user = f.id_user
             JOIN registrasi_peserta_didik rpd ON f.id_formulir = rpd.id_formulir
             JOIN jurusan j ON rpd.jurusan = j.id_jurusan
             JOIN master_biaya_jurusan mbj ON j.id_jurusan = mbj.id_jurusan
+            LEFT JOIN periode_pendaftaran pp_active ON pp_active.status = 'active'
+            LEFT JOIN diskon_periode dp ON (dp.id_periode = pp_active.id_periode AND dp.id_jurusan = j.id_jurusan)
             LEFT JOIN pembayaran_pendaftaran pp ON f.id_formulir = pp.id_formulir
             LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
             WHERE f.status = 'Terverifikasi' 
@@ -174,7 +183,9 @@ router.get('/data/eligible-cpdb', async (req, res) => {
                 pp.status_pelunasan = 'BELUM_LUNAS'
                 OR f.id_formulir NOT IN (SELECT id_formulir FROM pembayaran_pendaftaran)
             )
-            GROUP BY u.id_user, u.nama_lengkap, f.no_formulir, j.jurusan, mbj.total_biaya, pp.id_pembayaran
+            GROUP BY u.id_user, u.nama_lengkap, f.no_formulir, j.jurusan, j.id_jurusan, 
+                     mbj.total_biaya, dp.nominal_diskon, pp.id_pembayaran, pp.sisa_pembayaran, 
+                     pp.status_pelunasan, pp_active.id_periode
         `;
         
         const [rows] = await db.query(query);
@@ -188,23 +199,21 @@ router.get('/data/eligible-cpdb', async (req, res) => {
 // Get payment details by ID
 router.get('/detail/:id_pembayaran', async (req, res) => {
     try {
-        // Get payment header info
         const [payment] = await db.query(`
             SELECT 
-                pp.id_pembayaran,
-                pp.id_formulir,
-                pp.id_jurusan,
-                pp.total_biaya,
-                pp.sisa_pembayaran,
-                pp.status_pelunasan,
+                pp.*,
                 f.no_formulir,
                 u.nama_lengkap,
                 j.jurusan,
+                per.nama_periode,
+                pp.total_biaya,
+                pp.sisa_pembayaran,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_verified
             FROM pembayaran_pendaftaran pp
             JOIN formulir f ON pp.id_formulir = f.id_formulir
             JOIN users u ON f.id_user = u.id_user
             JOIN jurusan j ON pp.id_jurusan = j.id_jurusan
+            JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
             LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
             WHERE pp.id_pembayaran = ?
             GROUP BY pp.id_pembayaran
@@ -214,7 +223,6 @@ router.get('/detail/:id_pembayaran', async (req, res) => {
             return res.status(404).json({ message: 'Data pembayaran tidak ditemukan' });
         }
 
-        // Get payment transactions
         const [transactions] = await db.query(`
             SELECT 
                 dpp.*,
@@ -224,7 +232,6 @@ router.get('/detail/:id_pembayaran', async (req, res) => {
             ORDER BY dpp.tanggal_pembayaran DESC
         `, [req.params.id_pembayaran]);
 
-        // Calculate first and second payments
         const firstPayment = transactions.find(t => t.status_verifikasi === 'VERIFIED');
         const secondPayment = transactions.filter(t => t.status_verifikasi === 'VERIFIED')[1];
 
@@ -248,98 +255,71 @@ router.post('/', upload.single('bukti_pembayaran'), async (req, res) => {
     try {
         await conn.beginTransaction();
 
-        const { id_user, total_biaya, nominal_pembayaran, metode_pembayaran, nama_pengirim } = req.body;
+        const { id_user, nominal_pembayaran, metode_pembayaran, nama_pengirim } = req.body;
         
-        console.log('Request Body:', req.body);
-        console.log('File:', req.file);
-        
-        // Validate required fields
-        if (!id_user || !total_biaya || !metode_pembayaran) {
-            console.log('Missing required fields:', {
-                id_user: id_user || 'missing',
-                total_biaya: total_biaya || 'missing',
-                metode_pembayaran: metode_pembayaran || 'missing'
-            });
+        if (!id_user || !metode_pembayaran) {
             return res.status(400).json({ 
-                message: 'Data tidak lengkap', 
-                details: 'id_user, total_biaya, dan metode_pembayaran harus diisi' 
+                message: 'Data tidak lengkap'
             });
         }
 
-        // Validate nama_pengirim if metode_pembayaran is TRANSFER
         if (metode_pembayaran === 'TRANSFER' && !nama_pengirim) {
             return res.status(400).json({
-                message: 'Data tidak lengkap',
-                details: 'Nama pengirim harus diisi untuk pembayaran transfer'
+                message: 'Nama pengirim harus diisi untuk pembayaran transfer'
             });
         }
 
-        // Get formulir and existing payment data
-        const [formulirData] = await conn.query(
-            `SELECT 
+        // Get formulir, jurusan, and payment data
+        const [formulirData] = await conn.query(`
+            SELECT 
                 f.id_formulir,
                 pp.id_pembayaran,
                 pp.sisa_pembayaran as existing_sisa,
+                j.id_jurusan,
+                j.sisa_kapasitas,
+                mbj.total_biaya as base_biaya,
+                COALESCE(dp.nominal_diskon, 0) as nominal_diskon,
+                per.id_periode,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_verified
-             FROM formulir f
-             LEFT JOIN pembayaran_pendaftaran pp ON f.id_formulir = pp.id_formulir
-             LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
-             WHERE f.id_user = ? 
-             AND f.status = 'Terverifikasi' 
-             AND f.status_formulir = 'Sudah Lengkap'
-             GROUP BY f.id_formulir, pp.id_pembayaran, pp.sisa_pembayaran`,
+            FROM formulir f
+            JOIN registrasi_peserta_didik rpd ON f.id_formulir = rpd.id_formulir
+            JOIN jurusan j ON rpd.jurusan = j.id_jurusan
+            JOIN master_biaya_jurusan mbj ON j.id_jurusan = mbj.id_jurusan
+            JOIN periode_pendaftaran per ON per.status = 'active'
+            LEFT JOIN diskon_periode dp ON (dp.id_periode = per.id_periode AND dp.id_jurusan = j.id_jurusan)
+            LEFT JOIN pembayaran_pendaftaran pp ON f.id_formulir = pp.id_formulir
+            LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
+            WHERE f.id_user = ? 
+            AND f.status = 'Terverifikasi' 
+            AND f.status_formulir = 'Sudah Lengkap'
+            GROUP BY f.id_formulir, pp.id_pembayaran, pp.sisa_pembayaran, j.id_jurusan, j.sisa_kapasitas, 
+                     mbj.total_biaya, dp.nominal_diskon, per.id_periode`,
             [id_user]
         );
 
         if (!formulirData || formulirData.length === 0) {
-            return res.status(400).json({ 
-                message: 'Data tidak valid', 
-                details: 'Formulir tidak ditemukan untuk user ini' 
-            });
+            return res.status(400).json({ message: 'Data tidak valid' });
         }
 
-        const id_formulir = formulirData[0].id_formulir;
-        let existingPayment = formulirData[0].id_pembayaran;
-        const existingSisa = formulirData[0].existing_sisa;
-        const totalVerified = formulirData[0].total_verified;
+        const {
+            id_formulir, id_jurusan, sisa_kapasitas,
+            base_biaya, nominal_diskon, id_periode, total_verified
+        } = formulirData[0];
 
-        // Get id_jurusan and capacity from registrasi_peserta_didik
-        const [jurusanData] = await conn.query(
-            `SELECT j.id_jurusan, j.sisa_kapasitas 
-             FROM registrasi_peserta_didik rpd 
-             JOIN jurusan j ON rpd.jurusan = j.id_jurusan 
-             WHERE rpd.id_formulir = ?`,
-            [id_formulir]
-        );
-        if (!jurusanData || jurusanData.length === 0) {
-            console.log('Jurusan data not found for id_formulir:', id_formulir);
-            return res.status(400).json({ 
-                message: 'Data tidak valid', 
-                details: 'Data jurusan tidak ditemukan untuk formulir ini' 
-            });
+        let payment_id = formulirData[0].id_pembayaran;
+
+        if (!payment_id && sisa_kapasitas <= 0) {
+            return res.status(400).json({ message: 'Kapasitas jurusan sudah penuh' });
         }
 
-        const id_jurusan = jurusanData[0].id_jurusan;
-        const sisa_kapasitas = jurusanData[0].sisa_kapasitas;
-
-        // Check jurusan capacity if this is a new payment
-        if (!existingPayment && sisa_kapasitas <= 0) {
-            return res.status(400).json({
-                message: 'Kapasitas jurusan sudah penuh'
-            });
-        }
-
-        // Convert values to proper format
-        const parsedTotalBiaya = parseFloat(total_biaya);
-        const parsedNominalPembayaran = nominal_pembayaran ? parseFloat(nominal_pembayaran) : 0;
+        // Calculate total biaya with discount
+        const total_biaya = Math.max(0, parseFloat(base_biaya) - parseFloat(nominal_diskon));
+        const parsedNominalPembayaran = parseFloat(nominal_pembayaran) || 0;
         
         let sisaPembayaran, statusPelunasan;
         
-        if (existingPayment) {
-            // This is a second payment
-            sisaPembayaran = existingSisa - parsedNominalPembayaran;
-            
-            // Update existing payment record
+        if (payment_id) {
+            sisaPembayaran = formulirData[0].existing_sisa - parsedNominalPembayaran;
             await conn.query(
                 `UPDATE pembayaran_pendaftaran 
                  SET sisa_pembayaran = ?, 
@@ -348,21 +328,20 @@ router.post('/', upload.single('bukti_pembayaran'), async (req, res) => {
                          ELSE 'BELUM_LUNAS'
                      END
                  WHERE id_pembayaran = ?`,
-                [sisaPembayaran, sisaPembayaran, existingPayment]
+                [sisaPembayaran, sisaPembayaran, payment_id]
             );
         } else {
-            // This is the first payment
-            sisaPembayaran = parsedTotalBiaya - parsedNominalPembayaran;
+            sisaPembayaran = total_biaya - parsedNominalPembayaran;
             statusPelunasan = sisaPembayaran <= 0 ? 'LUNAS' : 'BELUM_LUNAS';
             
-            // Insert new payment record
-            const [payment] = await conn.query(
-                'INSERT INTO pembayaran_pendaftaran (id_formulir, id_jurusan, total_biaya, sisa_pembayaran, status_pelunasan) VALUES (?, ?, ?, ?, ?)',
-                [id_formulir, id_jurusan, parsedTotalBiaya, sisaPembayaran, statusPelunasan]
+            const [result] = await conn.query(
+                `INSERT INTO pembayaran_pendaftaran 
+                 (id_formulir, id_jurusan, id_periode_daftar, total_biaya, sisa_pembayaran, status_pelunasan) 
+                 VALUES (?, ?, ?, ?, ?, ?)`,
+                [id_formulir, id_jurusan, id_periode, total_biaya, sisaPembayaran, statusPelunasan]
             );
-            existingPayment = payment.insertId;
+            payment_id = result.insertId;
 
-            // Decrease jurusan sisa_kapasitas since this is a new verified payment
             await conn.query(
                 'UPDATE jurusan SET sisa_kapasitas = sisa_kapasitas - 1 WHERE id_jurusan = ?',
                 [id_jurusan]
@@ -370,43 +349,31 @@ router.post('/', upload.single('bukti_pembayaran'), async (req, res) => {
         }
         
         const bukti_pembayaran = req.file ? `/uploads/bukti-pembayaran/${req.file.filename}` : null;
-        // Set timezone to Asia/Jakarta
         const now = moment().tz('Asia/Jakarta').format('YYYY-MM-DD HH:mm:ss');
 
-        console.log('Processed values:', {
-            id_formulir,
-            id_jurusan,
-            parsedTotalBiaya,
-            parsedNominalPembayaran,
-            sisaPembayaran
-        });
-
-        // Insert payment detail
-        const insertDetailQuery = `
+        await conn.query(`
             INSERT INTO detail_pembayaran_pendaftaran 
-            (id_pembayaran, nominal_pembayaran, bukti_pembayaran, status_verifikasi, 
+            (id_pembayaran, id_periode_bayar, nominal_pembayaran, bukti_pembayaran, status_verifikasi, 
             tanggal_pembayaran, metode_pembayaran, nama_pengirim, nama_verifikator)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-
-        await conn.query(insertDetailQuery, [
-            existingPayment,
-            parsedNominalPembayaran,
-            bukti_pembayaran,
-            'VERIFIED',
-            now,
-            metode_pembayaran,
-            nama_pengirim || null,
-            req.user.nama // Set verifikator name from logged in admin
-        ]);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                payment_id,
+                id_periode,
+                parsedNominalPembayaran,
+                bukti_pembayaran,
+                'VERIFIED',
+                now,
+                metode_pembayaran,
+                nama_pengirim || null,
+                req.user.nama
+            ]
+        );
 
         await conn.commit();
         res.json({ 
             success: true,
             message: 'Pembayaran berhasil ditambahkan',
-            data: {
-                id_pembayaran: existingPayment
-            }
+            data: { id_pembayaran: payment_id }
         });
     } catch (error) {
         await conn.rollback();
@@ -417,6 +384,7 @@ router.post('/', upload.single('bukti_pembayaran'), async (req, res) => {
     }
 });
 
+// Export existing routes...
 // Delete entire payment record
 router.delete('/:id_pembayaran', async (req, res) => {
     const conn = await db.getConnection();
@@ -425,10 +393,11 @@ router.delete('/:id_pembayaran', async (req, res) => {
 
         // Get payment info before deleting
         const [payment] = await conn.query(
-            `SELECT pp.*, f.no_formulir, j.sisa_kapasitas 
+            `SELECT pp.*, f.no_formulir, j.sisa_kapasitas, per.nama_periode
              FROM pembayaran_pendaftaran pp
              JOIN formulir f ON pp.id_formulir = f.id_formulir
              JOIN jurusan j ON pp.id_jurusan = j.id_jurusan
+             JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
              WHERE pp.id_pembayaran = ?`,
             [req.params.id_pembayaran]
         );
@@ -494,9 +463,10 @@ router.post('/verify/:id_detail', async (req, res) => {
 
         // Get payment detail info
         const [detailPayment] = await conn.query(
-            `SELECT dpp.*, pp.id_pembayaran, pp.total_biaya, pp.id_jurusan
+            `SELECT dpp.*, pp.id_pembayaran, pp.total_biaya, pp.id_jurusan, per.nama_periode
              FROM detail_pembayaran_pendaftaran dpp
              JOIN pembayaran_pendaftaran pp ON dpp.id_pembayaran = pp.id_pembayaran
+             JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
              WHERE dpp.id_detail = ?`,
             [id_detail]
         );
@@ -585,6 +555,7 @@ router.get('/kuitansi/:id_pembayaran', async (req, res) => {
                 f.no_formulir,
                 u.nama_lengkap,
                 j.jurusan as nama_jurusan,
+                per.nama_periode,
                 pp.status_pelunasan,
                 (
                     SELECT nama_verifikator 
@@ -599,6 +570,7 @@ router.get('/kuitansi/:id_pembayaran', async (req, res) => {
             JOIN users u ON f.id_user = u.id_user
             JOIN registrasi_peserta_didik rpd ON f.id_formulir = rpd.id_formulir
             JOIN jurusan j ON rpd.jurusan = j.id_jurusan
+            JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
             WHERE pp.id_pembayaran = ?
         `, [req.params.id_pembayaran]);
 
@@ -719,5 +691,4 @@ router.delete('/delete/:id_detail', async (req, res) => {
         conn.release();
     }
 });
-
 module.exports = router;

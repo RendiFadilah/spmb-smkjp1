@@ -27,9 +27,4 @@ router.use('/cpdb/pembayaran', PembayaranCPDBRoutes);
 router.use('/cpdb/formulir/registrasi-peserta-didik', cpdbRegistrasiPesertaDidikRoutes);
 router.use('/cpdb/settings', cpdbSettingsRoutes);
 
-// Handle 404 for API routes
-router.use((req, res) => {
-  res.status(404).json({ message: 'API endpoint tidak ditemukan' });
-});
-
 module.exports = router;

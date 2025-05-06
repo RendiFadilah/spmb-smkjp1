@@ -1,0 +1,469 @@
+<!-- Page Title -->
+<div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
+    <h1 class="text-3xl font-bold text-gray-800">Manajemen Diskon Periode</h1>
+    <p class="mt-2 text-gray-600">Kelola data diskon per periode dan jurusan</p>
+</div>
+
+<!-- Search and Add Button -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Search -->
+    <div class="relative flex-1 group">
+        <input type="text" 
+               id="searchInput" 
+               class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
+               placeholder="Cari berdasarkan periode atau jurusan...">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
+            <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <!-- Clear search button -->
+        <button id="clearSearch" 
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Add Button -->
+    <button type="button"
+            onclick="openAddModal()"
+            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Diskon
+    </button>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-xl">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Periode
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Jurusan
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Nominal Diskon
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="diskonTableBody">
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="diskonModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">
+                    Tambah Diskon
+                </h3>
+                <button type="button" onclick="closeModal('diskonModal')" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-colors duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="diskonForm" onsubmit="handleSubmit(event)" class="p-6">
+                <input type="hidden" id="diskonId" name="id_diskon">
+                <div class="grid gap-6 mb-6">
+                    <div>
+                        <label for="id_periode" class="block mb-2 text-sm font-medium text-gray-900">Periode</label>
+                        <select id="id_periode" 
+                                name="id_periode" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" 
+                                required>
+                            <option value="">Pilih Periode</option>
+                        </select>
+                    </div>
+                    <div id="jurusanWrapper" style="display: none;">
+                        <label for="id_jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan</label>
+                        <select id="id_jurusan" 
+                                name="id_jurusan" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200 cursor-not-allowed opacity-75" 
+                                required
+                                multiple
+                                readonly
+                                disabled>
+                        </select>
+                        <p class="mt-1 text-sm text-gray-500">Jurusan akan otomatis dipilih sesuai periode</p>
+                    </div>
+                    <div>
+                        <label for="nominal_diskon" class="block mb-2 text-sm font-medium text-gray-900">Nominal Diskon</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                            <input type="text" 
+                                   id="nominal_diskon" 
+                                   name="nominal_diskon" 
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 pl-10 transition-all duration-200" 
+                                   required 
+                                   onkeyup="formatNominal(this)"
+                                   onchange="formatNominal(this)">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200 rounded-b">
+                    <button type="button" onclick="closeModal('diskonModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-6"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-500">
+                    Apakah Anda yakin ingin menghapus diskon ini?
+                </h3>
+                <button type="button" onclick="confirmDelete()" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedId = null;
+let allData = [];
+
+// Initialize DataTable
+$(document).ready(function() {
+    loadDiskonData();
+    
+    // Enhanced search functionality
+    const searchInput = $('#searchInput');
+    const clearButton = $('#clearSearch');
+    
+    searchInput.on('input', function() {
+        const hasValue = $(this).val().length > 0;
+        clearButton.toggleClass('hidden', !hasValue);
+        filterData();
+    });
+    
+    clearButton.on('click', function() {
+        searchInput.val('');
+        $(this).addClass('hidden');
+        filterData();
+        searchInput.focus();
+    });
+    
+    // Add loading animation
+    searchInput.on('focus', function() {
+        $(this).parent().addClass('ring-2 ring-green-200');
+    }).on('blur', function() {
+        $(this).parent().removeClass('ring-2 ring-green-200');
+    });
+});
+
+function loadDiskonData() {
+    $.get('/api/admin/diskon', function(response) {
+        if (response.success) {
+            allData = response.data;
+            filterData();
+        }
+    }).fail(function(xhr) {
+        showToast('Gagal memuat data diskon', 'error');
+    });
+}
+
+function filterData() {
+    const searchValue = $('#searchInput').val().toLowerCase();
+    let filteredData = allData;
+    
+    if (searchValue) {
+        // Group data first to search across all jurusan in a period
+        const groupedData = filteredData.reduce((acc, diskon) => {
+            if (!acc[diskon.id_periode]) {
+                acc[diskon.id_periode] = {
+                    ...diskon,
+                    all_jurusan: []
+                };
+            }
+            acc[diskon.id_periode].all_jurusan.push(diskon.kode_jurusan);
+            return acc;
+        }, {});
+
+        // Filter based on period name or any jurusan in the period
+        filteredData = filteredData.filter(diskon => {
+            const periodGroup = groupedData[diskon.id_periode];
+            return periodGroup.nama_periode.toLowerCase().includes(searchValue) ||
+                   periodGroup.all_jurusan.some(j => j.toLowerCase().includes(searchValue));
+        });
+    }
+    
+    renderTable(filteredData);
+}
+
+function renderTable(data) {
+    const tbody = $('#diskonTableBody');
+    tbody.fadeOut(150, function() {
+        tbody.empty();
+        
+        // Group data by periode
+        const groupedData = data.reduce((acc, diskon) => {
+            if (!acc[diskon.id_periode]) {
+                acc[diskon.id_periode] = {
+                    nama_periode: diskon.nama_periode,
+                    diskons: []
+                };
+            }
+            acc[diskon.id_periode].diskons.push(diskon);
+            return acc;
+        }, {});
+
+        // Render each group
+        Object.values(groupedData).forEach(function(group) {
+            // Get unique nominal_diskon for this period
+            const nominal = group.diskons[0].nominal_diskon;
+            
+            // Get all jurusan codes for this period
+            const jurusanCodes = group.diskons.map(d => d.kode_jurusan).join(', ');
+
+            // Create row
+            const row = `
+                <tr class="hover:bg-gray-50 transition-all duration-200 transform hover:scale-[1.01]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${group.nama_periode}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${jurusanCodes}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${parseInt(nominal).toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="editDiskon(${group.diskons[0].id_diskon})" 
+                                class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteDiskon(${group.diskons[0].id_diskon})" 
+                                class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            tbody.append(row);
+        });
+        tbody.fadeIn(150);
+    });
+}
+
+function openAddModal() {
+    $('#modalTitle').text('Tambah Diskon');
+    $('#diskonForm')[0].reset();
+    $('#diskonId').val('');
+    $('#jurusanWrapper').hide();
+    
+    // Load periode data only
+    loadPeriodeOptions();
+    
+    openModal('diskonModal');
+}
+
+function loadPeriodeOptions() {
+    $.get('/api/admin/periode', function(response) {
+        if (response.success) {
+            const select = $('#id_periode');
+            select.empty().append('<option value="">Pilih Periode</option>');
+            response.data.forEach(periode => {
+                select.append(`<option value="${periode.id_periode}">${periode.nama_periode}</option>`);
+            });
+        }
+    });
+}
+
+function loadJurusanOptions(periodeId = null) {
+    const jurusanWrapper = $('#jurusanWrapper');
+    const select = $('#id_jurusan');
+    select.empty();
+    
+    if (!periodeId) {
+        jurusanWrapper.fadeOut();
+        return;
+    }
+
+    $.get(`/api/admin/diskon/jurusan/${periodeId}`, function(response) {
+        if (response.success) {
+            // Add all jurusan options and select them automatically
+            const jurusanIds = [];
+            response.data.forEach(jurusan => {
+                select.append(`<option value="${jurusan.id_jurusan}">${jurusan.kode_jurusan} - ${jurusan.nama_jurusan}</option>`);
+                jurusanIds.push(jurusan.id_jurusan);
+            });
+            
+            // Show jurusan wrapper with animation
+            jurusanWrapper.fadeIn();
+            
+            // Set all jurusan as selected
+            select.val(jurusanIds);
+            
+            // Disable the select to prevent changes
+            select.prop('disabled', true);
+        }
+    });
+}
+
+// Add periode change handler
+$('#id_periode').on('change', function() {
+    loadJurusanOptions($(this).val());
+});
+
+function editDiskon(id) {
+    selectedId = id;
+    $('#modalTitle').text('Edit Diskon');
+    $('#jurusanWrapper').hide();
+    
+    // Get diskon data first
+    $.get(`/api/admin/diskon/${id}`, function(response) {
+        if (response.success) {
+            const data = response.data;
+            $('#diskonId').val(data.id_diskon);
+            
+            // Load periode options with callback
+            $.get('/api/admin/periode', function(periodeResponse) {
+                if (periodeResponse.success) {
+                    const select = $('#id_periode');
+                    select.empty().append('<option value="">Pilih Periode</option>');
+                    periodeResponse.data.forEach(periode => {
+                        select.append(`<option value="${periode.id_periode}">${periode.nama_periode}</option>`);
+                    });
+                    
+                    // Now set the periode value and trigger change after options are loaded
+                    select.val(data.id_periode).trigger('change');
+                    
+                    // Set nominal
+                    $('#nominal_diskon').val(parseInt(data.nominal_diskon).toLocaleString('id-ID'));
+                    
+                    openModal('diskonModal');
+                }
+            });
+        }
+    });
+}
+
+function deleteDiskon(id) {
+    selectedId = id;
+    openModal('deleteModal');
+}
+
+function confirmDelete() {
+    if (selectedId) {
+        $.ajax({
+            url: `/api/admin/diskon/${selectedId}`,
+            type: 'DELETE',
+            success: function(response) {
+                if (response.success) {
+                    closeModal('deleteModal');
+                    loadDiskonData();
+                    showToast('Diskon berhasil dihapus');
+                }
+            },
+            error: function() {
+                showToast('Gagal menghapus diskon', 'error');
+            }
+        });
+    }
+}
+
+function formatNominal(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/\D/g, '');
+    
+    // Format with thousand separator
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    // Update input value
+    input.value = value;
+}
+
+function unformatNominal(value) {
+    // Remove all non-digit characters
+    return value.replace(/\D/g, '');
+}
+
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const data = {};
+    
+    // Get all form data
+    for (let [key, value] of formData.entries()) {
+        if (key !== 'id_jurusan') {
+            data[key] = value;
+        }
+    }
+    
+    // Get selected jurusan values
+    data.id_jurusan = $('#id_jurusan').val();
+    
+    // Unformat nominal
+    data.nominal_diskon = unformatNominal(data.nominal_diskon);
+    
+    const url = data.id_diskon ? 
+        `/api/admin/diskon/${data.id_diskon}` : 
+        '/api/admin/diskon';
+    const method = data.id_diskon ? 'PUT' : 'POST';
+    
+    $.ajax({
+        url: url,
+        type: method,
+        data: data,
+        success: function(response) {
+            if (response.success) {
+                closeModal('diskonModal');
+                loadDiskonData();
+                showToast(`Diskon berhasil ${data.id_diskon ? 'diperbarui' : 'ditambahkan'}`);
+            }
+        },
+        error: function(xhr) {
+            showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+    });
+}
+
+function openModal(modalId) {
+    $(`#${modalId}`).removeClass('hidden').addClass('animate-fade-in');
+}
+
+function closeModal(modalId) {
+    $(`#${modalId}`).addClass('hidden').removeClass('animate-fade-in');
+}
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#16a34a" : "#ef4444",
+        className: "rounded-lg shadow-lg",
+    }).showToast();
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+</style>

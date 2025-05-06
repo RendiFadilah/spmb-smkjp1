@@ -99,11 +99,11 @@ router.put('/:id', async (req, res) => {
             seragam_batik: req.body.seragam_batik ?? existing.seragam_batik,
             seragam_olahraga: req.body.seragam_olahraga ?? existing.seragam_olahraga,
             seragam_muslim: req.body.seragam_muslim ?? existing.seragam_muslim,
-            topi: req.body.topi ?? existing.topi,
-            dasi: req.body.dasi ?? existing.dasi,
+            al_quran: req.body.al_quran ?? existing.al_quran,
+            tempat_makan: req.body.tempat_makan ?? existing.tempat_makan,
+            kartu_pelajar: req.body.kartu_pelajar ?? existing.kartu_pelajar,
             gesper: req.body.gesper ?? existing.gesper,
-            bet: req.body.bet ?? existing.bet,
-            lokasi: req.body.lokasi ?? existing.lokasi,
+            kerudung: req.body.kerudung ?? existing.kerudung,
             nama_petugas: req.user.nama
         };
 
@@ -193,11 +193,11 @@ router.get('/export/all', async (req, res) => {
             'Seragam Batik',
             'Seragam Olahraga',
             'Seragam Muslim',
-            'Topi',
-            'Dasi',
+            'Al-Quran',
+            'Tempat Makan',
+            'Kartu Pelajar',
             'Gesper',
-            'Bet',
-            'Lokasi',
+            'Kerudung',
             'Nama Petugas'
         ];
 
@@ -220,15 +220,15 @@ router.get('/export/all', async (req, res) => {
                 item.seragam_batik,
                 item.seragam_olahraga,
                 item.seragam_muslim,
-                item.topi,
-                item.dasi,
+                item.al_quran,
+                item.tempat_makan,
+                item.kartu_pelajar,
                 item.gesper,
-                item.bet,
-                item.lokasi,
+                item.kerudung,
                 item.nama_petugas
             ]);
 
-            // Apply conditional formatting for status columns (Topi, Dasi, Gesper, Bet, Lokasi)
+            // Apply conditional formatting for status columns (Al-Quran, Tempat Makan, Kartu Pelajar, Gesper, Kerudung)
             const statusColumns = [8, 9, 10, 11, 12]; // Column indices for status fields
             statusColumns.forEach(colIndex => {
                 const cell = row.getCell(colIndex);
@@ -337,11 +337,11 @@ router.get('/export/today', async (req, res) => {
             'Seragam Batik',
             'Seragam Olahraga',
             'Seragam Muslim',
-            'Topi',
-            'Dasi',
+            'Al-Quran',
+            'Tempat Makan', 
+            'Kartu Pelajar',
             'Gesper',
-            'Bet',
-            'Lokasi',
+            'Kerudung',
             'Nama Petugas'
         ];
 
@@ -364,15 +364,15 @@ router.get('/export/today', async (req, res) => {
                 item.seragam_batik,
                 item.seragam_olahraga,
                 item.seragam_muslim,
-                item.topi,
-                item.dasi,
+                item.al_quran,
+                item.tempat_makan,
+                item.kartu_pelajar,
                 item.gesper,
-                item.bet,
-                item.lokasi,
+                item.kerudung,
                 item.nama_petugas
             ]);
 
-            // Apply conditional formatting for status columns (Topi, Dasi, Gesper, Bet, Lokasi)
+            // Apply conditional formatting for status columns (Al-Quran, Tempat Makan, Kartu Pelajar, Gesper, Kerudung)
             const statusColumns = [8, 9, 10, 11, 12]; // Column indices for status fields
             statusColumns.forEach(colIndex => {
                 const cell = row.getCell(colIndex);

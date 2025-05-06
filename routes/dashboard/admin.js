@@ -189,6 +189,16 @@ router.get('/formulir/cetak-kuitansi', (req, res) => {
 // GET /dashboard/admin/pembayaran - Payment Management
 router.get('/pembayaran', async (req, res) => {
     try {
+        // Get active period
+        const [activePeriodeResult] = await db.query(`
+            SELECT * FROM periode_pendaftaran 
+            WHERE tanggal_mulai <= CURDATE() 
+            AND tanggal_selesai >= CURDATE() 
+            AND status = 'ACTIVE'
+            LIMIT 1
+        `);
+        const activePeriode = activePeriodeResult[0] || null;
+
         // Get all payments with their details and payment history
         const query = `
             SELECT 
@@ -196,10 +206,13 @@ router.get('/pembayaran', async (req, res) => {
                 u.nama_lengkap,
                 f.no_formulir,
                 j.jurusan,
-                mbj.total_biaya,
+                mbj.total_biaya as base_biaya,
+                MAX(COALESCE(dp.nominal_diskon, 0)) as nominal_diskon,
+                (mbj.total_biaya - MAX(COALESCE(dp.nominal_diskon, 0))) as total_biaya,
+                per.nama_periode,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_verified,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'PENDING' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_pending,
-                (mbj.total_biaya - COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0)) as sisa_pembayaran,
+                ((mbj.total_biaya - MAX(COALESCE(dp.nominal_diskon, 0))) - COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0)) as sisa_pembayaran,
                 MAX(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nama_verifikator END) as nama_verifikator,
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -216,11 +229,49 @@ router.get('/pembayaran', async (req, res) => {
             JOIN registrasi_peserta_didik rpd ON f.id_formulir = rpd.id_formulir
             JOIN jurusan j ON rpd.jurusan = j.id_jurusan
             JOIN master_biaya_jurusan mbj ON j.id_jurusan = mbj.id_jurusan
+            LEFT JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
+            LEFT JOIN diskon_periode dp ON (per.id_periode = dp.id_periode AND j.id_jurusan = dp.id_jurusan)
             LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
-            GROUP BY pp.id_pembayaran, u.nama_lengkap, f.no_formulir, j.jurusan, mbj.total_biaya
+            GROUP BY pp.id_pembayaran, pp.id_formulir, pp.id_periode_daftar, pp.status_pelunasan, pp.created_at, pp.updated_at,
+                     u.nama_lengkap, f.no_formulir, j.jurusan, mbj.total_biaya, per.nama_periode
             ORDER BY pp.created_at DESC
         `;
         const [payments] = await db.query(query);
+
+        // Get master biaya data with jurusan
+        const [masterBiaya] = await db.query(`
+            SELECT mbj.*, j.jurusan, j.id_jurusan
+            FROM master_biaya_jurusan mbj
+            JOIN jurusan j ON mbj.id_jurusan = j.id_jurusan
+        `);
+
+        // Get diskon periode data for active period with jurusan
+        const [diskonPeriode] = await db.query(`
+            SELECT dp.*, j.jurusan, j.id_jurusan
+            FROM diskon_periode dp
+            JOIN jurusan j ON dp.id_jurusan = j.id_jurusan
+            WHERE dp.id_periode = ?
+        `, [activePeriode ? activePeriode.id_periode : 0]);
+
+        // Process payments to include biaya and diskon info
+        const processedPayments = payments.map(payment => {
+            // Find matching biaya for the jurusan
+            const akBiaya = masterBiaya.find(mb => mb.id_jurusan === payment.id_jurusan) || null;
+            
+            // Find matching diskon for the jurusan
+            const akDiskon = diskonPeriode.find(dp => dp.id_jurusan === payment.id_jurusan) || null;
+
+            return {
+                ...payment,
+                akBiaya,
+                akDiskon
+            };
+        });
+
+        // Debug logging
+        console.log('Active Periode:', activePeriode);
+        console.log('Diskon Periode:', diskonPeriode);
+        console.log('Master Biaya:', masterBiaya);
 
         res.render('dashboard/admin/pembayaran/index', {
             title: 'Manajemen Pembayaran - SPMB SMK Jakarta Pusat 1',
@@ -228,7 +279,10 @@ router.get('/pembayaran', async (req, res) => {
             user: req.user,
             layout: 'layouts/dashboard',
             currentPath: '/dashboard/admin/pembayaran',
-            payments
+            payments,
+            activePeriode,
+            masterBiaya,
+            diskonPeriode
         });
     } catch (error) {
         console.error('Error fetching payments:', error);
@@ -244,6 +298,14 @@ router.get('/reward-spmb', (req, res) => {
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/reward-spmb'
+    });
+});
+
+// GET /dashboard/admin/reward-spmb/cetak/:id - Print Reward Receipt
+router.get('/reward-spmb/cetak/:id', isAdmin, (req, res) => {
+    res.render('dashboard/admin/rewards/cetakKuitansi', {
+        title: 'Cetak Kuitansi Reward',
+        layout: false
     });
 });
 
@@ -266,6 +328,28 @@ router.get('/biaya', (req, res) => {
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/biaya'
+    });
+});
+
+// GET /dashboard/admin/periode - Periode Pendaftaran Management
+router.get('/periode', (req, res) => {
+    res.render('dashboard/admin/periode/index', {
+        title: 'Periode Pendaftaran - SPMB SMK Jakarta Pusat 1',
+        description: 'Manajemen Periode Pendaftaran SPMB SMK Jakarta Pusat 1',
+        user: req.user,
+        layout: 'layouts/dashboard',
+        currentPath: '/dashboard/admin/periode'
+    });
+});
+
+// GET /dashboard/admin/diskon - Diskon Periode Management
+router.get('/diskon', (req, res) => {
+    res.render('dashboard/admin/diskon/index', {
+        title: 'Diskon Periode - SPMB SMK Jakarta Pusat 1',
+        description: 'Manajemen Diskon Periode SPMB SMK Jakarta Pusat 1',
+        user: req.user,
+        layout: 'layouts/dashboard',
+        currentPath: '/dashboard/admin/diskon'
     });
 });
 
@@ -314,20 +398,26 @@ router.get('/pembayaran/:id', async (req, res) => {
                 u.nama_lengkap,
                 f.no_formulir,
                 j.jurusan,
-                mbj.total_biaya,
+                mbj.total_biaya as base_biaya,
+                MAX(COALESCE(dp.nominal_diskon, 0)) as nominal_diskon,
+                (mbj.total_biaya - MAX(COALESCE(dp.nominal_diskon, 0))) as total_biaya,
+                per.nama_periode,
                 MAX(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nama_verifikator END) as nama_verifikator,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_verified,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'PENDING' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_pending,
-                (mbj.total_biaya - COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0)) as sisa_pembayaran
+                ((mbj.total_biaya - MAX(COALESCE(dp.nominal_diskon, 0))) - COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0)) as sisa_pembayaran
             FROM pembayaran_pendaftaran pp
             JOIN formulir f ON pp.id_formulir = f.id_formulir
             JOIN users u ON f.id_user = u.id_user
             JOIN registrasi_peserta_didik rpd ON f.id_formulir = rpd.id_formulir
             JOIN jurusan j ON rpd.jurusan = j.id_jurusan
             JOIN master_biaya_jurusan mbj ON j.id_jurusan = mbj.id_jurusan
+            LEFT JOIN periode_pendaftaran per ON pp.id_periode_daftar = per.id_periode
+            LEFT JOIN diskon_periode dp ON (per.id_periode = dp.id_periode AND j.id_jurusan = dp.id_jurusan)
             LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
             WHERE pp.id_pembayaran = ?
-            GROUP BY pp.id_pembayaran, u.nama_lengkap, f.no_formulir, j.jurusan, mbj.total_biaya
+            GROUP BY pp.id_pembayaran, pp.id_formulir, pp.id_periode_daftar, pp.status_pelunasan, pp.created_at, pp.updated_at,
+                     u.nama_lengkap, f.no_formulir, j.jurusan, mbj.total_biaya, per.nama_periode
         `;
         const [payments] = await db.query(paymentQuery, [id]);
         const payment = payments[0];

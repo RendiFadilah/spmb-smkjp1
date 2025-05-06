@@ -11,6 +11,8 @@ const seragamRoutes = require('./seragam');
 const biayaRoutes = require('./biaya');
 const settingsRoutes = require('./settings');
 const jurusanRoutes = require('./jurusan');
+const periodeRoutes = require('./periode');
+const diskonRoutes = require('./diskon');
 const { isAuthenticated, isAdmin } = require('../../../middleware/auth');
 
 // Apply auth middlewares to all routes
@@ -29,5 +31,7 @@ router.use('/seragam', seragamRoutes);
 router.use('/biaya', biayaRoutes);
 router.use('/settings', settingsRoutes);
 router.use('/jurusan', jurusanRoutes);
+router.use('/periode', periodeRoutes);
+router.use('/diskon', diskonRoutes);
 
 module.exports = router;

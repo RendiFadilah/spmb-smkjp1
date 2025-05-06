@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuitansi Pembayaran SPMB</title>
+    <title>Kuitansi Reward SPMB</title>
     <link rel="icon" type="image/png" href="/images/logo-jp1.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,16 +23,16 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 60px; /* Reduced from 100px */
-            color: rgba(75, 85, 99, 0.05); /* Slightly more transparent */
+            font-size: 60px;
+            color: rgba(75, 85, 99, 0.05);
             white-space: nowrap;
             pointer-events: none;
             z-index: 1;
             width: 100%;
             text-align: center;
-            font-weight: 700; /* Slightly reduced from 800 */
+            font-weight: 700;
             line-height: 1;
-            letter-spacing: -1px; /* Added to make text more compact */
+            letter-spacing: -1px;
         }
 
         .content-wrapper {
@@ -48,8 +48,8 @@
                 background: transparent;
             }
             .print-landscape {
-                width: 210mm;  /* A5 width */
-                height: 148mm; /* A5 height */
+                width: 210mm;
+                height: 148mm;
                 padding: 12px;
                 overflow: hidden;
                 background: transparent !important;
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <h2 class="text-lg font-bold text-gray-900 leading-tight">KUITANSI PEMBAYARAN</h2>
+                    <h2 class="text-lg font-bold text-gray-900 leading-tight">KUITANSI REWARD</h2>
                     <p class="text-xs text-gray-600">SPMB 2025/2026</p>
                 </div>
             </div>
@@ -100,47 +100,46 @@
                             <p class="text-sm font-semibold text-gray-900" id="noFormulir"></p>
                         </div>
                         <div>
-                            <p class="text-xs font-medium text-gray-500">Telah terima dari</p>
-                            <p class="text-sm font-semibold text-gray-900" id="namaCPDB"></p>
+                            <p class="text-xs font-medium text-gray-500">Sudah Terima Dari</p>
+                            <p class="text-sm font-semibold text-gray-900">SMK Jakarta Pusat 1</p>
                         </div>
                     </div>
 
                     <div>
-                        <p class="text-xs font-medium text-gray-500">Untuk Pembayaran</p>
-                        <p class="text-sm font-semibold text-gray-900">Pendaftaran Peserta Didik Baru SMK Jakarta Pusat 1 Tahun 2025/2026</p>
+                        <p class="text-xs font-medium text-gray-500">Nama CPDB</p>
+                        <p class="text-sm font-semibold text-gray-900" id="namaCPDB"></p>
                     </div>
 
                     <!-- Amount Box -->
                     <div class="bg-gradient-to-r from-green-50/80 to-green-100/80 rounded-lg p-3">
                         <div class="flex justify-between items-center">
                             <div class="space-y-0.5">
-                                <p class="text-xs font-medium text-gray-500">Nominal Pembayaran</p>
+                                <p class="text-xs font-medium text-gray-500">Nominal Reward</p>
                                 <p class="text-xl font-bold text-gray-900" id="nominal">Rp </p>
                                 <p class="text-xs text-gray-600 italic" id="terbilang"></p>
                             </div>
-                            <div id="statusBadge"></div>
                         </div>
                     </div>
 
-                    <!-- Payment Details -->
+                    <!-- Reward Details -->
                     <div>
-                        <p class="text-xs font-medium text-gray-500 mb-1">Rincian Pembayaran:</p>
-                        <div id="paymentDetails" class="space-y-1">
-                            <p class="text-xs text-gray-600">Total Biaya: <span id="totalBiaya" class="font-medium"></span></p>
-                            <div id="paymentList" class="space-y-0.5">
-                                <!-- Payment details will be inserted here -->
-                            </div>
-                            <div class="mt-2">
-                                <p class="text-xs text-gray-600">Status Pembayaran: <span id="statusPelunasan" class="font-medium"></span></p>
-                            </div>
+                        <p class="text-xs font-medium text-gray-500 mb-1">Keterangan:</p>
+                        <div id="rewardDetails" class="space-y-1">
+                            <p class="text-xs text-gray-600" id="keterangan"></p>
+                            <p class="text-xs text-gray-600">No. WhatsApp: <span id="noWa" class="font-medium"></span></p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Signature -->
-                <div class="flex justify-end mt-2">
+                <div class="flex justify-between mt-4">
                     <div class="text-center">
                         <p class="text-xs text-gray-600" id="tanggalTTD">Jakarta, </p>
+                        <p class="text-xs font-medium text-gray-500 mt-2 mb-8">Penerima</p>
+                        <p class="text-xs font-semibold text-gray-900" id="namaPembawa"></p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-gray-600">&nbsp;</p>
                         <p class="text-xs font-medium text-gray-500 mt-2 mb-8">Petugas</p>
                         <p class="text-xs font-semibold text-gray-900" id="namaPetugas"></p>
                     </div>
@@ -190,8 +189,8 @@
         // Fetch kuitansi data from API
         async function fetchKuitansiData() {
             try {
-                const id_pembayaran = window.location.pathname.split('/').pop();
-                const response = await fetch(`/api/admin/pembayaran/kuitansi/${id_pembayaran}`);
+                const id_reward = window.location.pathname.split('/').pop();
+                const response = await fetch(`/api/admin/rewards/${id_reward}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch kuitansi data');
                 }
@@ -199,70 +198,14 @@
                 
                 // Fill in the receipt details
                 document.getElementById('noFormulir').textContent = data.no_formulir;
-                document.getElementById('namaCPDB').textContent = `${data.nama_lengkap} - ${data.nama_jurusan}`;
-                document.getElementById('nominal').textContent = 'Rp ' + parseInt(data.total_pembayaran).toLocaleString('id-ID');
-                document.getElementById('terbilang').textContent = numberToWords(parseInt(data.total_pembayaran)) + ' Rupiah';
-                document.getElementById('tanggalTTD').textContent = 'Jakarta, ' + formatDate(new Date());
-                document.getElementById('namaPetugas').textContent = data.verifikator;
-
-                // Fill in payment details
-                const totalBiaya = parseInt(data.total_biaya);
-                document.getElementById('totalBiaya').textContent = `Rp ${totalBiaya.toLocaleString('id-ID')}`;
-                
-                let runningTotal = 0;
-                const paymentList = document.getElementById('paymentList');
-                
-                if (data.detail_pembayaran && data.detail_pembayaran.length > 0) {
-                    data.detail_pembayaran.forEach((payment, index) => {
-                        const paymentAmount = parseInt(payment.nominal_pembayaran);
-                        runningTotal += paymentAmount;
-                        const remainingBalance = totalBiaya - runningTotal;
-                        
-                        const paymentElement = document.createElement('p');
-                        paymentElement.className = 'text-xs text-gray-600';
-                        paymentElement.innerHTML = `Pembayaran ${index + 1} (${formatDate(payment.tanggal_pembayaran)}): Rp ${paymentAmount.toLocaleString('id-ID')} (Diverifikasi oleh: ${payment.nama_verifikator || '-'}) - Sisa: Rp ${remainingBalance.toLocaleString('id-ID')}`;
-                        paymentList.appendChild(paymentElement);
-                    });
-                } else {
-                    const noPaymentElement = document.createElement('p');
-                    noPaymentElement.className = 'text-xs text-gray-500 italic';
-                    noPaymentElement.textContent = 'Belum ada pembayaran';
-                    paymentList.appendChild(noPaymentElement);
-                }
-
-                // Set payment status
-                const statusElement = document.getElementById('statusPelunasan');
-                const statusBadge = document.getElementById('statusBadge');
-                
-                if (runningTotal >= totalBiaya) {
-                    statusElement.textContent = 'LUNAS';
-                    statusElement.className = 'font-medium text-green-600';
-                    statusBadge.innerHTML = `
-                        <div class="relative">
-                            <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 blur opacity-50 rounded-xl"></div>
-                            <div class="relative px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center gap-2 border border-white/20">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm font-extrabold text-white tracking-wider">LUNAS</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    statusElement.textContent = 'BELUM LUNAS';
-                    statusElement.className = 'font-medium text-red-600';
-                    statusBadge.innerHTML = `
-                        <div class="relative">
-                            <div class="absolute inset-0 bg-gradient-to-r from-red-400 to-red-500 blur opacity-50 rounded-xl"></div>
-                            <div class="relative px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-lg flex items-center gap-2 border border-white/20">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm font-extrabold text-white tracking-wider">BELUM LUNAS</span>
-                            </div>
-                        </div>
-                    `;
-                }
+                document.getElementById('namaCPDB').textContent = data.jurusan ? `${data.nama_cpdb} - ${data.jurusan}` : data.nama_cpdb;
+                document.getElementById('nominal').textContent = 'Rp ' + parseInt(data.nominal).toLocaleString('id-ID');
+                document.getElementById('terbilang').textContent = numberToWords(parseInt(data.nominal)) + ' Rupiah';
+                document.getElementById('tanggalTTD').textContent = 'Jakarta, ' + formatDate(data.tanggal_reward);
+                document.getElementById('namaPetugas').textContent = data.nama_petugas;
+                document.getElementById('namaPembawa').textContent = data.nama_pembawa;
+                document.getElementById('keterangan').textContent = data.keterangan_pembawa;
+                document.getElementById('noWa').textContent = data.no_wa_pembawa;
 
                 // Auto print after data is loaded
                 setTimeout(() => {

@@ -365,6 +365,11 @@ function renderTable(data) {
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${reward.nama_petugas}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(reward.tanggal_reward).toLocaleDateString('id-ID')}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="/dashboard/admin/reward-spmb/cetak/${reward.id_reward}" 
+                           target="_blank"
+                           class="text-blue-600 hover:text-blue-800 mr-3 transition-colors duration-200">
+                            <i class="fas fa-print"></i>
+                        </a>
                         <button onclick="editReward(${reward.id_reward})" 
                                 class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-200">
                             <i class="fas fa-edit"></i>

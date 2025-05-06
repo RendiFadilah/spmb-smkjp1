@@ -3,9 +3,13 @@ const db = require('../config/database');
 class PembayaranPendaftaran {
     static async findByFormulir(idFormulir) {
         const query = `
-            SELECT p.*, k.keterangan as keterangan_biaya
+            SELECT p.*, k.keterangan as keterangan_biaya,
+                   k.total_biaya as master_biaya,
+                   COALESCE(dp.nominal_diskon, 0) as nominal_diskon
             FROM pembayaran_pendaftaran p
             LEFT JOIN master_biaya_jurusan k ON p.id_jurusan = k.id_jurusan
+            LEFT JOIN periode_pendaftaran pp ON p.id_periode_daftar = pp.id_periode
+            LEFT JOIN diskon_periode dp ON (dp.id_periode = pp.id_periode AND dp.id_jurusan = p.id_jurusan)
             WHERE p.id_formulir = ?
         `;
         const [rows] = await db.query(query, [idFormulir]);
@@ -13,23 +17,61 @@ class PembayaranPendaftaran {
     }
 
     static async create(data) {
-        const totalBiaya = 3000000; // Default total_biaya
-        const nominal = parseFloat(data.nominal_pembayaran) || 0;
-        const sisaPembayaran = Math.max(0, totalBiaya - nominal);
+        try {
+            // Get active period
+            const [activePeriod] = await db.query(
+                'SELECT id_periode FROM periode_pendaftaran WHERE status = "active" LIMIT 1'
+            );
+            
+            if (!activePeriod[0]) {
+                throw new Error('No active registration period found');
+            }
 
-        const query = `
-            INSERT INTO pembayaran_pendaftaran 
-            (id_formulir, id_jurusan, total_biaya, sisa_pembayaran, status_pelunasan)
-            VALUES (?, ?, ?, ?, ?)
-        `;
-        const [result] = await db.query(query, [
-            data.id_formulir,
-            data.id_jurusan,
-            totalBiaya,
-            sisaPembayaran, // Calculate sisa_pembayaran based on nominal_pembayaran
-            'BELUM_LUNAS' // Initial status
-        ]);
-        return result.insertId;
+            // Get master biaya for the jurusan
+            const [masterBiaya] = await db.query(
+                'SELECT total_biaya FROM master_biaya_jurusan WHERE id_jurusan = ? ORDER BY created_at DESC LIMIT 1',
+                [data.id_jurusan]
+            );
+
+            if (!masterBiaya[0]) {
+                throw new Error('Master biaya not found for the specified jurusan');
+            }
+
+            // Get discount if available
+            const [discount] = await db.query(
+                'SELECT nominal_diskon FROM diskon_periode WHERE id_periode = ? AND id_jurusan = ?',
+                [activePeriod[0].id_periode, data.id_jurusan]
+            );
+
+            // Calculate total biaya with discount
+            const baseBiaya = parseFloat(masterBiaya[0].total_biaya);
+            const discountAmount = discount[0] ? parseFloat(discount[0].nominal_diskon) : 0;
+            const totalBiaya = Math.max(0, baseBiaya - discountAmount);
+
+            // Calculate initial sisa pembayaran
+            const nominal = parseFloat(data.nominal_pembayaran) || 0;
+            const sisaPembayaran = Math.max(0, totalBiaya - nominal);
+
+            const query = `
+                INSERT INTO pembayaran_pendaftaran 
+                (id_formulir, id_jurusan, id_periode_daftar, total_biaya, sisa_pembayaran, status_pelunasan)
+                VALUES (?, ?, ?, ?, ?, ?)
+            `;
+            
+            const [result] = await db.query(query, [
+                data.id_formulir,
+                data.id_jurusan,
+                activePeriod[0].id_periode,
+                totalBiaya,
+                sisaPembayaran,
+                'BELUM_LUNAS'
+            ]);
+
+            return result.insertId;
+        } catch (error) {
+            console.error('Error in PembayaranPendaftaran.create:', error);
+            throw error;
+        }
     }
 
     static async updateSisaPembayaran(idPembayaran) {
@@ -97,7 +139,6 @@ class PembayaranPendaftaran {
             throw error;
         }
     }
-
 }
 
 module.exports = PembayaranPendaftaran;

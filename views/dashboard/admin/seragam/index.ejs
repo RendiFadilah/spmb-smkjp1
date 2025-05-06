@@ -93,19 +93,19 @@
                         S. Muslim
                     </th>
                     <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Topi
+                        Al-Quran
                     </th>
                     <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Dasi
+                        Tempat Makan
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Kartu Pelajar
                     </th>
                     <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Gesper
                     </th>
                     <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Bet
-                    </th>
-                    <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Lokasi
+                        Kerudung
                     </th>
                     <th scope="col" class="sticky right-[50px] z-10 bg-gray-50 px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Petugas
@@ -270,17 +270,24 @@ function renderTable(data) {
                     </select>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                    <button onclick="toggleStatus(${item.id_seragam}, 'topi', '${item.topi}')" 
+                    <button onclick="toggleStatus(${item.id_seragam}, 'al_quran', '${item.al_quran}')" 
                             class="transition-transform duration-200 transform hover:scale-110 focus:outline-none" 
                             title="Klik untuk mengubah status">
-                        <i class="fas ${item.topi === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
+                        <i class="fas ${item.al_quran === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
                     </button>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                    <button onclick="toggleStatus(${item.id_seragam}, 'dasi', '${item.dasi}')" 
+                    <button onclick="toggleStatus(${item.id_seragam}, 'tempat_makan', '${item.tempat_makan}')" 
                             class="transition-transform duration-200 transform hover:scale-110 focus:outline-none" 
                             title="Klik untuk mengubah status">
-                        <i class="fas ${item.dasi === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
+                        <i class="fas ${item.tempat_makan === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
+                    </button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <button onclick="toggleStatus(${item.id_seragam}, 'kartu_pelajar', '${item.kartu_pelajar}')" 
+                            class="transition-transform duration-200 transform hover:scale-110 focus:outline-none" 
+                            title="Klik untuk mengubah status">
+                        <i class="fas ${item.kartu_pelajar === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
                     </button>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -291,17 +298,10 @@ function renderTable(data) {
                     </button>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                    <button onclick="toggleStatus(${item.id_seragam}, 'bet', '${item.bet}')" 
+                    <button onclick="toggleStatus(${item.id_seragam}, 'kerudung', '${item.kerudung}')" 
                             class="transition-transform duration-200 transform hover:scale-110 focus:outline-none" 
                             title="Klik untuk mengubah status">
-                        <i class="fas ${item.bet === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
-                    </button>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-center">
-                    <button onclick="toggleStatus(${item.id_seragam}, 'lokasi', '${item.lokasi}')" 
-                            class="transition-transform duration-200 transform hover:scale-110 focus:outline-none" 
-                            title="Klik untuk mengubah status">
-                        <i class="fas ${item.lokasi === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
+                        <i class="fas ${item.kerudung === 'Sudah' ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'} text-xl"></i>
                     </button>
                 </td>
                 <td class="sticky right-[50px] z-10 bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -378,11 +378,11 @@ function editSeragam(id) {
         $('select[name="seragam_batik"]').val(data.seragam_batik);
         $('select[name="seragam_olahraga"]').val(data.seragam_olahraga);
         $('select[name="seragam_muslim"]').val(data.seragam_muslim);
-        $('select[name="topi"]').val(data.topi);
-        $('select[name="dasi"]').val(data.dasi);
+        $('select[name="al_quran"]').val(data.al_quran);
+        $('select[name="tempat_makan"]').val(data.tempat_makan);
+        $('select[name="kartu_pelajar"]').val(data.kartu_pelajar);
         $('select[name="gesper"]').val(data.gesper);
-        $('select[name="bet"]').val(data.bet);
-        $('select[name="lokasi"]').val(data.lokasi);
+        $('select[name="kerudung"]').val(data.kerudung);
         
         // Set payment
         const paymentSelect = $('#id_pembayaran');
@@ -542,15 +542,15 @@ function showToast(message, type = 'success') {
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900">Topi</label>
-                            <select name="topi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Al-Quran</label>
+                            <select name="al_quran" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
                                 <option value="Belum">Belum</option>
                                 <option value="Sudah">Sudah</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900">Dasi</label>
-                            <select name="dasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Tempat Makan</label>
+                            <select name="tempat_makan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
                                 <option value="Belum">Belum</option>
                                 <option value="Sudah">Sudah</option>
                             </select>
@@ -558,23 +558,23 @@ function showToast(message, type = 'success') {
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Kartu Pelajar</label>
+                            <select name="kartu_pelajar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
+                                <option value="Belum">Belum</option>
+                                <option value="Sudah">Sudah</option>
+                            </select>
+                        </div>
+                        <div>
                             <label class="block mb-2 text-sm font-medium text-gray-900">Gesper</label>
                             <select name="gesper" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
                                 <option value="Belum">Belum</option>
                                 <option value="Sudah">Sudah</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900">Bet</label>
-                            <select name="bet" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
-                                <option value="Belum">Belum</option>
-                                <option value="Sudah">Sudah</option>
-                            </select>
-                        </div>
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900">Lokasi</label>
-                        <select name="lokasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Kerudung</label>
+                        <select name="kerudung" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3" required>
                             <option value="Belum">Belum</option>
                             <option value="Sudah">Sudah</option>
                         </select>

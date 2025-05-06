@@ -17,11 +17,13 @@ class Reward {
 
     static async getById(id) {
         const query = `
-            SELECT r.*, f.no_formulir, u.nama_lengkap as nama_cpdb
+            SELECT r.*, f.no_formulir, u.nama_lengkap as nama_cpdb, j.jurusan
             FROM rewards r
             LEFT JOIN pembayaran_pendaftaran p ON r.id_pembayaran = p.id_pembayaran
             LEFT JOIN formulir f ON p.id_formulir = f.id_formulir
             LEFT JOIN users u ON f.id_user = u.id_user
+            LEFT JOIN registrasi_peserta_didik rpd ON f.id_formulir = rpd.id_formulir
+            LEFT JOIN jurusan j ON rpd.jurusan = j.id_jurusan
             WHERE r.id_reward = ?
         `;
         const [rows] = await db.execute(query, [id]);

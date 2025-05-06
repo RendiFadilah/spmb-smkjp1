@@ -4,6 +4,60 @@
     <p class="mt-2 text-gray-600">Kelola data pembayaran PPDB</p>
 </div>
 
+<!-- Payment Information Section -->
+<div class="mb-8 bg-white rounded-xl border border-gray-100 p-6">
+    <!-- Header with collapse button -->
+    <div class="flex justify-between items-center cursor-pointer" onclick="toggleCollapse('payment-info')">
+        <h2 class="text-xl font-bold text-gray-800">Informasi Pembayaran</h2>
+        <button class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+            <i id="payment-info-icon" class="fas fa-chevron-down transform transition-transform duration-200"></i>
+        </button>
+    </div>
+    
+    <% if (activePeriode) { %>
+        <div id="payment-info-content" class="space-y-4 mt-4 overflow-hidden transition-all duration-300 ease-in-out opacity-0" style="max-height: 0;">
+            <!-- Period Header -->
+            <div class="text-lg font-semibold text-gray-700 mb-6">
+                <%= activePeriode.nama_periode %>: <%= new Date(activePeriode.tanggal_mulai).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) %> - <%= new Date(activePeriode.tanggal_selesai).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) %>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <% masterBiaya.forEach((biaya, index) => { %>
+                    <% const diskon = diskonPeriode.find(d => d.id_jurusan === biaya.id_jurusan) %>
+                    <% const totalAfterDiskon = (biaya.total_biaya || 0) - (diskon?.nominal_diskon || 0) %>
+                    
+                    <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <div class="p-2 rounded-lg bg-<%= biaya.jurusan === 'RPL' ? 'blue' : 'emerald' %>-50">
+                                <i class="fas fa-<%= biaya.jurusan === 'RPL' ? 'laptop-code' : 'chart-line' %> text-lg text-<%= biaya.jurusan === 'RPL' ? 'blue' : 'emerald' %>-500"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-800"><%= biaya.jurusan %></h3>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex flex-col py-1 border-b border-gray-100">
+                                <span class="text-sm text-gray-600">Biaya Investasi Pendidikan</span>
+                                <span class="font-medium">Rp <%= new Intl.NumberFormat('id-ID').format(biaya.total_biaya || 0) %></span>
+                            </div>
+                            <div class="flex flex-col py-1 border-b border-gray-100">
+                                <span class="text-sm text-gray-600">Diskon <%= activePeriode?.nama_periode || 'Periode Aktif' %></span>
+                                <span class="font-medium text-green-600">Rp <%= new Intl.NumberFormat('id-ID').format(diskon?.nominal_diskon || 0) %></span>
+                            </div>
+                            <div class="flex flex-col py-1">
+                                <span class="text-sm font-semibold text-gray-700">Total Biaya Setelah Diskon</span>
+                                <span class="font-bold text-<%= biaya.jurusan === 'RPL' ? 'blue' : 'emerald' %>-600">Rp <%= new Intl.NumberFormat('id-ID').format(totalAfterDiskon) %></span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="text-gray-500 italic">Tidak ada periode pendaftaran yang aktif</div>
+    <% } %>
+</div>
+
 <!-- Tabs -->
 <div class="mb-6 bg-white rounded-xl border border-gray-100 p-2">
     <div class="flex space-x-2">
@@ -176,6 +230,16 @@
                         </select>
                     </div>
                     <div>
+                        <label for="periode_daftar" class="block mb-2 text-sm font-medium text-gray-900">Periode Daftar</label>
+                        <input type="text" 
+                               id="periode_daftar" 
+                               name="periode_daftar" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200"
+                               value="<%= activePeriode?.nama_periode || '-' %>"
+                               readonly>
+                        <input type="hidden" id="id_periode_daftar" name="id_periode_daftar" value="<%= activePeriode?.id_periode %>">
+                    </div>
+                    <div>
                         <label for="total_biaya" class="block mb-2 text-sm font-medium text-gray-900">Total Biaya</label>
                         <div class="relative">
                             <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
@@ -247,6 +311,7 @@
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No. Formulir</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Lengkap</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jurusan</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Periode Daftar</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Biaya</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Dibayar</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sisa</th>
@@ -268,7 +333,19 @@
                             <%= payment.jurusan %>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_biaya) %>
+                            <%= payment.nama_periode || '-' %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <div class="flex flex-col">
+                                <span>Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_biaya) %></span>
+                                <% if (payment.nominal_diskon > 0) { %>
+                                    <span class="text-xs text-gray-400">
+                                        (Biaya Awal: Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.base_biaya) %>)
+                                        <br/>
+                                        (Diskon: Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.nominal_diskon) %>)
+                                    </span>
+                                <% } %>
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             Rp <%= new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_verified) %>
@@ -323,6 +400,40 @@
 </div>
 
 <script>
+// Collapse functionality
+function toggleCollapse(id) {
+    const content = document.getElementById(`${id}-content`);
+    const icon = document.getElementById(`${id}-icon`);
+    
+    if (content && icon) {
+        const isCollapsed = content.style.maxHeight === '0px' || content.style.maxHeight === '';
+        
+        // Toggle content visibility with smooth transition
+        if (isCollapsed) {
+            // Opening
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.classList.remove('opacity-0');
+            content.classList.add('opacity-100');
+            
+            // Update maxHeight after content is rendered
+            setTimeout(() => {
+                content.style.maxHeight = 'none'; // Allow content to grow if needed
+            }, 300);
+        } else {
+            // Closing
+            content.style.maxHeight = content.scrollHeight + 'px';
+            // Force reflow
+            content.offsetHeight;
+            content.style.maxHeight = '0px';
+            content.classList.remove('opacity-100');
+            content.classList.add('opacity-0');
+        }
+        
+        // Rotate chevron icon with smooth transition
+        icon.style.transform = isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+}
+
 // Initialize payments data from server
 const allPayments = JSON.parse('<%- JSON.stringify(payments) %>').map(payment => ({
     ...payment,
@@ -436,7 +547,19 @@ function renderTable(data) {
                     ${payment.jurusan}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_biaya)}
+                    ${payment.nama_periode || '-'}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div class="flex flex-col">
+                        <span>Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_biaya)}</span>
+                        ${payment.nominal_diskon > 0 ? `
+                            <span class="text-xs text-gray-400">
+                                (Biaya Awal: Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.base_biaya)})
+                                <br/>
+                                (Diskon: Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.nominal_diskon)})
+                            </span>
+                        ` : ''}
+                    </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     Rp ${new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(payment.total_verified)}
@@ -543,7 +666,63 @@ $(document).ready(function() {
                 select.append('<option value="" disabled>Tidak ada CPDB yang eligible untuk pembayaran</option>');
             } else {
                 data.forEach(cpdb => {
-                    select.append(`<option value="${cpdb.id_user}" data-biaya="${cpdb.total_biaya}">${cpdb.display_name}</option>`);
+                    const displayText = cpdb.has_payment ? 
+                        `${cpdb.display_name} (Sisa: Rp ${new Intl.NumberFormat('id-ID').format(cpdb.sisa_pembayaran)})` :
+                        cpdb.display_name;
+                        
+                    select.append(`<option value="${cpdb.id_user}" 
+                        data-biaya="${cpdb.total_biaya}" 
+                        data-jurusan-id="${cpdb.id_jurusan}"
+                        data-has-payment="${cpdb.has_payment}"
+                        data-sisa-pembayaran="${cpdb.sisa_pembayaran || ''}"
+                        data-total-verified="${cpdb.total_verified || 0}"
+                        >${displayText}</option>`);
+                });
+
+                // Add change event handler for id_user select
+                select.on('change', function() {
+                    const selectedOption = $(this).find('option:selected');
+                    const hasPayment = selectedOption.data('has-payment');
+                    const sisaPembayaran = selectedOption.data('sisa-pembayaran');
+                    
+                    // Clear total_biaya if no option selected
+                    if (!selectedOption.val()) {
+                        $('#total_biaya').val('');
+                        return;
+                    }
+
+                    // Always show sisa pembayaran if CPDB has existing payments
+                    if (hasPayment) {
+                        $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(sisaPembayaran));
+                        return;
+                    }
+
+                    // For new CPDB, show total biaya with discount
+                    const jurusanId = selectedOption.data('jurusan-id');
+                    const baseBiaya = selectedOption.data('biaya');
+                    const activePeriodeId = $('#id_periode_daftar').val();
+                    
+                    if (baseBiaya && jurusanId && activePeriodeId) {
+                        // Get discount and calculate total
+                        $.ajax({
+                            url: `/api/admin/periode/${activePeriodeId}/diskon/${jurusanId}`,
+                            method: 'GET',
+                            success: function(response) {
+                                if (!response.success) {
+                                    throw new Error(response.message || 'Response tidak valid');
+                                }
+
+                                const diskon = response.data?.nominal_diskon || 0;
+                                const totalAfterDiskon = Math.max(0, baseBiaya - diskon);
+                                
+                                $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(totalAfterDiskon));
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error fetching discount:', { xhr, status, error });
+                                $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(baseBiaya));
+                            }
+                        });
+                    }
                 });
             }
 
@@ -555,12 +734,118 @@ $(document).ready(function() {
                 allowClear: true
             });
 
-            // Add change event handler for id_user select
-            select.on('change', function() {
-                const selectedOption = $(this).find('option:selected');
-                const totalBiaya = selectedOption.data('biaya');
-                if (totalBiaya) {
-                    $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(totalBiaya));
+                // Add change event handler for id_user select
+                select.on('change', function() {
+                    const selectedOption = $(this).find('option:selected');
+                    const hasPayment = selectedOption.data('has-payment');
+                    const sisaPembayaran = selectedOption.data('sisa-pembayaran');
+                    const jurusanId = selectedOption.data('jurusan-id');
+                    const baseBiaya = selectedOption.data('biaya');
+                    const activePeriodeId = $('#id_periode_daftar').val();
+                    
+                    // Clear total_biaya if no option selected
+                    if (!selectedOption.val()) {
+                        $('#total_biaya').val('');
+                        return;
+                    }
+
+                    // Always show sisa pembayaran if CPDB has existing payments
+                    if (hasPayment) {
+                        $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(sisaPembayaran));
+                        return;
+                    }
+                    
+                    // For new CPDB, show total biaya with discount
+                    if (baseBiaya && jurusanId && activePeriodeId) {
+                        // Debug info
+                        console.log('Fetching discount with params:', {
+                            baseBiaya,
+                            jurusanId,
+                            activePeriodeId,
+                            url: `/api/admin/periode/${activePeriodeId}/diskon/${jurusanId}`
+                        });
+
+                    // Validate parameters
+                    if (!activePeriodeId) {
+                        $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(baseBiaya));
+                        $('#discount_info').html(`
+                            <div class="bg-yellow-50 p-3 rounded">
+                                <div class="flex items-center text-yellow-700">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    <span>Periode aktif tidak ditemukan</span>
+                                </div>
+                                <div class="text-sm mt-1">Menggunakan biaya dasar tanpa diskon</div>
+                            </div>
+                        `);
+                        return;
+                    }
+
+                    if (!jurusanId) {
+                        $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(baseBiaya));
+                        $('#discount_info').html(`
+                            <div class="bg-yellow-50 p-3 rounded">
+                                <div class="flex items-center text-yellow-700">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    <span>Data jurusan tidak ditemukan</span>
+                                </div>
+                                <div class="text-sm mt-1">Menggunakan biaya dasar tanpa diskon</div>
+                            </div>
+                        `);
+                        return;
+                    }
+                    
+                    // Create or update discount info element
+                    if (!$('#discount_info').length) {
+                        $('<div id="discount_info" class="text-sm text-gray-600 mt-2"></div>')
+                            .insertAfter('#total_biaya');
+                    }
+                    
+                    
+                    // Get discounts for active period
+                    $.ajax({
+                        url: `/api/admin/periode/${activePeriodeId}/diskon/${jurusanId}`,
+                        method: 'GET',
+                        success: function(response) {
+                            if (!response.success) {
+                                throw new Error(response.message || 'Response tidak valid');
+                            }
+
+                            const diskon = response.data?.nominal_diskon || 0;
+                            const totalAfterDiskon = Math.max(0, baseBiaya - diskon); // Ensure total is not negative
+                            
+                            // Update total_biaya with discounted amount
+                            $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(totalAfterDiskon));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching discount:', { xhr, status, error });
+                            
+                            // Show error state and use base biaya
+                            $('#total_biaya').val(new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(baseBiaya));
+                            
+                            let errorMessage = 'Terjadi kesalahan sistem';
+                            if (xhr.status === 404) {
+                                errorMessage = 'Tidak ada diskon untuk periode dan jurusan ini';
+                            } else if (xhr.responseJSON?.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            
+                            $('#discount_info').html(`
+                                <div class="bg-yellow-50 p-3 rounded">
+                                    <div class="flex items-center text-yellow-700">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        <span>Informasi Biaya</span>
+                                    </div>
+                                    <div class="text-sm text-yellow-600 mt-1">
+                                        ${errorMessage}
+                                    </div>
+                                    <div class="flex justify-between items-center mt-3 p-2 bg-white bg-opacity-50 rounded">
+                                        <span class="font-medium">Menggunakan biaya dasar:</span>
+                                        <span class="font-medium">Rp ${new Intl.NumberFormat('id-ID').format(baseBiaya)}</span>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    });
                 } else {
                     $('#total_biaya').val('');
                 }
@@ -644,12 +929,11 @@ function handleSubmit(event) {
     
     const formData = new FormData(event.target);
     
-    // Get selected CPDB's total biaya
-    const selectedOption = $('#id_user option:selected');
-    const totalBiaya = selectedOption.data('biaya');
-    
     // Get nominal pembayaran and remove formatting
     const nominalPembayaran = unformatNominal($('#nominal_pembayaran').val());
+    
+    // Get the actual total_biaya (after discount) from the input field
+    const totalBiaya = unformatNominal($('#total_biaya').val());
     
     // Validate nominal pembayaran
     if (!nominalPembayaran) {
@@ -676,6 +960,9 @@ function handleSubmit(event) {
         return;
     }
 
+    // Get selected CPDB
+    const selectedOption = $('#id_user option:selected');
+    
     // Set values in formData
     formData.set('id_user', selectedOption.val());
     formData.set('total_biaya', totalBiaya);
@@ -838,5 +1125,24 @@ function handleDelete() {
 
 .animate-fade-in {
     animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Smooth transitions for collapse */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Chevron rotation transition */
+#payment-info-icon {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Opacity transition */
+.opacity-0 {
+    opacity: 0;
+}
+.opacity-100 {
+    opacity: 1;
 }
 </style>
