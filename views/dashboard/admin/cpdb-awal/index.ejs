@@ -139,11 +139,11 @@
                     </div>
                     <div>
                         <label for="nisn" class="block mb-2 text-sm font-medium text-gray-900">NISN</label>
-                        <input type="text" id="nisn" name="nisn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                        <input type="text" id="nisn" name="nisn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
                     </div>
                     <div>
                         <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">NIK</label>
-                        <input type="text" id="nik" name="nik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                        <input type="text" id="nik" name="nik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200">
                     </div>
                     <div>
                         <label for="asal_smp" class="block mb-2 text-sm font-medium text-gray-900">Asal SMP</label>
@@ -151,7 +151,11 @@
                     </div>
                     <div>
                         <label for="nomor_whatsapp" class="block mb-2 text-sm font-medium text-gray-900">Nomor WhatsApp</label>
-                        <input type="text" id="nomor_whatsapp" name="nomor_whatsapp" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required pattern="^(\+62|62|0)8[1-9][0-9]{6,9}$">
+                        <input type="text" id="nomor_whatsapp" name="nomor_whatsapp" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
+                    </div>
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                        <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
                     </div>
                     <div>
                         <label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin</label>
@@ -452,6 +456,8 @@ function editCPDB(id) {
         $('#nomor_whatsapp').val(data.nomor_whatsapp);
         $('#jenis_kelamin').val(data.jenis_kelamin);
         $('#status_wawancara').val(data.status_wawancara);
+        $('#password').val(''); // Clear password field for security
+        $('#password').prop('required', false); // Make password optional on edit
         openModal('cpdbModal');
     });
 }

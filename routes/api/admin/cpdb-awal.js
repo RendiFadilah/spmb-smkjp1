@@ -35,47 +35,7 @@ router.get('/:id', isAdmin, async (req, res) => {
 // Create new CPDB
 router.post('/', isAdmin, async (req, res) => {
     try {
-        const { nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin } = req.body;
-
-        // Validate required fields
-        if (!nama_lengkap || !nomor_whatsapp || !nisn || !nik || !asal_smp || !jenis_kelamin) {
-            return res.status(400).json({ message: 'Semua field harus diisi' });
-        }
-
-        // Validate jenis_kelamin
-        if (!['Laki-laki', 'Perempuan'].includes(jenis_kelamin)) {
-            return res.status(400).json({ message: 'Jenis kelamin harus dipilih (Laki-laki/Perempuan)' });
-        }
-
-        // Validate WhatsApp number format
-        const whatsappRegex = /^(\+62|62|0)8[1-9][0-9]{6,9}$/;
-        if (!whatsappRegex.test(nomor_whatsapp)) {
-            return res.status(400).json({ message: 'Format nomor WhatsApp tidak valid' });
-        }
-
-        // Check if WhatsApp number already exists
-        const existingWhatsApp = await CPDBAwal.findByWhatsApp(nomor_whatsapp);
-        if (existingWhatsApp) {
-            return res.status(400).json({ 
-                message: 'Nomor WhatsApp sudah terdaftar' 
-            });
-        }
-
-        // Check if NISN already exists
-        const existingNISN = await CPDBAwal.findByNISN(nisn);
-        if (existingNISN) {
-            return res.status(400).json({ 
-                message: 'NISN sudah terdaftar' 
-            });
-        }
-
-        // Check if NIK already exists
-        const existingNIK = await CPDBAwal.findByNIK(nik);
-        if (existingNIK) {
-            return res.status(400).json({ 
-                message: 'NIK sudah terdaftar' 
-            });
-        }
+        const { nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin, password } = req.body;
 
         const cpdbId = await CPDBAwal.create({
             nama_lengkap,
@@ -83,7 +43,8 @@ router.post('/', isAdmin, async (req, res) => {
             nisn,
             nik,
             asal_smp,
-            jenis_kelamin
+            jenis_kelamin,
+            password
         });
         
         res.status(201).json({
@@ -100,48 +61,8 @@ router.post('/', isAdmin, async (req, res) => {
 // Update CPDB
 router.put('/:id', isAdmin, async (req, res) => {
     try {
-        const { nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin, status_wawancara } = req.body;
+        const { nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin, status_wawancara, password } = req.body;
         const id = req.params.id;
-
-        // Validate required fields
-        if (!nama_lengkap || !nomor_whatsapp || !nisn || !nik || !asal_smp || !jenis_kelamin) {
-            return res.status(400).json({ message: 'Semua field harus diisi' });
-        }
-
-        // Validate jenis_kelamin
-        if (!['Laki-laki', 'Perempuan'].includes(jenis_kelamin)) {
-            return res.status(400).json({ message: 'Jenis kelamin harus dipilih (Laki-laki/Perempuan)' });
-        }
-
-        // Validate WhatsApp number format
-        const whatsappRegex = /^(\+62|62|0)8[1-9][0-9]{6,9}$/;
-        if (!whatsappRegex.test(nomor_whatsapp)) {
-            return res.status(400).json({ message: 'Format nomor WhatsApp tidak valid' });
-        }
-
-        // Check if CPDB exists
-        const cpdb = await CPDBAwal.findById(id);
-        if (!cpdb) {
-            return res.status(404).json({ message: 'CPDB tidak ditemukan' });
-        }
-
-        // Check if WhatsApp number is already used by another user
-        const existingWhatsApp = await CPDBAwal.findByWhatsApp(nomor_whatsapp);
-        if (existingWhatsApp && existingWhatsApp.id_user !== parseInt(id)) {
-            return res.status(400).json({ message: 'Nomor WhatsApp sudah terdaftar' });
-        }
-
-        // Check if NISN is already used by another user
-        const existingNISN = await CPDBAwal.findByNISN(nisn);
-        if (existingNISN && existingNISN.id_user !== parseInt(id)) {
-            return res.status(400).json({ message: 'NISN sudah terdaftar' });
-        }
-
-        // Check if NIK is already used by another user
-        const existingNIK = await CPDBAwal.findByNIK(nik);
-        if (existingNIK && existingNIK.id_user !== parseInt(id)) {
-            return res.status(400).json({ message: 'NIK sudah terdaftar' });
-        }
 
         // Update CPDB
         await CPDBAwal.update(id, {
@@ -151,7 +72,8 @@ router.put('/:id', isAdmin, async (req, res) => {
             nik,
             asal_smp,
             jenis_kelamin,
-            status_wawancara
+            status_wawancara,
+            ...(password && { password }) // Only include password if provided
         });
 
         res.json({ message: 'Data CPDB berhasil diperbarui' });

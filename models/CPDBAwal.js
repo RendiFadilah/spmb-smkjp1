@@ -99,13 +99,8 @@ class CPDBAwal {
         throw new Error('Jenis kelamin harus dipilih (Laki-laki/Perempuan)');
       }
 
-      // Get the current maximum id_user
-      const [maxIdResult] = await db.execute('SELECT MAX(id_user) as maxId FROM users');
-      const nextId = (maxIdResult[0].maxId || 0) + 1;
-
-      // Generate password using the calculated next id
-      const generatedPassword = this.generatePassword(nama_lengkap, nextId);
-      const hashedPassword = await bcrypt.hash(generatedPassword, 12);
+      // Hash the provided password
+      const hashedPassword = await bcrypt.hash(data.password, 12);
 
       // Log the values for debugging
       console.log('Creating CPDB with values:', {
@@ -116,7 +111,7 @@ class CPDBAwal {
         asal_smp,
         jenis_kelamin,
         tanggal_daftar,
-        raw_password: generatedPassword
+        raw_password: data.password
       });
 
       // Insert user with password included
@@ -145,7 +140,7 @@ class CPDBAwal {
           tanggal_daftar,
           'Belum',
           hashedPassword,
-          generatedPassword
+          data.password
         ]
       );
 
@@ -178,65 +173,40 @@ class CPDBAwal {
       nik,
       asal_smp,
       jenis_kelamin,
-      status_wawancara 
+      status_wawancara,
+      password 
     } = data;
     try {
-      const [result] = await db.execute(
-        `UPDATE users 
-         SET nama_lengkap = ?, 
-             nomor_whatsapp = ?, 
-             nisn = ?,
-             nik = ?,
-             asal_smp = ?,
-             jenis_kelamin = ?,
-             status_wawancara = ?
-         WHERE id_user = ? 
-         AND roles = "CPDB"`,
-        [nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin, status_wawancara, id]
-      );
-      return result.affectedRows > 0;
-    } catch (error) {
-      throw error;
-    }
-  }
+      // Build the SQL query dynamically based on whether password is provided
+      let sql = `UPDATE users 
+                 SET nama_lengkap = ?, 
+                     nomor_whatsapp = ?, 
+                     nisn = ?,
+                     nik = ?,
+                     asal_smp = ?,
+                     jenis_kelamin = ?,
+                     status_wawancara = ?`;
+      
+      let params = [nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin, status_wawancara];
 
-  static async updateWithPassword(id, data) {
-    const { 
-      nama_lengkap, 
-      nomor_whatsapp, 
-      nisn,
-      nik,
-      asal_smp,
-      jenis_kelamin,
-      status_wawancara
-    } = data;
-    try {
-      // Generate new password with random 4-digit number
-      const generatedPassword = this.generatePassword(nama_lengkap, id);
-      const hashedPassword = await bcrypt.hash(generatedPassword, 12);
+      // If password is provided, add it to the update
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        sql += `, password = ?, raw_password = ?`;
+        params.push(hashedPassword, password);
 
-      // Log the generated password for debugging
-      console.log('Updating user with new password:', {
-        id,
-        nama_lengkap,
-        raw_password: generatedPassword
-      });
+        // Log the password update for debugging
+        console.log('Updating user with new password:', {
+          id,
+          nama_lengkap,
+          raw_password: password
+        });
+      }
 
-      const [result] = await db.execute(
-        `UPDATE users 
-         SET nama_lengkap = ?, 
-             nomor_whatsapp = ?, 
-             nisn = ?,
-             nik = ?,
-             asal_smp = ?,
-             jenis_kelamin = ?,
-             status_wawancara = ?,
-             password = ?,
-             raw_password = ?
-         WHERE id_user = ? 
-         AND roles = "CPDB"`,
-        [nama_lengkap, nomor_whatsapp, nisn, nik, asal_smp, jenis_kelamin, status_wawancara, hashedPassword, generatedPassword, id]
-      );
+      sql += ` WHERE id_user = ? AND roles = "CPDB"`;
+      params.push(id);
+
+      const [result] = await db.execute(sql, params);
       return result.affectedRows > 0;
     } catch (error) {
       throw error;
