@@ -28,20 +28,10 @@
                     id="tab-BR">
                 Bisnis Retail
             </button>
-            <button onclick="switchTab('BD')" 
+            <button onclick="switchTab('RPL')" 
                     class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200"
-                    id="tab-BD">
-                Bisnis Digital
-            </button>
-            <button onclick="switchTab('DKV')" 
-                    class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200"
-                    id="tab-DKV">
-                Desain Komunikasi Visual
-            </button>
-            <button onclick="switchTab('TKJ')" 
-                    class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200"
-                    id="tab-TKJ">
-                Teknik Komputer dan Jaringan
+                    id="tab-RPL">
+                Rekayasa Perangkat Lunak
             </button>
         </nav>
     </div>
@@ -86,21 +76,6 @@
         </div>
     </div>
     <!-- DKV -->
-    <div class="bg-white rounded-xl shadow-lg border border-red-100 p-6 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
-        <div class="flex items-center">
-            <div class="p-4 rounded-full bg-red-100 mr-4">
-                <i class="fas fa-palette text-3xl text-red-600"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-600">DKV</p>
-                <h3 class="text-3xl font-bold text-gray-800" id="totalDKV">-</h3>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <!-- BR -->
     <div class="bg-white rounded-xl shadow-lg border border-blue-100 p-6 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
         <div class="flex items-center">
             <div class="p-4 rounded-full bg-orange-100 mr-4">
@@ -112,27 +87,17 @@
             </div>
         </div>
     </div>
-    <!-- MP -->
-    <div class="bg-white rounded-xl shadow-lg border border-purple-100 p-6 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
-        <div class="flex items-center">
-            <div class="p-4 rounded-full bg-yellow-100 mr-4">
-                <i class="fas fa-laptop text-3xl text-yellow-600"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-600">BD</p>
-                <h3 class="text-3xl font-bold text-gray-800" id="totalBD">-</h3>
-            </div>
-        </div>
-    </div>
-    <!-- DKV -->
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-white rounded-xl shadow-lg border border-red-100 p-6 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
         <div class="flex items-center">
             <div class="p-4 rounded-full bg-gray-100 mr-4">
                 <i class="fas fa-desktop text-3xl text-gray-600"></i>
             </div>
             <div>
-                <p class="text-sm font-medium text-gray-600">TKJ</p>
-                <h3 class="text-3xl font-bold text-gray-800" id="totalTKJ">-</h3>
+                <p class="text-sm font-medium text-gray-600">RPL</p>
+                <h3 class="text-3xl font-bold text-gray-800" id="totalRPL">-</h3>
             </div>
         </div>
     </div>
@@ -276,7 +241,7 @@ function updateStats(data) {
         BR: data.filter(cpdb => cpdb.kode === 'BR').length,
         BD: data.filter(cpdb => cpdb.kode === 'BD').length,
         DKV: data.filter(cpdb => cpdb.kode === 'DKV').length,
-        TKJ: data.filter(cpdb => cpdb.kode === 'TKJ').length
+        RPL: data.filter(cpdb => cpdb.kode === 'RPL').length
     };
     
     console.log('Calculated stats:', stats); // Debug log
@@ -287,7 +252,7 @@ function updateStats(data) {
     $('#totalBR').text(stats.BR);
     $('#totalBD').text(stats.BD);
     $('#totalDKV').text(stats.DKV);
-    $('#totalTKJ').text(stats.TKJ);
+    $('#totalRPL').text(stats.RPL);
 }
 
 function filterData() {
