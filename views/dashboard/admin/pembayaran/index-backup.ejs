@@ -399,36 +399,6 @@
     </div>
 </div>
 
-
-
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
-    <div class="relative w-full max-w-md max-h-full">
-        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
-            <div class="p-6 text-center">
-                <i class="fas fa-exclamation-circle text-5xl text-red-500 mb-4"></i>
-                <h3 class="mb-5 text-lg font-normal text-gray-800">
-                    Apakah anda yakin ingin menghapus pembayaran ini?
-                </h3>
-                <input type="hidden" id="deletePaymentId">
-                <button type="button" onclick="handleDelete()"
-                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
-                    Ya, Hapus
-                </button>
-                <button type="button" onclick="closeModal('deleteModal')"
-                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
-                    Batal
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script id="payments-data" type="application/json">
-  <%- JSON.stringify(payments) %>
-</script>
-
-
 <script>
 // Collapse functionality
 function toggleCollapse(id) {
@@ -464,17 +434,12 @@ function toggleCollapse(id) {
     }
 }
 
-
-let activeTab = 'today';
-
 // Initialize payments data from server
-  const allPayments = JSON.parse(document.getElementById('payments-data').textContent).map(payment => ({
+const allPayments = JSON.parse('<%- JSON.stringify(payments) %>').map(payment => ({
     ...payment,
     created_at: payment.created_at ? new Date(payment.created_at) : null
-  }));
-
-
-
+}));
+let activeTab = 'today';
 
 function switchTab(tab) {
     activeTab = tab;
@@ -487,9 +452,9 @@ function switchTab(tab) {
         'belum-lunas': 'belumLunasTab'
     };
     
-   Object.entries(tabs).forEach(([key, tabId]) => {
-    const element = document.getElementById(tabId);
-    if (key === tab) {
+    Object.values(tabs).forEach(tabId => {
+        const element = document.getElementById(tabId);
+        if (tabId === tabs[tab]) {
             element.classList.add('bg-green-100', 'text-green-800');
             element.classList.remove('text-gray-600', 'hover:bg-gray-100');
         } else {
@@ -500,7 +465,6 @@ function switchTab(tab) {
     
     filterData();
 }
-
 
 function filterData() {
     const searchText = $('#searchInput').val().toLowerCase();
@@ -541,9 +505,6 @@ function filterData() {
                 };
             });
             break;
-        case 'all':
-            // No additional filtering needed for 'all' tab
-            break;
         case 'lunas':
             filteredData = filteredData.filter(payment => 
                 payment.status_pelunasan === 'LUNAS'
@@ -554,6 +515,7 @@ function filterData() {
                 payment.status_pelunasan === 'BELUM_LUNAS'
             );
             break;
+        // 'all' tab shows everything, so no additional filtering needed
     }
     
     // Apply search filter if there's search text
@@ -665,12 +627,7 @@ function updateStats(data) {
 
 $(document).ready(function() {
     // Initial load
-    if (Array.isArray(allPayments)) {
-        switchTab('today');
-    } else {
-        console.error('Gagal menginisialisasi allPayments. Cek data dari server.');
-    }
-
+    filterData();
     
     // Search functionality
     const searchInput = $('#searchInput');
@@ -688,10 +645,9 @@ $(document).ready(function() {
         filterData();
         searchInput.focus();
     });
-
 });
 
-function openAddModal() {
+    function openAddModal() {
         $('#modalTitle').text('Tambah Pembayaran');
         $('#paymentForm')[0].reset();
         $('#paymentId').val('');
@@ -1099,6 +1055,28 @@ function exportData(type) {
 }
 </script>
 
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-2xl transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-circle text-5xl text-red-500 mb-4"></i>
+                <h3 class="mb-5 text-lg font-normal text-gray-800">
+                    Apakah anda yakin ingin menghapus pembayaran ini?
+                </h3>
+                <input type="hidden" id="deletePaymentId">
+                <button type="button" onclick="handleDelete()"
+                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 transition-all duration-200">
+                    Ya, Hapus
+                </button>
+                <button type="button" onclick="closeModal('deleteModal')"
+                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-200">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 function confirmDelete(id) {
