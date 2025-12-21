@@ -228,7 +228,40 @@ router.get('/pembayaran', isAuthenticated, async (req, res) => {
 
         if (pembayaran) {
             detailPembayaran = await DetailPembayaranPendaftaran.findByPembayaran(pembayaran.id_pembayaran);
-        } 
+        }
+        
+        // Get biaya info based on active period and jurusan
+        let biayaInfo = null;
+        if (registrationRows[0]?.id_jurusan) {
+            const biayaQuery = `
+                SELECT mbj.* 
+                FROM master_biaya_jurusan mbj
+                INNER JOIN periode_master_biaya pmb ON mbj.id_biaya = pmb.id_biaya
+                INNER JOIN periode_pendaftaran pp ON pmb.id_periode = pp.id_periode
+                WHERE mbj.id_jurusan = ? 
+                AND pp.status = 'active'
+                ORDER BY mbj.created_at DESC
+                LIMIT 1
+            `;
+            console.log('Fetching biaya for jurusan:', registrationRows[0].id_jurusan);
+            const [biayaRows] = await db.execute(biayaQuery, [registrationRows[0].id_jurusan]);
+            biayaInfo = biayaRows[0] || null;
+            console.log('Biaya info found:', biayaInfo);
+            
+            // Fallback: if no biaya found with active period, get latest biaya for this jurusan
+            if (!biayaInfo) {
+                console.log('No biaya found with active period, trying fallback query...');
+                const fallbackQuery = `
+                    SELECT * FROM master_biaya_jurusan 
+                    WHERE id_jurusan = ? 
+                    ORDER BY created_at DESC 
+                    LIMIT 1
+                `;
+                const [fallbackRows] = await db.execute(fallbackQuery, [registrationRows[0].id_jurusan]);
+                biayaInfo = fallbackRows[0] || null;
+                console.log('Fallback biaya info:', biayaInfo);
+            }
+        }
 
         res.render('dashboard/cpdb/pendaftaran', {
             title: 'Pembayaran - SPMB SMK Jakarta Pusat 1',
@@ -244,7 +277,8 @@ router.get('/pembayaran', isAuthenticated, async (req, res) => {
             berkasData: berkasData,
             pembayaran,
             detailPembayaran,
-            registrationRows
+            registrationRows,
+            biayaInfo
         });
     } catch (error) {
         console.error('Error in pembayaran route:', error);

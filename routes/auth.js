@@ -5,6 +5,12 @@ const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
 const { rateLimit: rateLimitConfig } = require('../middleware/auth');
 
+// Validate JWT_SECRET
+if (!process.env.JWT_SECRET) {
+  console.warn('WARNING: JWT_SECRET not found in environment variables. Using fallback secret.');
+  console.warn('Please add JWT_SECRET to your .env file for production use.');
+}
+
 // Apply rate limiting to login route
 const loginLimiter = rateLimit(rateLimitConfig);
 
@@ -123,13 +129,14 @@ router.post('/login', loginLimiter, async (req, res) => {
     }
 
     // Create JWT token
+    const jwtSecret = process.env.JWT_SECRET || 'spmb-smkjp1-jwt-fallback-secret-key-change-in-production';
     const token = jwt.sign(
       {
         id: user.id_user,
         roles: user.roles,
         nama: user.nama_lengkap,
       },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: '1d' }
     );
 

@@ -1,10 +1,16 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// Validate JWT_SECRET
+if (!process.env.JWT_SECRET) {
+  console.warn('WARNING: JWT_SECRET not found in environment variables. Using fallback secret.');
+  console.warn('Please add JWT_SECRET to your .env file for production use.');
+}
+
 // Rate limiting configuration
 exports.rateLimit = {
-  windowMs: process.env.RATE_LIMIT_WINDOW * 60 * 1000, // Convert minutes to milliseconds
-  max: process.env.RATE_LIMIT_MAX, // Limit each IP to X requests per windowMs
+  windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000, // Convert minutes to milliseconds
+  max: process.env.RATE_LIMIT_MAX || 5, // Limit each IP to X requests per windowMs
   message: 'Terlalu banyak percobaan login, silakan coba lagi nanti',
   standardHeaders: true,
   legacyHeaders: false
@@ -24,7 +30,8 @@ exports.isAuthenticated = async (req, res, next) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const jwtSecret = process.env.JWT_SECRET || 'spmb-smkjp1-jwt-fallback-secret-key-change-in-production';
+    const decoded = jwt.verify(token, jwtSecret);
     
     // Get user from database
     const user = await User.findById(decoded.id);

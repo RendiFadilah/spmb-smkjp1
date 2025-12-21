@@ -197,8 +197,8 @@ $(document).ready(function() {
 });
 
 function loadBiayaData() {
-    $.get('/api/admin/biaya', function(data) {
-        allData = data;
+    $.get('/api/admin/biaya', function(response) {
+        allData = response.data || [];
         filterData();
     }).fail(function(xhr) {
         showToast('Gagal memuat data biaya', 'error');
@@ -255,10 +255,11 @@ function openAddModal() {
     $('#biayaId').val('');
     
     // Load jurusan
-    $.get('/api/admin/biaya/data/jurusan', function(data) {
+    $.get('/api/admin/biaya/data/jurusan', function(response) {
         const select = $('#id_jurusan');
         select.empty().append('<option value="">Pilih Jurusan</option>');
-        data.forEach(jurusan => {
+        const jurusanData = response.data || [];
+        jurusanData.forEach(jurusan => {
             select.append(`<option value="${jurusan.id_jurusan}">${jurusan.nama_jurusan}</option>`);
         });
     });
@@ -271,15 +272,17 @@ function editBiaya(id) {
     $('#modalTitle').text('Edit Biaya');
     
     // Load jurusan first
-    $.get('/api/admin/biaya/data/jurusan', function(jurusanData) {
+    $.get('/api/admin/biaya/data/jurusan', function(response) {
         const select = $('#id_jurusan');
         select.empty().append('<option value="">Pilih Jurusan</option>');
+        const jurusanData = response.data || [];
         jurusanData.forEach(jurusan => {
             select.append(`<option value="${jurusan.id_jurusan}">${jurusan.nama_jurusan}</option>`);
         });
         
         // Then load biaya data
-        $.get(`/api/admin/biaya/${id}`, function(data) {
+        $.get(`/api/admin/biaya/${id}`, function(biayaResponse) {
+            const data = biayaResponse.data;
             $('#biayaId').val(data.id_biaya);
             $('#id_jurusan').val(data.id_jurusan);
             $('#tahun_ajaran').val(data.tahun_ajaran);

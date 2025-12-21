@@ -1,0 +1,20 @@
+Test query untuk mengecek data:
+
+1. Cek periode aktif:
+SELECT * FROM periode_pendaftaran WHERE status = 'active';
+
+2. Cek master biaya jurusan:
+SELECT * FROM master_biaya_jurusan;
+
+3. Cek relasi periode dengan biaya:
+SELECT * FROM periode_master_biaya;
+
+4. Test query utama (ganti 1 dengan id_jurusan):
+SELECT mbj.* 
+FROM master_biaya_jurusan mbj
+INNER JOIN periode_master_biaya pmb ON mbj.id_biaya = pmb.id_biaya
+INNER JOIN periode_pendaftaran pp ON pmb.id_periode = pp.id_periode
+WHERE mbj.id_jurusan = 1 
+AND pp.status = 'active'
+ORDER BY mbj.created_at DESC
+LIMIT 1;

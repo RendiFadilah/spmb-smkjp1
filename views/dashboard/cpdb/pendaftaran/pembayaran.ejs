@@ -235,7 +235,11 @@
                             </div>
                             <p class="text-sm text-gray-500 mb-1">Total Biaya</p>
                             <p class="text-2xl font-bold text-gray-900" id="totalBiaya">
-                              Rp. 3.300.000
+                                <% if (typeof biayaInfo !== 'undefined' && biayaInfo && biayaInfo.total_biaya) { %>
+                                    Rp <%= new Intl.NumberFormat('id-ID').format(biayaInfo.total_biaya) %>
+                                <% } else { %>
+                                    <span class="text-sm text-gray-400">Data tidak tersedia</span>
+                                <% } %>
                             </p>
                         </div>
 
@@ -245,7 +249,11 @@
                             </div>
                             <p class="text-sm text-gray-500 mb-1">Minimal Pembayaran</p>
                             <p class="text-2xl font-bold text-green-600" id="minimalPembayaran">
-                                Rp 2.300.000
+                                <% if (typeof biayaInfo !== 'undefined' && biayaInfo && biayaInfo.minimal_pembayaran) { %>
+                                    Rp <%= new Intl.NumberFormat('id-ID').format(biayaInfo.minimal_pembayaran) %>
+                                <% } else { %>
+                                    <span class="text-sm text-gray-400">Data tidak tersedia</span>
+                                <% } %>
                             </p>
                         </div>
                     </div>
@@ -487,30 +495,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to toggle nama_pengirim field with animation
     function toggleNamaPengirim() {
+        if (!metodePembayaran) return; // Check if element exists
+        
         if (metodePembayaran.value === 'TRANSFER') {
-            namaPengirimContainer.style.display = 'block';
-            namaPengirimContainer.style.opacity = '0';
-            setTimeout(() => {
-                namaPengirimContainer.style.opacity = '1';
-                namaPengirimContainer.style.transform = 'translateY(0)';
-            }, 50);
-            namaPengirimInput.required = true;
+            if (namaPengirimContainer) {
+                namaPengirimContainer.style.display = 'block';
+                namaPengirimContainer.style.opacity = '0';
+                setTimeout(() => {
+                    namaPengirimContainer.style.opacity = '1';
+                    namaPengirimContainer.style.transform = 'translateY(0)';
+                }, 50);
+            }
+            if (namaPengirimInput) namaPengirimInput.required = true;
         } else {
-            namaPengirimContainer.style.opacity = '0';
-            namaPengirimContainer.style.transform = 'translateY(-10px)';
-            setTimeout(() => {
-                namaPengirimContainer.style.display = 'none';
+            if (namaPengirimContainer) {
+                namaPengirimContainer.style.opacity = '0';
+                namaPengirimContainer.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    namaPengirimContainer.style.display = 'none';
+                }, 300);
+            }
+            if (namaPengirimInput) {
                 namaPengirimInput.required = false;
                 namaPengirimInput.value = ''; // Clear the value when hidden
-            }, 300);
+            }
         }
     }
 
     // Add event listener for payment method change
-    metodePembayaran.addEventListener('change', toggleNamaPengirim);
-
-    // Initial check on page load
-    toggleNamaPengirim();
+    if (metodePembayaran) {
+        metodePembayaran.addEventListener('change', toggleNamaPengirim);
+        // Initial check on page load
+        toggleNamaPengirim();
+    }
 
     // Function to preview uploaded image with enhanced preview
     function previewImage(input) {
@@ -595,6 +612,65 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    async function loadBiayaInfo(idJurusan) {
+        try {
+            console.log('Loading biaya for jurusan:', idJurusan);
+            const response = await fetch(`/api/cpdb/pembayaran/biaya/${idJurusan}`);
+            
+            if (!response.ok) {
+                console.error('Failed to fetch biaya info, status:', response.status);
+                // Set error message
+                const totalBiayaElement = document.getElementById('totalBiaya');
+                const minimalPembayaranElement = document.getElementById('minimalPembayaran');
+                if (totalBiayaElement) {
+                    totalBiayaElement.textContent = 'Data tidak tersedia';
+                    totalBiayaElement.classList.add('text-sm');
+                }
+                if (minimalPembayaranElement) {
+                    minimalPembayaranElement.textContent = 'Data tidak tersedia';
+                    minimalPembayaranElement.classList.add('text-sm');
+                }
+                return;
+            }
+            
+            const result = await response.json();
+            console.log('Biaya info result:', result);
+            
+            if (result.success && result.data) {
+                const biaya = result.data;
+                
+                // Update total biaya
+                const totalBiayaElement = document.getElementById('totalBiaya');
+                if (totalBiayaElement) {
+                    totalBiayaElement.textContent = formatCurrency(biaya.total_biaya);
+                }
+                
+                // Update minimal pembayaran
+                const minimalPembayaranElement = document.getElementById('minimalPembayaran');
+                if (minimalPembayaranElement) {
+                    minimalPembayaranElement.textContent = formatCurrency(biaya.minimal_pembayaran);
+                }
+                
+                console.log('Biaya loaded successfully');
+            } else {
+                console.error('Biaya data not found in response');
+            }
+        } catch (error) {
+            console.error('Error loading biaya info:', error);
+            // Set error message
+            const totalBiayaElement = document.getElementById('totalBiaya');
+            const minimalPembayaranElement = document.getElementById('minimalPembayaran');
+            if (totalBiayaElement) {
+                totalBiayaElement.textContent = 'Error loading data';
+                totalBiayaElement.classList.add('text-sm');
+            }
+            if (minimalPembayaranElement) {
+                minimalPembayaranElement.textContent = 'Error loading data';
+                minimalPembayaranElement.classList.add('text-sm');
+            }
+        }
+    }
+
     async function loadPaymentInfo() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
@@ -610,6 +686,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get registration data
             const registrationData = data.registrasi;
             console.log('Registration data:', registrationData);
+
+            // Load biaya dinamis berdasarkan jurusan dan periode aktif
+            if (registrationData?.id_jurusan) {
+                await loadBiayaInfo(registrationData.id_jurusan);
+            }
 
             // Get all relevant sections
             const initialPaymentInfo = document.querySelector('.space-y-6').parentElement;
@@ -823,13 +904,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    submitPaymentForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+    if (submitPaymentForm) {
+        submitPaymentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-        try {
-            // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
+            try {
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
 
             // Get form elements
@@ -937,8 +1019,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }
-    });
+        });
+    }
 
     // Initial load
     loadPaymentInfo();
+    
+    // Load biaya info from server-side data if available
+    <% if (typeof registrationRows !== 'undefined' && registrationRows && registrationRows[0] && registrationRows[0].id_jurusan) { %>
+        // Load biaya for current jurusan from server-side data
+        const serverSideJurusanId = <%= registrationRows[0].id_jurusan %>;
+        console.log('Loading biaya from server-side data, jurusan ID:', serverSideJurusanId);
+        loadBiayaInfo(serverSideJurusanId);
+    <% } %>
 });

@@ -199,13 +199,14 @@ router.get('/pembayaran', async (req, res) => {
         `);
         const activePeriode = activePeriodeResult[0] || null;
 
-        // Get all payments with their details and payment history
+        // Get all payments with their basic info (without JSON_ARRAYAGG)
         const query = `
             SELECT 
                 pp.*,
                 u.nama_lengkap,
                 f.no_formulir,
                 j.jurusan,
+                j.id_jurusan,
                 mbj.total_biaya as base_biaya,
                 MAX(COALESCE(dp.nominal_diskon, 0)) as nominal_diskon,
                 (mbj.total_biaya - MAX(COALESCE(dp.nominal_diskon, 0))) as total_biaya,
@@ -213,16 +214,7 @@ router.get('/pembayaran', async (req, res) => {
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_verified,
                 COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'PENDING' THEN dpp.nominal_pembayaran ELSE 0 END), 0) as total_pending,
                 ((mbj.total_biaya - MAX(COALESCE(dp.nominal_diskon, 0))) - COALESCE(SUM(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nominal_pembayaran ELSE 0 END), 0)) as sisa_pembayaran,
-                MAX(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nama_verifikator END) as nama_verifikator,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'id_detail', dpp.id_detail,
-                        'tanggal_pembayaran', dpp.tanggal_pembayaran,
-                        'nominal_pembayaran', dpp.nominal_pembayaran,
-                        'status_verifikasi', dpp.status_verifikasi,
-                        'nama_verifikator', dpp.nama_verifikator
-                    )
-                ) as detail_pembayaran
+                MAX(CASE WHEN dpp.status_verifikasi = 'VERIFIED' THEN dpp.nama_verifikator END) as nama_verifikator
             FROM pembayaran_pendaftaran pp
             JOIN formulir f ON pp.id_formulir = f.id_formulir
             JOIN users u ON f.id_user = u.id_user
@@ -233,10 +225,44 @@ router.get('/pembayaran', async (req, res) => {
             LEFT JOIN diskon_periode dp ON (per.id_periode = dp.id_periode AND j.id_jurusan = dp.id_jurusan)
             LEFT JOIN detail_pembayaran_pendaftaran dpp ON pp.id_pembayaran = dpp.id_pembayaran
             GROUP BY pp.id_pembayaran, pp.id_formulir, pp.id_periode_daftar, pp.status_pelunasan, pp.created_at, pp.updated_at,
-                     u.nama_lengkap, f.no_formulir, j.jurusan, mbj.total_biaya, per.nama_periode
+                     u.nama_lengkap, f.no_formulir, j.jurusan, j.id_jurusan, mbj.total_biaya, per.nama_periode
             ORDER BY pp.created_at DESC
         `;
         const [payments] = await db.query(query);
+
+        // Get all payment details separately
+        const [paymentDetails] = await db.query(`
+            SELECT 
+                dpp.id_pembayaran,
+                dpp.id_detail,
+                dpp.tanggal_pembayaran,
+                dpp.nominal_pembayaran,
+                dpp.status_verifikasi,
+                dpp.nama_verifikator
+            FROM detail_pembayaran_pendaftaran dpp
+            ORDER BY dpp.id_pembayaran, dpp.tanggal_pembayaran
+        `);
+
+        // Group payment details by payment ID
+        const detailsByPayment = {};
+        paymentDetails.forEach(detail => {
+            if (!detailsByPayment[detail.id_pembayaran]) {
+                detailsByPayment[detail.id_pembayaran] = [];
+            }
+            detailsByPayment[detail.id_pembayaran].push({
+                id_detail: detail.id_detail,
+                tanggal_pembayaran: detail.tanggal_pembayaran,
+                nominal_pembayaran: detail.nominal_pembayaran,
+                status_verifikasi: detail.status_verifikasi,
+                nama_verifikator: detail.nama_verifikator
+            });
+        });
+
+        // Add payment details to each payment
+        const paymentsWithDetails = payments.map(payment => ({
+            ...payment,
+            detail_pembayaran: detailsByPayment[payment.id_pembayaran] || []
+        }));
 
         // Get master biaya data with jurusan
         const [masterBiaya] = await db.query(`
@@ -254,7 +280,7 @@ router.get('/pembayaran', async (req, res) => {
         `, [activePeriode ? activePeriode.id_periode : 0]);
 
         // Process payments to include biaya and diskon info
-        const processedPayments = payments.map(payment => {
+        const processedPayments = paymentsWithDetails.map(payment => {
             // Find matching biaya for the jurusan
             const akBiaya = masterBiaya.find(mb => mb.id_jurusan === payment.id_jurusan) || null;
             
@@ -279,7 +305,7 @@ router.get('/pembayaran', async (req, res) => {
             user: req.user,
             layout: 'layouts/dashboard',
             currentPath: '/dashboard/admin/pembayaran',
-            payments,
+            payments: processedPayments,
             activePeriode,
             masterBiaya,
             diskonPeriode

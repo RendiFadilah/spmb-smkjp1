@@ -7,6 +7,7 @@ const db = require('../../../config/database');
 const PembayaranPendaftaran = require('../../../models/PembayaranPendaftaran');
 const DetailPembayaranPendaftaran = require('../../../models/DetailPembayaranPendaftaran');
 const RegistrasiPesertaDidik = require('../../../models/RegistrasiPesertaDidik');
+const MasterBiayaJurusan = require('../../../models/MasterBiayaJurusan');
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -31,6 +32,40 @@ const upload = multer({
         } else {
             cb('Error: Images Only!');
         }
+    }
+});
+
+// Get biaya by jurusan and active period
+router.get('/biaya/:idJurusan', async function(req, res) {
+    try {
+        const idJurusan = parseInt(req.params.idJurusan);
+        
+        if (!idJurusan) {
+            return res.status(400).json({
+                success: false,
+                message: 'ID Jurusan tidak valid'
+            });
+        }
+
+        const biaya = await MasterBiayaJurusan.getBiayaByPeriodeAndJurusan(idJurusan);
+        
+        if (!biaya) {
+            return res.status(404).json({
+                success: false,
+                message: 'Biaya tidak ditemukan untuk jurusan ini pada periode aktif'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: biaya
+        });
+    } catch (error) {
+        console.error('Error getting biaya:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
     }
 });
 

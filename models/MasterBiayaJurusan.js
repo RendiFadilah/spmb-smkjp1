@@ -79,6 +79,21 @@ class MasterBiayaJurusan {
         const [rows] = await db.execute(query);
         return rows;
     }
+
+    static async getBiayaByPeriodeAndJurusan(idJurusan) {
+        const query = `
+            SELECT mbj.* 
+            FROM master_biaya_jurusan mbj
+            INNER JOIN periode_master_biaya pmb ON mbj.id_biaya = pmb.id_biaya
+            INNER JOIN periode_pendaftaran pp ON pmb.id_periode = pp.id_periode
+            WHERE mbj.id_jurusan = ? 
+            AND pp.status = 'active'
+            ORDER BY mbj.created_at DESC
+            LIMIT 1
+        `;
+        const [rows] = await db.execute(query, [idJurusan]);
+        return rows[0];
+    }
 }
 
 module.exports = MasterBiayaJurusan;

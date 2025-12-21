@@ -9,6 +9,12 @@ const { addUserData, handleExpiredSession } = require('./middleware/auth');
 
 const app = express();
 
+// Validate SESSION_SECRET
+if (!process.env.SESSION_SECRET) {
+  console.warn('WARNING: SESSION_SECRET not found in environment variables. Using fallback secret.');
+  console.warn('Please add SESSION_SECRET to your .env file for production use.');
+}
+
 // MySQL session store configuration
 const sessionStore = new MySQLStore({
   host: process.env.DB_HOST,
@@ -21,7 +27,7 @@ const sessionStore = new MySQLStore({
 // Session middleware
 app.use(session({
   key: 'session_cookie_name',
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'spmb-smkjp1-fallback-secret-key-change-in-production',
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
