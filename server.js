@@ -9,6 +9,11 @@ const { addUserData, handleExpiredSession } = require('./middleware/auth');
 
 const app = express();
 
+// Trust proxy - Required for rate limiting behind reverse proxy
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Validate SESSION_SECRET
 if (!process.env.SESSION_SECRET) {
   console.warn('WARNING: SESSION_SECRET not found in environment variables. Using fallback secret.');
