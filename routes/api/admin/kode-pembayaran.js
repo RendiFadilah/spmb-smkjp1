@@ -247,5 +247,69 @@ router.post('/import', upload.single('file'), async (req, res) => {
     }
 });
 
+// Preview generated kode pembayaran
+router.post('/preview-generate', async (req, res) => {
+    try {
+        const { jumlah, prefix } = req.body;
+        
+        // Validate input
+        if (!jumlah || jumlah <= 0) {
+            return res.status(400).json({ message: 'Jumlah harus lebih dari 0' });
+        }
+
+        if (jumlah > 1000) {
+            return res.status(400).json({ message: 'Jumlah maksimal 1000 kode per generate' });
+        }
+
+        // Generate preview
+        const kodeList = await KodePembayaran.generateKodeBatch(parseInt(jumlah), prefix || 'KB');
+        
+        res.json({ 
+            preview: kodeList,
+            total: kodeList.length
+        });
+    } catch (error) {
+        console.error('Error previewing kode pembayaran:', error);
+        res.status(500).json({ 
+            message: 'Terjadi kesalahan saat membuat preview kode pembayaran',
+            error: error.message 
+        });
+    }
+});
+
+// Generate and save kode pembayaran in batch
+router.post('/generate', async (req, res) => {
+    try {
+        const { jumlah, prefix } = req.body;
+        
+        // Validate input
+        if (!jumlah || jumlah <= 0) {
+            return res.status(400).json({ message: 'Jumlah harus lebih dari 0' });
+        }
+
+        if (jumlah > 1000) {
+            return res.status(400).json({ message: 'Jumlah maksimal 1000 kode per generate' });
+        }
+
+        // Generate kode list
+        const kodeList = await KodePembayaran.generateKodeBatch(parseInt(jumlah), prefix || 'KB');
+        
+        // Save to database
+        const totalInserted = await KodePembayaran.createBatch(kodeList);
+        
+        res.json({ 
+            message: `Berhasil generate ${totalInserted} kode pembayaran`,
+            count: totalInserted,
+            kodes: kodeList
+        });
+    } catch (error) {
+        console.error('Error generating kode pembayaran:', error);
+        res.status(500).json({ 
+            message: 'Terjadi kesalahan saat generate kode pembayaran',
+            error: error.message 
+        });
+    }
+});
+
 
 module.exports = router;

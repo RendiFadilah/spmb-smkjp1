@@ -1,623 +1,519 @@
-<!-- Hero Section -->
-<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-    <!-- Background Image -->
+<!-- ==================== HERO SECTION ==================== -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Image + Overlays -->
     <div class="absolute inset-0">
-        <img src="/images/cover-sekolah.jpg" alt="SMK Jakarta Pusat 1" class="w-full h-full object-cover">
-        <!-- Dark Overlay for Better Text Contrast -->
-        <div class="absolute inset-0 bg-black/60"></div>
+        <img src="/images/cover-sekolah.jpg" alt="SMK Jakarta Pusat 1" class="w-full h-full object-cover scale-105">
+        <!-- Dark base overlay -->
+        <div class="absolute inset-0 bg-black/65"></div>
+        <!-- Colored gradient overlay on top -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-950/80 via-slate-950/60 to-indigo-950/80"></div>
+        <!-- Subtle color accents -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.12),transparent_50%)]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(99,102,241,0.12),transparent_50%)]"></div>
     </div>
 
-    <!-- Content -->
-    <div class="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20">
-        <div class="text-center max-w-3xl mx-auto">
-            <span class="inline-block text-white text-sm sm:text-base lg:text-xl mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary-600/40 backdrop-blur-sm rounded-full border border-white/10">
-                Sistem Penerimaan Murid Baru 2025/2026
-            </span>
-            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                Wujudkan Mimpimu Menjadi
-                <span class="block mt-2 text-white drop-shadow-lg">Profesional Masa Depan</span>
+    <!-- Animated floating shapes -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Grid pattern overlay -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M60 0H0v60&quot; fill=&quot;none&quot; stroke=&quot;white&quot; stroke-width=&quot;0.5&quot;/%3E%3C/svg%3E');"></div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 container mx-auto px-4 py-20 md:py-28">
+        <div class="text-center max-w-4xl mx-auto">
+            <!-- Badge -->
+            <div data-aos="fade-down" data-aos-duration="600">
+                <span class="inline-flex items-center gap-2 text-blue-200 text-xs sm:text-sm font-medium px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/15 mb-6 sm:mb-8">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    Pendaftaran Dibuka — Tahun Ajaran 2026/2027
+                </span>
+            </div>
+
+            <!-- Title -->
+            <h1 data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white mb-6 sm:mb-8 leading-[1.1] tracking-tight">
+                Wujudkan Mimpimu<br>
+                <span class="text-blue-600">Bersama Kami</span>
             </h1>
-            <p class="text-base sm:text-lg lg:text-xl text-white/90 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-                Bergabunglah dengan SMK Jakarta Pusat 1, sekolah kejuruan terdepan dengan 
-                <span class="font-semibold">4 Program Keahlian</span> yang siap mempersiapkan masa depan karirmu.
+
+            <!-- Subtitle -->
+            <p data-aos="fade-up" data-aos-duration="800" data-aos-delay="200" class="text-base sm:text-lg lg:text-xl text-white/70 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+                SMK Jakarta Pusat 1 — Sekolah kejuruan unggulan dengan
+                <span class="text-white font-medium">4 Program Keahlian</span> 
+                yang mempersiapkan generasi profesional masa depan.
             </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
-                <a href="/auth" 
-                   class="bg-white text-primary-600 px-6 sm:px-8 py-3 rounded-xl text-base sm:text-lg font-semibold hover:bg-primary-50 transition-colors duration-300 inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
-                    <i class="fas fa-user-plus text-lg sm:text-xl"></i>
+
+            <!-- CTA Buttons -->
+            <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="300" class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/auth" class="group relative inline-flex items-center justify-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-2xl text-base sm:text-lg font-bold hover:bg-blue-50 transition-all duration-300 shadow-2xl shadow-blue-500/20 hover:shadow-blue-500/30 hover:-translate-y-0.5">
+                    <i class="fas fa-user-plus"></i>
                     <span>Daftar Sekarang</span>
+                    <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
                 </a>
-                <a href="#keunggulan" 
-                   class="bg-primary-600/30 backdrop-blur-sm text-white border border-white/30 px-6 sm:px-8 py-3 rounded-xl text-base sm:text-lg font-semibold hover:bg-primary-600/40 hover:border-white/50 transition-all duration-300 inline-flex items-center justify-center gap-2">
-                    <i class="fas fa-info-circle text-lg sm:text-xl"></i>
+                <a href="#keunggulan" class="inline-flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-2xl text-base sm:text-lg font-semibold hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                    <i class="fas fa-play-circle"></i>
                     <span>Jelajahi</span>
                 </a>
             </div>
+
+            <!-- Stats Row -->
+            <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="400" class="counter-section mt-16 sm:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-3xl mx-auto">
+                <div class="bg-white/[0.07] backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 hover:bg-white/[0.12] transition-all duration-300">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white counter-number" data-target="4" data-suffix="">0</div>
+                    <div class="text-xs sm:text-sm text-white/50 mt-1 font-medium">Program Keahlian</div>
+                </div>
+                <div class="bg-white/[0.07] backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 hover:bg-white/[0.12] transition-all duration-300">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white counter-number" data-target="50" data-suffix="+">0</div>
+                    <div class="text-xs sm:text-sm text-white/50 mt-1 font-medium">Guru Profesional</div>
+                </div>
+                <div class="bg-white/[0.07] backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 hover:bg-white/[0.12] transition-all duration-300">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white counter-number" data-target="850" data-suffix="+">0</div>
+                    <div class="text-xs sm:text-sm text-white/50 mt-1 font-medium">Siswa Aktif</div>
+                </div>
+                <div class="bg-white/[0.07] backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 hover:bg-white/[0.12] transition-all duration-300">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white counter-number" data-target="20" data-suffix="+">0</div>
+                    <div class="text-xs sm:text-sm text-white/50 mt-1 font-medium">Mitra Industri</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Bottom Gradient Overlay -->
-    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
-</section>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+        <a href="#keunggulan" class="flex flex-col items-center gap-2 text-white/40 hover:text-white/70 transition-colors">
+            <span class="text-xs font-medium tracking-widest uppercase">Scroll</span>
+            <i class="fas fa-chevron-down text-sm"></i>
+        </a>
+    </div>
 
-<!-- Keunggulan Section -->
-<section class="py-16 bg-gradient-to-br from-white to-primary-50" id="keunggulan">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <div class="inline-block group">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4 relative inline-block">
-                    Kenapa Harus SMK Jakarta Pusat 1 ?
-                </h2>
-                <p class="text-lg text-gray-600 relative inline-block mt-2">
-                    Alasan mengapa kami menjadi pilihan terbaik untuk masa depanmu
-                </p>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Keunggulan 1 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 transition-all duration-300 border border-primary-500/10 group">
-                <div class="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center mb-6 mx-auto text-white group-hover:scale-110 group-hover:bg-primary-600 transition-all duration-300">
-                    <i class="fas fa-medal text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Akreditasi A</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-center">Terakreditasi A untuk semua program keahlian</p>
-            </div>
-
-            <!-- Keunggulan 2 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 transition-all duration-300 border border-primary-500/10 group">
-                <div class="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center mb-6 mx-auto text-white group-hover:scale-110 group-hover:bg-primary-600 transition-all duration-300">
-                    <i class="fas fa-chalkboard-teacher text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Guru Profesional</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-center">Tenaga pengajar berpengalaman dan tersertifikasi</p>
-            </div>
-
-            <!-- Keunggulan 3 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 transition-all duration-300 border border-primary-500/10 group">
-                <div class="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center mb-6 mx-auto text-white group-hover:scale-110 group-hover:bg-primary-600 transition-all duration-300">
-                    <i class="fas fa-building text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Fasilitas Lengkap</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-center">Sarana dan prasarana modern mendukung pembelajaran</p>
-            </div>
-
-            <!-- Keunggulan 4 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 transition-all duration-300 border border-primary-500/10 group">
-                <div class="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center mb-6 mx-auto text-white group-hover:scale-110 group-hover:bg-primary-600 transition-all duration-300">
-                    <i class="fas fa-handshake text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Kerjasama Industri</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-center">Bermitra dengan perusahaan ternama untuk prakerin</p>
-            </div>
-        </div>
+    <!-- Bottom fade -->
+    <div class="absolute bottom-0 left-0 right-0 h-32">
+        <div class="absolute inset-0 bg-gradient-to-t from-white to-transparent dark:hidden"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 to-transparent hidden dark:block"></div>
     </div>
 </section>
 
-<!-- Program Keahlian Section -->
-<section id="program-keahlian" class="py-16 bg-gradient-to-br from-blue-600 to-blue-800 relative overflow-hidden">
-    <!-- Decorative Elements -->
-    <div class="absolute inset-0">
-        <div class="absolute top-0 left-0 w-72 h-72 bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div class="absolute top-0 right-0 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-    </div>
+<!-- ==================== KEUNGGULAN SECTION ==================== -->
+<section class="py-20 sm:py-28 bg-white dark:bg-gray-950 relative overflow-hidden transition-colors duration-300" id="keunggulan">
+    <!-- Light mode decorative -->
+    <div class="absolute top-0 left-0 w-96 h-96 bg-blue-50 dark:bg-blue-900/20 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-80 h-80 bg-indigo-50 dark:bg-indigo-900/20 rounded-full blur-3xl translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
-    <div class="max-w-7xl mx-auto px-4 relative z-10">
-        <div class="text-center mb-16">
-            <span class="inline-block text-blue-600 text-sm font-semibold px-4 py-1 rounded-full border border-blue-600/30 backdrop-blur-sm mb-4">
-                Pilihan Karir
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-16 sm:mb-20" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest px-4 py-2 bg-blue-100 dark:bg-blue-500/10 rounded-full mb-4 border border-blue-200 dark:border-blue-500/20">
+                <i class="fas fa-star text-[10px]"></i> Mengapa Kami
             </span>
-            <h2 class="text-4xl font-bold text-primary-600 mb-4">Program Keahlian</h2>
-            <p class="text-lg text-blue-600">Pilih jalur pendidikan sesuai dengan minat dan bakatmu</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">
+                Kenapa Harus <span class="text-blue-600 dark:text-blue-400">SMK JP 1?</span>
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Kami hadir dengan keunggulan terbaik untuk masa depan karirmu
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Cards -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <div class="group bg-gray-50 dark:bg-gray-900 rounded-3xl p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="0">
+                <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-medal text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Akreditasi A</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Terakreditasi A untuk semua program keahlian yang tersedia</p>
+            </div>
+
+            <div class="group bg-gray-50 dark:bg-gray-900 rounded-3xl p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-chalkboard-teacher text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Guru Profesional</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Tenaga pengajar berpengalaman dan tersertifikasi nasional</p>
+            </div>
+
+            <div class="group bg-gray-50 dark:bg-gray-900 rounded-3xl p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-building text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Fasilitas Lengkap</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Sarana dan prasarana modern mendukung proses pembelajaran</p>
+            </div>
+
+            <div class="group bg-gray-50 dark:bg-gray-900 rounded-3xl p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-handshake text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Kerjasama Industri</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Bermitra dengan perusahaan ternama untuk prakerin siswa</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROGRAM KEAHLIAN SECTION ==================== -->
+<section id="program-keahlian" class="py-20 sm:py-28 relative overflow-hidden transition-colors duration-300">
+    <!-- Background: Light = gradient biru muda, Dark = gradient gelap -->
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-white dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950 transition-colors duration-300"></div>
+    
+    <!-- Decorative blobs -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200/40 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/40 dark:bg-indigo-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-widest px-4 py-2 bg-blue-100 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-full mb-4">
+                <i class="fas fa-graduation-cap text-[10px]"></i> Pilihan Karir
+            </span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">Program Keahlian</h2>
+            <p class="text-base sm:text-lg text-gray-600 dark:text-blue-200/60 max-w-xl mx-auto">Pilih jalur pendidikan sesuai dengan minat dan bakatmu</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" data-aos="fade-up" data-aos-delay="100">
             <!-- Left Column - Program List -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/20 hover:shadow-2xl transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="program-item cursor-pointer p-4 rounded-xl transition-all duration-300 hover:bg-blue-50/80 active group" data-program="rpl">
+            <div class="bg-white dark:bg-white/[0.05] backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-white/10 shadow-lg shadow-blue-100/30 dark:shadow-none">
+                <h3 class="text-lg font-bold text-gray-800 dark:text-white/80 mb-6 flex items-center gap-2">
+                    <i class="fas fa-list text-blue-600 dark:text-blue-400 text-sm"></i> Pilih Program
+                </h3>
+                <div class="space-y-3">
+                    <div class="program-item cursor-pointer p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:bg-blue-50 dark:hover:bg-white/10 active bg-blue-50 dark:bg-white/10 border border-blue-200 dark:border-white/10 group" data-program="rpl">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                                <i class="fas fa-laptop-code text-2xl text-primary-600"></i>
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
+                                <i class="fas fa-laptop-code text-xl sm:text-2xl text-white"></i>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-00 group-hover:text-blue-600 transition-colors">Rekayasa Perangkat Lunak</h3>
-                                <p class="text-sm text-gray-500 mt-1">Software Engineering</p>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors truncate">Rekayasa Perangkat Lunak</h4>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-white/40 mt-0.5">Software Engineering</p>
                             </div>
+                            <i class="fas fa-chevron-right text-gray-300 dark:text-white/20 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors text-sm"></i>
                         </div>
                     </div>
 
-                    <div class="program-item cursor-pointer p-4 rounded-xl transition-all duration-300 hover:bg-blue-50/80 group" data-program="akuntansi">
+                    <div class="program-item cursor-pointer p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:bg-blue-50 dark:hover:bg-white/10 border border-transparent hover:border-blue-200 dark:hover:border-white/10 group" data-program="akuntansi">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                                <i class="fas fa-calculator text-2xl text-primary-600"></i>
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-105 transition-transform duration-300">
+                                <i class="fas fa-calculator text-xl sm:text-2xl text-white"></i>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Akuntansi</h3>
-                                <p class="text-sm text-gray-500 mt-1">Accounting & Finance</p>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors truncate">Akuntansi</h4>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-white/40 mt-0.5">Accounting & Finance</p>
                             </div>
+                            <i class="fas fa-chevron-right text-gray-300 dark:text-white/20 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors text-sm"></i>
                         </div>
                     </div>
 
-                    <div class="program-item cursor-pointer p-4 rounded-xl transition-all duration-300 hover:bg-blue-50/80 group" data-program="otkp">
+                    <div class="program-item cursor-pointer p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:bg-blue-50 dark:hover:bg-white/10 border border-transparent hover:border-blue-200 dark:hover:border-white/10 group" data-program="otkp">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                                <i class="fas fa-building text-2xl text-primary-600"></i>
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-gradient-to-br from-amber-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
+                                <i class="fas fa-building text-xl sm:text-2xl text-white"></i>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Manajemen Perkantoran</h3>
-                                <p class="text-sm text-gray-500 mt-1">Office Management</p>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors truncate">Manajemen Perkantoran</h4>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-white/40 mt-0.5">Office Management</p>
                             </div>
+                            <i class="fas fa-chevron-right text-gray-300 dark:text-white/20 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors text-sm"></i>
                         </div>
                     </div>
 
-                    <div class="program-item cursor-pointer p-4 rounded-xl transition-all duration-300 hover:bg-blue-50/80 group" data-program="ritel">
+                    <div class="program-item cursor-pointer p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:bg-blue-50 dark:hover:bg-white/10 border border-transparent hover:border-blue-200 dark:hover:border-white/10 group" data-program="ritel">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                                <i class="fas fa-store text-2xl text-primary-600"></i>
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-gradient-to-br from-pink-400 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg shadow-rose-500/20 group-hover:scale-105 transition-transform duration-300">
+                                <i class="fas fa-store text-xl sm:text-2xl text-white"></i>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Bisnis Retail</h3>
-                                <p class="text-sm text-gray-500 mt-1">Retail Business</p>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-pink-600 dark:group-hover:text-pink-300 transition-colors truncate">Bisnis Retail</h4>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-white/40 mt-0.5">Retail Business</p>
                             </div>
+                            <i class="fas fa-chevron-right text-gray-300 dark:text-white/20 group-hover:text-pink-500 dark:group-hover:text-pink-400 transition-colors text-sm"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Right Column - Program Description -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20 hover:shadow-2xl transition-all duration-300">
-                <div id="program-description" class="space-y-6">
-                    <!-- RPL Content -->
+            <div class="bg-white dark:bg-white/[0.05] backdrop-blur-lg rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-white/10 shadow-lg shadow-blue-100/30 dark:shadow-none">
+                <div id="program-description">
+                    <!-- RPL -->
                     <div class="program-content active" data-program="rpl">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-                                <i class="fas fa-laptop-code text-3xl text-primary-600"></i>
-                            </div>
+                            <div class="w-14 h-14 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg"><i class="fas fa-laptop-code text-2xl text-white"></i></div>
                             <div>
-                                <h3 class="text-2xl font-bold text-blue-600">Rekayasa Perangkat Lunak</h3>
-                                <p class="text-blue-500">Software Engineering</p>
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Rekayasa Perangkat Lunak</h3>
+                                <p class="text-blue-600 dark:text-blue-300/60 text-sm font-medium">Software Engineering</p>
                             </div>
                         </div>
-                        
-                        <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl mb-6">
-                            <p class="text-gray-600">Program keahlian yang mempelajari pengembangan aplikasi, pemrograman, dan rekayasa software. Siswa akan dibekali dengan kemampuan coding, analisis sistem, dan pengembangan aplikasi modern.</p>
+                        <div class="bg-blue-50 dark:bg-white/[0.05] p-5 rounded-2xl border border-blue-100 dark:border-white/5 mb-6">
+                            <p class="text-gray-700 dark:text-white/60 text-sm leading-relaxed">Program keahlian yang mempelajari pengembangan aplikasi, pemrograman, dan rekayasa software. Dibekali kemampuan coding, analisis sistem, dan pengembangan aplikasi modern.</p>
                         </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-briefcase text-blue-500"></i>
-                                    Prospek Kerja
-                                </h4>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-blue-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-briefcase text-blue-600 dark:text-blue-400 text-xs"></i> Prospek Kerja</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Software Developer
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Web Developer
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Mobile App Developer
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        System Analyst
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-blue-500 dark:text-blue-400 text-[10px]"></i>Software Developer</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-blue-500 dark:text-blue-400 text-[10px]"></i>Web Developer</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-blue-500 dark:text-blue-400 text-[10px]"></i>Mobile App Developer</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-blue-500 dark:text-blue-400 text-[10px]"></i>System Analyst</li>
                                 </ul>
                             </div>
-
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-star text-blue-500"></i>
-                                    Keunggulan
-                                </h4>
+                            <div class="bg-blue-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-blue-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-star text-amber-500 dark:text-amber-400 text-xs"></i> Keunggulan</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Lab Komputer Modern
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Project-Based Learning
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Sertifikasi Industri
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Lab Komputer Modern</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Project-Based Learning</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Sertifikasi Industri</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Akuntansi Content -->
+                    <!-- Akuntansi -->
                     <div class="program-content hidden" data-program="akuntansi">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-                                <i class="fas fa-calculator text-3xl text-primary-600"></i>
-                            </div>
+                            <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg"><i class="fas fa-calculator text-2xl text-white"></i></div>
                             <div>
-                                <h3 class="text-2xl font-bold text-blue-600">Akuntansi</h3>
-                                <p class="text-blue-500">Accounting & Finance</p>
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Akuntansi</h3>
+                                <p class="text-emerald-600 dark:text-emerald-300/60 text-sm font-medium">Accounting & Finance</p>
                             </div>
                         </div>
-                        
-                        <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl mb-6">
-                            <p class="text-gray-600">Program keahlian yang mempelajari pencatatan, pengelolaan, dan analisis keuangan. Siswa akan dibekali dengan kemampuan mengelola pembukuan, pajak, dan laporan keuangan sesuai standar akuntansi.</p>
+                        <div class="bg-emerald-50 dark:bg-white/[0.05] p-5 rounded-2xl border border-emerald-100 dark:border-white/5 mb-6">
+                            <p class="text-gray-700 dark:text-white/60 text-sm leading-relaxed">Program keahlian yang mempelajari pencatatan, pengelolaan, dan analisis keuangan. Dibekali kemampuan mengelola pembukuan, pajak, dan laporan keuangan sesuai standar akuntansi.</p>
                         </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-briefcase text-blue-500"></i>
-                                    Prospek Kerja
-                                </h4>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="bg-emerald-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-emerald-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-briefcase text-emerald-600 dark:text-emerald-400 text-xs"></i> Prospek Kerja</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Akuntan
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Staff Keuangan
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Auditor
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Tax Consultant
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Akuntan</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Staff Keuangan</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Auditor</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Tax Consultant</li>
                                 </ul>
                             </div>
-
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-star text-blue-500"></i>
-                                    Keunggulan
-                                </h4>
+                            <div class="bg-emerald-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-emerald-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-star text-amber-500 dark:text-amber-400 text-xs"></i> Keunggulan</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Lab Akuntansi Modern
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Sertifikasi Kompetensi
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Kerjasama dengan Industri
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Lab Akuntansi Modern</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Sertifikasi Kompetensi</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Kerjasama dengan Industri</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
+                    <!-- OTKP -->
                     <div class="program-content hidden" data-program="otkp">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-                                <i class="fas fa-building text-3xl text-primary-600"></i>
-                            </div>
+                            <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg"><i class="fas fa-building text-2xl text-white"></i></div>
                             <div>
-                                <h3 class="text-2xl font-bold text-blue-600">Manajemen Perkantoran</h3>
-                                <p class="text-blue-500">Office Management</p>
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Manajemen Perkantoran</h3>
+                                <p class="text-amber-600 dark:text-amber-300/60 text-sm font-medium">Office Management</p>
                             </div>
                         </div>
-                        
-                        <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl mb-6">
-                            <p class="text-gray-600">Program keahlian yang mempelajari administrasi, pengelolaan dokumen, dan manajemen kantor modern. Siswa akan dibekali dengan kemampuan mengelola administrasi, korespondensi, dan kearsipan.</p>
+                        <div class="bg-amber-50 dark:bg-white/[0.05] p-5 rounded-2xl border border-amber-100 dark:border-white/5 mb-6">
+                            <p class="text-gray-700 dark:text-white/60 text-sm leading-relaxed">Program keahlian yang mempelajari administrasi, pengelolaan dokumen, dan manajemen kantor modern. Dibekali kemampuan mengelola administrasi, korespondensi, dan kearsipan.</p>
                         </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-briefcase text-blue-500"></i>
-                                    Prospek Kerja
-                                </h4>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="bg-amber-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-amber-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-briefcase text-amber-600 dark:text-amber-400 text-xs"></i> Prospek Kerja</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Sekretaris
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Admin Officer
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Office Manager
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        HR Staff
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-amber-500 dark:text-amber-400 text-[10px]"></i>Sekretaris</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-amber-500 dark:text-amber-400 text-[10px]"></i>Admin Officer</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-amber-500 dark:text-amber-400 text-[10px]"></i>Office Manager</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-amber-500 dark:text-amber-400 text-[10px]"></i>HR Staff</li>
                                 </ul>
                             </div>
-
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-star text-blue-500"></i>
-                                    Keunggulan
-                                </h4>
+                            <div class="bg-amber-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-amber-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-star text-amber-500 dark:text-amber-400 text-xs"></i> Keunggulan</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Lab Perkantoran Digital
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Praktik Kerja Industri
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Sertifikasi Profesi
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Lab Perkantoran Digital</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Praktik Kerja Industri</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Sertifikasi Profesi</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
+                    <!-- Ritel -->
                     <div class="program-content hidden" data-program="ritel">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-                                <i class="fas fa-store text-3xl text-primary-600"></i>
-                            </div>
+                            <div class="w-14 h-14 bg-gradient-to-br from-pink-400 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg"><i class="fas fa-store text-2xl text-white"></i></div>
                             <div>
-                                <h3 class="text-2xl font-bold text-blue-600">Bisnis Ritel</h3>
-                                <p class="text-blue-500">Retail Business</p>
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Bisnis Ritel</h3>
+                                <p class="text-pink-600 dark:text-pink-300/60 text-sm font-medium">Retail Business</p>
                             </div>
                         </div>
-                        
-                        <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl mb-6">
-                            <p class="text-gray-600">Program keahlian yang fokus pada pengelolaan toko modern dan strategi pemasaran ritel. Siswa akan mempelajari manajemen toko, visual merchandising, dan pelayanan pelanggan.</p>
+                        <div class="bg-pink-50 dark:bg-white/[0.05] p-5 rounded-2xl border border-pink-100 dark:border-white/5 mb-6">
+                            <p class="text-gray-700 dark:text-white/60 text-sm leading-relaxed">Program keahlian yang fokus pada pengelolaan toko modern dan strategi pemasaran ritel. Siswa mempelajari manajemen toko, visual merchandising, dan pelayanan pelanggan.</p>
                         </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-briefcase text-blue-500"></i>
-                                    Prospek Kerja
-                                </h4>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="bg-pink-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-pink-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-briefcase text-pink-600 dark:text-pink-400 text-xs"></i> Prospek Kerja</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Store Manager
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Retail Supervisor
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Marketing Staff
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Visual Merchandiser
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-pink-500 dark:text-pink-400 text-[10px]"></i>Store Manager</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-pink-500 dark:text-pink-400 text-[10px]"></i>Retail Supervisor</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-pink-500 dark:text-pink-400 text-[10px]"></i>Marketing Staff</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-pink-500 dark:text-pink-400 text-[10px]"></i>Visual Merchandiser</li>
                                 </ul>
                             </div>
-
-                            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-star text-blue-500"></i>
-                                    Keunggulan
-                                </h4>
+                            <div class="bg-pink-50 dark:bg-white/[0.05] rounded-2xl p-5 border border-pink-100 dark:border-white/5">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white/80 mb-3 flex items-center gap-2"><i class="fas fa-star text-amber-500 dark:text-amber-400 text-xs"></i> Keunggulan</h4>
                                 <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Business Center
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Kerjasama dengan Retail Modern
-                                    </li>
-                                    <li class="flex items-center gap-2 text-gray-600">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                        Praktik Bisnis Langsung
-                                    </li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Business Center</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Kerjasama Retail Modern</li>
+                                    <li class="flex items-center gap-2 text-gray-600 dark:text-white/50 text-sm"><i class="fas fa-check text-emerald-500 dark:text-emerald-400 text-[10px]"></i>Praktik Bisnis Langsung</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Alur Pendaftaran Section -->
-<section id="alur-pendaftaran" class="py-16 bg-gradient-to-br from-white to-primary-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Alur Pendaftaran</h2>
+<!-- ==================== ALUR PENDAFTARAN SECTION ==================== -->
+<section id="alur-pendaftaran" class="py-20 sm:py-28 relative overflow-hidden transition-colors duration-300">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gray-50 dark:bg-gray-950"></div>
+    <!-- Decorative -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div class="text-center mb-16 sm:mb-20" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest px-4 py-2 bg-blue-100 dark:bg-blue-500/10 rounded-full mb-4 border border-blue-200 dark:border-blue-500/20">
+                <i class="fas fa-route text-[10px]"></i> Langkah Demi Langkah
+            </span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">Alur Pendaftaran</h2>
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto">Ikuti langkah-langkah mudah berikut untuk mendaftar</p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8">
-            <!-- Step 1 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">1</span>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            <div class="relative group" data-aos="fade-up" data-aos-delay="0">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">1</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-school text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Datang ke Sekolah</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Datang ke Sekolah</h3>
             </div>
-
-            <!-- Step 2 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="200">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">2</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="75">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">2</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-user-plus text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Daftar Akun</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Daftar Akun</h3>
             </div>
-
-            <!-- Step 3 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="300">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">3</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="150">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">3</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-right-to-bracket text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Login Akun</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Login Akun</h3>
             </div>
-
-            <!-- Step 4 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="400">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">4</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="225">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">4</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-file-invoice text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Beli Formulir</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Beli Formulir</h3>
             </div>
-
-            <!-- Step 5 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="500">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">5</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">5</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-pen-to-square text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Isi Formulir</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Isi Formulir</h3>
             </div>
-
-            <!-- Step 6 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="600">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">6</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="375">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">6</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-folder-open text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Administrasi</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Adminstrasi</h3>
             </div>
-
-            <!-- Step 7 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="700">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">7</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="450">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-blue-500/20">7</div>
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-credit-card text-blue-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Pembayaran</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Pembayaran</h3>
             </div>
-
-            <!-- Step 8 -->
-            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary-500/10 relative group min-h-[120px] flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="800">
-                <div class="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center font-bold transform -rotate-6 group-hover:rotate-0 transition-transform duration-300 shadow-lg border-4 border-white">
-                    <span class="text-3xl text-white">8</span>
+            <div class="relative group" data-aos="fade-up" data-aos-delay="525">
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md shadow-gray-200/50 dark:shadow-none hover:shadow-xl hover:shadow-blue-100/50 dark:hover:shadow-none border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-500 hover:-translate-y-2 text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold mx-auto mb-4 shadow-lg shadow-emerald-500/20">
+                        <i class="fas fa-check text-base"></i>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-id-card text-emerald-500"></i></div>
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Cetak Kartu MPLS</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary-600 text-center font-sans">Cetak Kartu MPLS</h3>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Hubungi Kami Section -->
-<section id="hubungi-kami" class="py-16 bg-gradient-to-br from-primary-50 via-primary-100/30 to-white dark:from-gray-900 dark:to-gray-800">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Hubungi Kami</h2>
-            <p class="text-lg text-gray-600">
-                Apabila kamu memiliki pertanyaan lebih lanjut tentang SPMB SMK Jakarta Pusat 1<br>
-                Kamu dapat menghubungi kontak dibawah ini
-            </p>
+<!-- ==================== HUBUNGI KAMI SECTION ==================== -->
+<section id="hubungi-kami" class="py-20 sm:py-28 relative overflow-hidden transition-colors duration-300">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-white dark:bg-gray-900"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div class="text-center mb-16 sm:mb-20" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest px-4 py-2 bg-blue-100 dark:bg-blue-500/10 rounded-full mb-4 border border-blue-200 dark:border-blue-500/20">
+                <i class="fas fa-headset text-[10px]"></i> Informasi
+            </span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">Hubungi Kami</h2>
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Punya pertanyaan? Jangan ragu untuk menghubungi kami</p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Contact Info -->
-            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-primary-500/10">
-                <!-- Registration Period Card -->
-                <div class="bg-gradient-to-br from-primary-50 to-white p-8 rounded-2xl shadow-lg mb-8 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
-                            <i class="fas fa-calendar-alt text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900">Waktu Pendaftaran</h3>
+        <div class="grid lg:grid-cols-2 gap-8" data-aos="fade-up" data-aos-delay="100">
+            <!-- Left: Info -->
+            <div class="space-y-6">
+                <!-- Waktu Pendaftaran -->
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl shadow-blue-500/10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center"><i class="fas fa-calendar-alt text-lg"></i></div>
+                        <h3 class="text-xl font-bold">Waktu Pendaftaran</h3>
                     </div>
-                    <div class="space-y-4">
-                        <!-- Period 1 -->
-                        <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-primary-100 hover:border-primary-300 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600 font-bold">1</div>
-                                <div>
-                                    <p class="text-base text-gray-600">Periode 1</p>
-                                    <p class="text-lg font-semibold text-primary-600">13 Januari - 28 Februari 2025</p>
-                                </div>
-                            </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-sm font-bold shrink-0">1</div>
+                            <div><p class="text-white/60 text-xs">Periode 1</p><p class="font-semibold text-sm">12 Jan - 28 Feb 2026</p></div>
                         </div>
-                        <!-- Period 2 -->
-                        <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-primary-100 hover:border-primary-300 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600 font-bold">2</div>
-                                <div>
-                                    <p class="text-base text-gray-600">Periode 2</p>
-                                    <p class="text-lg font-semibold text-primary-600">1 Maret - 30 April 2025</p>
-                                </div>
-                            </div>
+                        <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-sm font-bold shrink-0">2</div>
+                            <div><p class="text-white/60 text-xs">Periode 2</p><p class="font-semibold text-sm">2 Mar - 30 Apr 2026</p></div>
                         </div>
-                        <!-- Period 3 -->
-                        <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-primary-100 hover:border-primary-300 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600 font-bold">3</div>
-                                <div>
-                                    <p class="text-base text-gray-600">Periode 3</p>
-                                    <p class="text-lg font-semibold text-primary-600">1 Mei - 29 Juni 2025</p>
-                                </div>
-                            </div>
+                        <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-sm font-bold shrink-0">3</div>
+                            <div><p class="text-white/60 text-xs">Periode 3</p><p class="font-semibold text-sm">11 Mei - 30 Jun 2026</p></div>
                         </div>
-                        <!-- Period 4 -->
-                        <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-primary-100 hover:border-primary-300 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600 font-bold">4</div>
-                                <div>
-                                    <p class="text-base text-gray-600">Periode 4</p>
-                                    <p class="text-lg font-semibold text-primary-600">1 Juli - (Kuota terpenuhi)</p>
-                                </div>
-                            </div>
+                        <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-sm font-bold shrink-0">4</div>
+                            <div><p class="text-white/60 text-xs">Periode 4</p><p class="font-semibold text-sm">1 Jul - 10 Juli 2026</p></div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Contact Person Cards -->
-                <div class="bg-gradient-to-br from-primary-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
-                            <i class="fas fa-headset text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900">Kontak Person</h3>
+
+                <!-- Contact Person -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-md shadow-gray-200/50 dark:shadow-none">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-11 h-11 bg-green-100 dark:bg-green-500/10 rounded-xl flex items-center justify-center"><i class="fab fa-whatsapp text-green-600 dark:text-green-400 text-lg"></i></div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Kontak Person</h3>
                     </div>
-                    <div class="space-y-6">
-                        <!-- Contact Card -->
-                        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-primary-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg transform rotate-3">
-                                    <i class="fas fa-user text-2xl text-primary-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-2">SMK Jakarta Pusat 1</h4>
-                                    <p class="text-gray-600 mb-4">Siap membantu menjawab pertanyaan seputar SPMB 2025/2026</p>
-                                    <a href="https://wa.me/6285213819519?text=Halloo%20Bapak%20%2F%20Ibu%2C%20saya%20ingin%20bertanya%20terkait%20SPMB%20SMK%20Jakarta%20Pusat%201%20tahun%202025%2F2026" 
-                                       class="inline-flex items-center gap-3 px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all duration-300 shadow-lg hover:shadow-xl group">
-                                        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform duration-300"></i>
-                                        <span class="font-semibold">Hubungi via WhatsApp</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Siap membantu menjawab pertanyaan seputar SPMB 2026/2027</p>
+                    <a href="https://wa.me/6281316227654?text=Halloo%20Bapak%20%2F%20Ibu%2C%20saya%20ingin%20bertanya%20terkait%20SPMB%20SMK%20Jakarta%20Pusat%201%20tahun%202025%2F2026" 
+                       class="inline-flex items-center gap-3 px-6 py-3.5 bg-green-500 text-white rounded-2xl hover:bg-green-600 transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-green-500/30 hover:-translate-y-0.5 font-semibold text-sm">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        Hubungi via WhatsApp
+                    </a>
                 </div>
             </div>
 
-            <!-- Location Info -->
-            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
-                        <i class="fas fa-map-marker-alt text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900">Lokasi Pendaftaran</h3>
-                </div>
-                
-                <!-- Google Maps -->
-                <div class="mb-6 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+            <!-- Right: Map + Address -->
+            <div class="space-y-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md shadow-gray-200/50 dark:shadow-none">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.666427097699!2d106.82630067462043!3d-6.178334360531391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2c6c8c6f7%3A0x4c5f3c4c4c4c4c4c!2sJl.%20Abdul%20Muis%20No.44%201%2C%20RT.1%2FRW.8%2C%20Petojo%20Sel.%2C%20Kecamatan%20Gambir%2C%20Kota%20Jakarta%20Pusat%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2010160!5e0!3m2!1sen!2sid!4v1705459163300!5m2!1sen!2sid"
-                        class="w-full h-[300px]"
+                        class="w-full h-[350px]"
                         style="border:0;"
                         allowfullscreen=""
                         loading="lazy"
@@ -625,22 +521,43 @@
                     </iframe>
                 </div>
 
-                <!-- Address Card -->
-                <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl border border-blue-100 hover:border-blue-200 transition-all duration-300">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-md shadow-gray-200/50 dark:shadow-none">
                     <div class="flex items-start gap-4">
-                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg transform -rotate-3">
-                            <i class="fas fa-building text-2xl text-primary-600"></i>
+                        <div class="w-11 h-11 bg-blue-100 dark:bg-blue-500/10 rounded-xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-location-dot text-blue-600 dark:text-blue-400"></i>
                         </div>
                         <div>
-                            <h4 class="text-xl font-bold text-blue-900 mb-2">Gedung Utama</h4>
-                            <p class="text-blue-800 mb-4 leading-relaxed">
-                                Jl. Abdul Muis No.44, RT.2/RW.3, Gambir, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10160
+                            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Gedung Utama</h4>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                                Jl. Abdul Muis No.44, RT.2/RW.3, Gambir, Kecamatan Gambir, Kota Jakarta Pusat, DKI Jakarta 10160
                             </p>
-                         
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- ==================== CTA SECTION ==================== -->
+<section class="py-20 relative overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 dark:from-blue-900 dark:via-indigo-900 dark:to-purple-900"></div>
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight">
+            Siap Bergabung Bersama Kami?
+        </h2>
+        <p class="text-lg text-blue-100/70 mb-10 max-w-2xl mx-auto">
+            Jangan lewatkan kesempatan untuk menjadi bagian dari SMK Jakarta Pusat 1. Daftarkan dirimu sekarang juga!
+        </p>
+        <a href="/auth" class="group inline-flex items-center gap-3 bg-white text-blue-600 px-10 py-4 rounded-2xl text-lg font-bold hover:bg-blue-50 transition-all duration-300 shadow-2xl shadow-black/10 hover:-translate-y-0.5">
+            <i class="fas fa-user-plus"></i>
+            Daftar Sekarang
+            <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover:translate-x-1"></i>
+        </a>
     </div>
 </section>

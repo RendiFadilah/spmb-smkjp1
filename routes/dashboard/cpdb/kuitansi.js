@@ -261,7 +261,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
                         </div>
                         <div class="receipt-title">
                             <h2>KUITANSI PEMBAYARAN</h2>
-                            <p>FORMULIR SPMB 2025/2026</p>
+                            <p>FORMULIR SPMB 2026/2027</p>
                         </div>
                     </div>
 
@@ -280,7 +280,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 
                         <div class="info-item" style="margin-bottom: 20px;">
                             <div class="info-label">Untuk Pembayaran</div>
-                            <div class="info-value">Formulir SPMB SMK Jakarta Pusat 1 Tahun 2025/2026</div>
+                            <div class="info-value">Formulir SPMB SMK Jakarta Pusat 1 Tahun 2026/2027</div>
                         </div>
 
                         <div class="amount-section">

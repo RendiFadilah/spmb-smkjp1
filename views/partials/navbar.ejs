@@ -1,97 +1,58 @@
-<nav class="bg-white/95 backdrop-blur-md  border-gray-200 fixed w-full z-20 top-0 start-0">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2 md:py-3">
-    <a href="/" class="flex items-center space-x-2 md:space-x-3 rtl:space-x-reverse">
-      <img src="/images/logo-jp1.png" class="h-8 md:h-10 w-auto" alt="SMK Jakarta Pusat 1 Logo">
-      <span class="self-center text-sm md:text-lg font-semibold text-gray-800">SPMB SMK Jakarta Pusat 1</span>
+<nav id="main-nav" class="fixed w-full z-50 top-0 start-0 transition-all duration-500 bg-transparent">
+  <div class="max-w-7xl flex flex-wrap items-center justify-between mx-auto px-4 sm:px-6 py-4 md:py-5">
+    <a href="/" class="flex items-center space-x-3 group">
+      <img src="/images/logo-jp1.png" class="h-9 md:h-11 w-auto drop-shadow-lg transition-transform duration-300 group-hover:scale-110" alt="Logo">
+      <div class="flex flex-col">
+        <span class="text-sm md:text-base font-bold text-white nav-brand-text transition-colors duration-500">SPMB SMK JP 1</span>
+        <span class="text-[10px] md:text-xs text-white/60 font-medium nav-brand-sub transition-colors duration-500 hidden sm:block">Penerimaan Murid Baru</span>
+      </div>
     </a>
-    <div class="flex md:order-2">
+    <div class="flex md:order-2 items-center gap-2 sm:gap-3">
+      <!-- Dark Mode Toggle -->
+      <button id="darkModeToggle" type="button" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/15 hover:bg-white/20 transition-all duration-300 text-white nav-dark-toggle" title="Toggle Dark Mode">
+        <i class="fas fa-moon text-sm dark-icon"></i>
+        <i class="fas fa-sun text-sm light-icon hidden"></i>
+      </button>
       <% if (typeof user !== 'undefined' && user) { %>
         <div class="relative">
-          <button type="button" class="flex items-center text-sm bg-white/90 border border-gray-200 rounded-full md:me-0 focus:ring-2 focus:ring-primary-100 hover:border-primary-300 transition-all duration-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-            <span class="sr-only">Open user menu</span>
-            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
-              <i class="fas fa-user-circle absolute w-12 h-12 text-gray-400 -left-1"></i>
-            </div>
+          <button type="button" class="flex items-center gap-2 text-sm bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-1.5 hover:bg-white/20 transition-all duration-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>
+            <span class="hidden sm:block text-sm font-medium text-white nav-user-text"><%= user.nama.split(' ')[0] %></span>
+            <i class="fas fa-chevron-down text-[10px] text-white/60 nav-user-text"></i>
           </button>
-          <!-- Dropdown menu -->
-          <div class="hidden z-50 my-4 w-60 text-base list-none bg-white/95 backdrop-blur-md rounded-xl border border-gray-100 shadow-lg" id="user-dropdown">
-            <div class="py-4 px-5">
-              <span class="block text-base font-semibold text-gray-900"><%= user.nama %></span>
-              <span class="block text-sm text-gray-500 truncate mt-0.5"><%= user.roles %></span>
+          <div class="hidden z-50 my-4 w-64 list-none bg-white rounded-2xl border border-gray-100 shadow-2xl overflow-hidden" id="user-dropdown">
+            <div class="py-4 px-5 bg-gradient-to-r from-blue-600 to-indigo-600">
+              <span class="block text-base font-bold text-white"><%= user.nama %></span>
+              <span class="block text-sm text-blue-100 mt-0.5"><%= user.roles %></span>
             </div>
-            <ul class="py-2" aria-labelledby="user-menu-button">
-              <li class="relative group px-2">
-                <a href="/<%= user.roles.toLowerCase() %>/dashboard" class="flex items-center py-2.5 px-4 text-sm text-gray-700 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-all duration-300">
-                  <i class="fas fa-gauge-high mr-3 w-4"></i>
-                  Dashboard
-                </a>
-              </li>
-              <li class="relative group px-2">
-                <form action="/auth/logout" method="POST" class="block">
-                  <button type="submit" class="flex w-full items-center py-2.5 px-4 text-sm text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-300">
-                    <i class="fas fa-right-from-bracket mr-3 w-4"></i>
-                    Logout
-                  </button>
-                </form>
-              </li>
+            <ul class="py-2 px-2">
+              <li><a href="/<%= user.roles.toLowerCase() %>/dashboard" class="flex items-center py-2.5 px-4 text-sm text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"><i class="fas fa-gauge-high mr-3 w-4 text-gray-400"></i>Dashboard</a></li>
+              <li><form action="/auth/logout" method="POST"><button type="submit" class="flex w-full items-center py-2.5 px-4 text-sm text-gray-700 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"><i class="fas fa-right-from-bracket mr-3 w-4 text-gray-400"></i>Logout</button></form></li>
             </ul>
           </div>
         </div>
       <% } else { %>
-        <a href="/auth" class="hidden md:flex text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center transition-all duration-300 transform hover:scale-105">
-          Login
+        <a href="/auth" class="hidden md:inline-flex items-center gap-2 text-white bg-white/15 backdrop-blur-md border border-white/25 hover:bg-white hover:text-blue-600 font-semibold rounded-full text-sm px-6 py-2.5 transition-all duration-300 hover:shadow-lg nav-cta-btn">
+          <i class="fas fa-arrow-right-to-bracket text-xs"></i> Masuk
         </a>
       <% } %>
-      <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex flex-col gap-1 p-1.5 w-9 h-9 justify-center items-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-primary-50 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-300 transition-all duration-300" aria-controls="navbar-sticky" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <span class="w-6 h-0.5 bg-current rounded-full"></span>
-        <span class="w-6 h-0.5 bg-current rounded-full"></span>
-        <span class="w-6 h-0.5 bg-current rounded-full"></span>
+      <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex flex-col gap-1.5 p-2.5 w-10 h-10 justify-center items-center rounded-xl md:hidden hover:bg-white/10 transition-all duration-300" aria-controls="navbar-sticky" aria-expanded="false">
+        <span class="sr-only">Menu</span>
+        <span class="w-5 h-0.5 bg-white rounded-full nav-hamburger-line"></span>
+        <span class="w-4 h-0.5 bg-white rounded-full nav-hamburger-line"></span>
+        <span class="w-3 h-0.5 bg-white rounded-full nav-hamburger-line"></span>
       </button>
     </div>
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-      <ul class="flex flex-col p-3 md:p-0 mt-3 font-medium border border-gray-100 rounded-xl bg-white/90 backdrop-blur-sm md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
-        <!-- Mobile Menu -->
-        <div class="block md:hidden border-b border-gray-100 pb-2 mb-2">
-          <span class="text-sm text-gray-500 px-4">Menu</span>
-        </div>
-        <li class="relative group">
-          <a href="/" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
-            <span class="relative">
-              Beranda
-              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
-            </span>
-          </a>
-        </li>
-        <li class="relative group">
-          <a href="#program-keahlian" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
-            <span class="relative">
-              Jurusan
-              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
-            </span>
-          </a>
-        </li>
-        <li class="relative group">
-          <a href="#alur-pendaftaran" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
-            <span class="relative">
-              Alur Pendaftaran
-              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
-            </span>
-          </a>
-        </li>
-        <li class="relative group">
-          <a href="#hubungi-kami" class="flex items-center py-2 px-3 text-gray-700 rounded-lg md:px-2 md:py-2 group-hover:text-primary-600 transition-all duration-300 ease-in-out hover:bg-primary-50/50 md:hover:bg-transparent">
-            <span class="relative">
-              Kontak
-              <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
-            </span>
-          </a>
-        </li>
+      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-2xl bg-white/95 backdrop-blur-xl md:space-x-1 md:flex-row md:mt-0 md:border-0 md:bg-transparent shadow-xl md:shadow-none border border-gray-100 md:border-0">
+        <li><a href="/" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-home mr-2 md:hidden"></i>Beranda</a></li>
+        <li><a href="#program-keahlian" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-graduation-cap mr-2 md:hidden"></i>Jurusan</a></li>
+        <li><a href="#alur-pendaftaran" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-route mr-2 md:hidden"></i>Alur Pendaftaran</a></li>
+        <li><a href="#hubungi-kami" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-phone mr-2 md:hidden"></i>Kontak</a></li>
         <% if (typeof user === 'undefined' || !user) { %>
-        <li class="block md:hidden border-t border-gray-100 mt-2">
-          <a href="/auth" class="flex items-center py-2 px-3 mt-2 text-white bg-primary-500 hover:bg-primary-600 rounded-lg transition-all duration-300">
-            <i class="fas fa-sign-in-alt mr-2"></i>
-            Login
+        <li class="block md:hidden border-t border-gray-100 mt-2 pt-2">
+          <a href="/auth" class="flex items-center justify-center py-2.5 px-4 text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl font-semibold text-sm shadow-lg shadow-blue-500/20">
+            <i class="fas fa-arrow-right-to-bracket mr-2"></i>Masuk / Daftar
           </a>
         </li>
         <% } %>

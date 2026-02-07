@@ -9,9 +9,35 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/logo-jp1.png">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="/css/output.css" rel="stylesheet">
+    <!-- Tailwind CSS v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'Poppins', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
+                950: '#172554',
+              }
+            }
+          }
+        }
+      }
+    </script>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -20,25 +46,213 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 
-    <!-- Google Fonts - Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Inter + Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- AOS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Dark mode early init (prevent flash) -->
+    <script>
+        (function(){
+            var d = localStorage.getItem('darkMode');
+            if (d === 'true' || (d === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        * {
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0066ff, #0052cc);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #0052cc, #003d99);
+        }
+
+        /* Dark mode scrollbar */
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #0066ff, #00d4ff, #0066ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+            100% { background-position: 0% center; }
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(2deg); }
+            66% { transform: translateY(-8px) rotate(-1deg); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .float-animation-delay {
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+
+        /* Pulse glow */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 102, 255, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 102, 255, 0.4); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* Particle canvas */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Hero gradient mesh */
+        .hero-mesh {
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(0, 102, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+        }
+
+        /* Card hover lift */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Shine effect */
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg) translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .shine-effect:hover::before {
+            transform: rotate(45deg) translateX(100%);
+        }
+
+        /* Timeline connector */
+        .timeline-connector {
+            position: relative;
+        }
+        .timeline-connector::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -2rem;
+            width: 2rem;
+            height: 2px;
+            background: linear-gradient(90deg, #0066ff, transparent);
+        }
+
+        /* Section divider */
+        .section-divider {
+            background: linear-gradient(90deg, transparent, #0066ff, transparent);
+            height: 1px;
+            width: 100px;
+            margin: 0 auto;
+        }
+
+        /* Blob animation */
+        @keyframes morphBlob {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+            75% { border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%; }
+        }
+
+        .morph-blob {
+            animation: morphBlob 8s ease-in-out infinite;
+        }
+
+        /* Number counter animation */
+        .counter-number {
+            font-variant-numeric: tabular-nums;
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-white dark:bg-gray-950 antialiased transition-colors duration-300 overflow-x-hidden">
     <!-- Navbar -->
     <%- include('../partials/navbar') %>
 
     <!-- Main Content -->
-    <main class="min-h-screen pt-16">
+    <main class="min-h-screen">
         <%- body %>
     </main>
 
@@ -46,6 +260,7 @@
     <%- include('../partials/footer') %>
 
     <!-- Custom Scripts -->
+    <script src="/js/navbar.js"></script>
     <script src="/js/typed-init.js"></script>
     <script src="/js/program-keahlian.js"></script>
     
@@ -53,9 +268,60 @@
     <script>
         AOS.init({
             duration: 800,
-            easing: 'ease-out',
-            once: true
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50
         });
+    </script>
+
+    <!-- Smooth reveal animations with GSAP -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate section titles
+        gsap.utils.toArray('.section-title').forEach(title => {
+            gsap.from(title, {
+                scrollTrigger: {
+                    trigger: title,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            });
+        });
+
+        // Counter animation
+        function animateCounters() {
+            document.querySelectorAll('.counter-number').forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const suffix = counter.getAttribute('data-suffix') || '';
+                let current = 0;
+                const increment = target / 60;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target + suffix;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current) + suffix;
+                    }
+                }, 16);
+            });
+        }
+
+        // Trigger counters when in view
+        const counterSection = document.querySelector('.counter-section');
+        if (counterSection) {
+            ScrollTrigger.create({
+                trigger: counterSection,
+                start: 'top 80%',
+                onEnter: animateCounters,
+                once: true
+            });
+        }
     </script>
 </body>
 </html>

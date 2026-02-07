@@ -6,7 +6,15 @@ class KodePembayaran {
         const query = `
             SELECT * 
             FROM kode_pembayaran
-            ORDER BY id_kode_pembayaran DESC
+            ORDER BY 
+                CASE 
+                    WHEN kode_bayar REGEXP '^[A-Za-z]+[0-9]+$' 
+                    THEN CONCAT(
+                        SUBSTRING(kode_bayar, 1, LENGTH(kode_bayar) - LENGTH(CAST(CAST(REGEXP_REPLACE(kode_bayar, '[^0-9]', '') AS UNSIGNED) AS CHAR))),
+                        LPAD(CAST(REGEXP_REPLACE(kode_bayar, '[^0-9]', '') AS UNSIGNED), 10, '0')
+                    )
+                    ELSE kode_bayar
+                END ASC
         `;
         const [rows] = await db.execute(query);
         return rows;
@@ -129,6 +137,67 @@ class KodePembayaran {
         }
 
         return kodeList.length;
+    }
+
+    static async getLastKodeNumber(prefix = 'KB') {
+        // Escape special regex characters in prefix
+        const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        
+        const query = `
+            SELECT kode_bayar 
+            FROM kode_pembayaran 
+            WHERE kode_bayar REGEXP ?
+            ORDER BY CAST(SUBSTRING(kode_bayar, ${prefix.length + 1}) AS UNSIGNED) DESC 
+            LIMIT 1
+        `;
+        
+        const regexPattern = `^${escapedPrefix}[0-9]+$`;
+        const [rows] = await db.execute(query, [regexPattern]);
+        
+        if (rows.length > 0) {
+            const lastKode = rows[0].kode_bayar;
+            const lastNumber = parseInt(lastKode.substring(prefix.length));
+            return lastNumber;
+        }
+        return 0;
+    }
+
+    static async generateKodeBatch(jumlah, prefix = 'KB') {
+        const lastNumber = await this.getLastKodeNumber(prefix);
+        const kodeList = [];
+        
+        for (let i = 1; i <= jumlah; i++) {
+            const newNumber = lastNumber + i;
+            const kodeBayar = `${prefix}${String(newNumber).padStart(4, '0')}`;
+            kodeList.push({
+                kode_bayar: kodeBayar,
+                status: 'Belum Terpakai'
+            });
+        }
+        
+        return kodeList;
+    }
+
+    static async createBatch(kodeList) {
+        const batchSize = 100;
+        let totalInserted = 0;
+        
+        for (let i = 0; i < kodeList.length; i += batchSize) {
+            const batch = kodeList.slice(i, i + batchSize);
+            const values = batch.map(kode => 
+                `('${kode.kode_bayar}', '${kode.status}')`
+            ).join(',');
+            
+            const query = `
+                INSERT INTO kode_pembayaran (kode_bayar, status)
+                VALUES ${values}
+            `;
+            
+            const [result] = await db.execute(query);
+            totalInserted += result.affectedRows;
+        }
+        
+        return totalInserted;
     }
 }
 

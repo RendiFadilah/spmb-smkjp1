@@ -164,7 +164,7 @@ router.get('/export/all', async (req, res) => {
         const titles = [
             'Laporan Pemberian Seragam',
             'PPDB SMK Jakarta Pusat 1',
-            'Tahun 2025/2026'
+            'Tahun 2026/2027'
         ];
 
         titles.forEach((title, index) => {
@@ -307,7 +307,7 @@ router.get('/export/today', async (req, res) => {
         const titles = [
             'Laporan Pemberian Seragam',
             'PPDB SMK Jakarta Pusat 1',
-            'Tahun 2025/2026',
+            'Tahun 2026/2027',
             formattedDate
         ];
 
