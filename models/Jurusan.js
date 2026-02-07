@@ -40,7 +40,7 @@ class Jurusan {
             data.jurusan,
             data.kode,
             data.kapasitas,
-            data.kapasitas, // Update sisa_kapasitas to match new kapasitas
+            data.sisa_kapasitas != null ? data.sisa_kapasitas : data.kapasitas,
             id
         ]);
         return result.affectedRows > 0;

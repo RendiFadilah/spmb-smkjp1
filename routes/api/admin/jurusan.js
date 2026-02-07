@@ -49,7 +49,8 @@ router.put('/:id', async (req, res) => {
     try {
         const data = {
             ...req.body,
-            kapasitas: parseInt(req.body.kapasitas)
+            kapasitas: parseInt(req.body.kapasitas),
+            sisa_kapasitas: req.body.sisa_kapasitas != null ? parseInt(req.body.sisa_kapasitas) : null
         };
 
         const success = await Jurusan.update(req.params.id, data);

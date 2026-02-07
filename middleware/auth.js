@@ -64,8 +64,8 @@ exports.isAuthenticated = async (req, res, next) => {
     if (req.xhr || req.path.startsWith('/api/')) {
       return res.status(401).json({ message: 'Sesi anda telah berakhir, silakan login kembali' });
     }
-    req.session.destroy();
     req.flash('message', 'Sesi anda telah berakhir, silakan login kembali');
+    req.session.destroy();
     res.redirect('/auth');
   }
 };
@@ -117,11 +117,26 @@ exports.addUserData = (req, res, next) => {
 // Middleware to check if user is admin, petugas, or bendahara
 exports.isAdmin = (req, res, next) => {
   if (!req.user) {
-    return res.status(401).json({ message: 'Silakan login terlebih dahulu' });
+    if (req.xhr || req.path.startsWith('/api/')) {
+      return res.status(401).json({ message: 'Silakan login terlebih dahulu' });
+    }
+    req.flash('message', 'Silakan login terlebih dahulu');
+    return res.redirect('/auth');
   }
 
   if (req.user.roles !== 'Admin' && req.user.roles !== 'Petugas' && req.user.roles !== 'Bendahara') {
-    return res.status(403).json({ message: 'Anda tidak memiliki akses ke halaman ini' });
+    if (req.xhr || req.path.startsWith('/api/')) {
+      return res.status(403).json({ message: 'Anda tidak memiliki akses ke halaman ini' });
+    }
+    return res.render('error', {
+      title: 'Akses Ditolak - SPMB SMK Jakarta Pusat 1',
+      message: 'Akses Ditolak',
+      error: {
+        status: 403,
+        stack: 'Anda tidak memiliki akses ke halaman ini'
+      },
+      layout: false
+    });
   }
 
   next();
