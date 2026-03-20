@@ -4,3 +4,6 @@ node_modules/
 public/css/output.css
 *.log
 npm-debug.log*
+
+# Uploads
+public/uploads/
