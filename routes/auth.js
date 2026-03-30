@@ -17,8 +17,8 @@ const loginLimiter = rateLimit(rateLimitConfig);
 // GET /auth - Render login/register page
 router.get('/', (req, res) => {
   res.render('auth/auth', {
-    title: 'Login/Register - SPMB SMK Jakarta Pusat 1',
-    description: 'Halaman Login dan Registrasi SPMB SMK Jakarta Pusat 1',
+    title: 'Login/Register - SPMB SDIT Salsabila 3 Banguntapan',
+    description: 'Halaman Login dan Registrasi SPMB SDIT Salsabila 3 Banguntapan',
     message: req.flash('message'),
     layout: false
   });
@@ -129,7 +129,7 @@ router.post('/login', loginLimiter, async (req, res) => {
     }
 
     // Create JWT token
-    const jwtSecret = process.env.JWT_SECRET || 'spmb-smkjp1-jwt-fallback-secret-key-change-in-production';
+    const jwtSecret = process.env.JWT_SECRET || 'spmb-sdit-salsabila-jwt-fallback-secret-key-change-in-production';
     const token = jwt.sign(
       {
         id: user.id_user,

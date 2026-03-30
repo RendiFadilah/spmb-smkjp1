@@ -30,7 +30,7 @@ exports.isAuthenticated = async (req, res, next) => {
     }
 
     // Verify token
-    const jwtSecret = process.env.JWT_SECRET || 'spmb-smkjp1-jwt-fallback-secret-key-change-in-production';
+    const jwtSecret = process.env.JWT_SECRET || 'spmb-sdit-salsabila-jwt-fallback-secret-key-change-in-production';
     const decoded = jwt.verify(token, jwtSecret);
     
     // Get user from database
@@ -86,7 +86,7 @@ exports.checkRole = (allowedRoles) => {
         return res.status(403).json({ message: 'Anda tidak memiliki akses ke halaman ini' });
       }
       return res.render('error', {
-        title: 'Akses Ditolak - SPMB SMK Jakarta Pusat 1',
+        title: 'Akses Ditolak - SPMB SDIT Salsabila 3 Banguntapan',
         message: 'Akses Ditolak',
         error: {
           status: 403,
@@ -129,7 +129,7 @@ exports.isAdmin = (req, res, next) => {
       return res.status(403).json({ message: 'Anda tidak memiliki akses ke halaman ini' });
     }
     return res.render('error', {
-      title: 'Akses Ditolak - SPMB SMK Jakarta Pusat 1',
+      title: 'Akses Ditolak - SPMB SDIT Salsabila 3 Banguntapan',
       message: 'Akses Ditolak',
       error: {
         status: 403,

@@ -20,7 +20,7 @@ router.get('/data/jurusan', async (req, res) => {
         res.json({ success: true, data: jurusan });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengambil data jurusan' });
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengambil data kelas' });
     }
 });
 

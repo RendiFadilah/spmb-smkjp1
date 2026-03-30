@@ -55,10 +55,10 @@
         </div>
     </div>
     <!-- Formulir Terverifikasi -->
-    <div class="bg-white rounded-lg shadow-sm border border-blue-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
+    <div class="bg-white rounded-lg shadow-sm border border-emerald-100 p-4 hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5">
         <div class="flex items-center space-x-3">
-            <div class="p-3 rounded-lg bg-blue-50">
-                <i class="fas fa-check-circle text-lg text-blue-500"></i>
+            <div class="p-3 rounded-lg bg-emerald-50">
+                <i class="fas fa-check-circle text-lg text-emerald-500"></i>
             </div>
             <div class="flex-1">
                 <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Terverifikasi</p>
@@ -114,7 +114,7 @@
         <!-- Export Buttons -->
         <div class="flex gap-2">
             <a href="/api/admin/formulir/export/today" 
-               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+               class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 <i class="fas fa-file-excel mr-2"></i>
                 Export Hari Ini
             </a>
@@ -474,7 +474,7 @@ function renderTable(data) {
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                         ${form.metode_pembayaran ? 
                             `<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                form.metode_pembayaran === 'Transfer' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                                form.metode_pembayaran === 'Transfer' ? 'bg-emerald-100 text-emerald-800' : 'bg-green-100 text-green-800'
                             }">
                                 ${form.metode_pembayaran}
                             </span>` 
@@ -505,7 +505,7 @@ function renderTable(data) {
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button onclick="showDetail(${form.id_formulir})" 
-                                class="text-blue-600 hover:text-blue-800 mr-3 transition-colors duration-200">
+                                class="text-emerald-600 hover:text-emerald-800 mr-3 transition-colors duration-200">
                             <i class="fas fa-eye"></i>
                         </button>
                         <button onclick="editFormulir(${form.id_formulir})" 

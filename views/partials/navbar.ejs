@@ -3,7 +3,7 @@
     <a href="/" class="flex items-center space-x-3 group">
       <img src="/images/logo-jp1.png" class="h-9 md:h-11 w-auto drop-shadow-lg transition-transform duration-300 group-hover:scale-110" alt="Logo">
       <div class="flex flex-col">
-        <span class="text-sm md:text-base font-bold text-white nav-brand-text transition-colors duration-500">SPMB SMK JP 1</span>
+        <span class="text-sm md:text-base font-bold text-white nav-brand-text transition-colors duration-500">SPMB SDIT Salsabila 3</span>
         <span class="text-[10px] md:text-xs text-white/60 font-medium nav-brand-sub transition-colors duration-500 hidden sm:block">Penerimaan Murid Baru</span>
       </div>
     </a>
@@ -16,23 +16,23 @@
       <% if (typeof user !== 'undefined' && user) { %>
         <div class="relative">
           <button type="button" class="flex items-center gap-2 text-sm bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-1.5 hover:bg-white/20 transition-all duration-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>
             <span class="hidden sm:block text-sm font-medium text-white nav-user-text"><%= user.nama.split(' ')[0] %></span>
             <i class="fas fa-chevron-down text-[10px] text-white/60 nav-user-text"></i>
           </button>
           <div class="hidden z-50 my-4 w-64 list-none bg-white rounded-2xl border border-gray-100 shadow-2xl overflow-hidden" id="user-dropdown">
-            <div class="py-4 px-5 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <div class="py-4 px-5 bg-gradient-to-r from-emerald-600 to-teal-600">
               <span class="block text-base font-bold text-white"><%= user.nama %></span>
-              <span class="block text-sm text-blue-100 mt-0.5"><%= user.roles %></span>
+              <span class="block text-sm text-emerald-100 mt-0.5"><%= user.roles %></span>
             </div>
             <ul class="py-2 px-2">
-              <li><a href="/<%= user.roles.toLowerCase() %>/dashboard" class="flex items-center py-2.5 px-4 text-sm text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"><i class="fas fa-gauge-high mr-3 w-4 text-gray-400"></i>Dashboard</a></li>
+              <li><a href="/<%= user.roles.toLowerCase() %>/dashboard" class="flex items-center py-2.5 px-4 text-sm text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-200"><i class="fas fa-gauge-high mr-3 w-4 text-gray-400"></i>Dashboard</a></li>
               <li><form action="/auth/logout" method="POST"><button type="submit" class="flex w-full items-center py-2.5 px-4 text-sm text-gray-700 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200"><i class="fas fa-right-from-bracket mr-3 w-4 text-gray-400"></i>Logout</button></form></li>
             </ul>
           </div>
         </div>
       <% } else { %>
-        <a href="/auth" class="hidden md:inline-flex items-center gap-2 text-white bg-white/15 backdrop-blur-md border border-white/25 hover:bg-white hover:text-blue-600 font-semibold rounded-full text-sm px-6 py-2.5 transition-all duration-300 hover:shadow-lg nav-cta-btn">
+        <a href="/auth" class="hidden md:inline-flex items-center gap-2 text-white bg-white/15 backdrop-blur-md border border-white/25 hover:bg-white hover:text-emerald-600 font-semibold rounded-full text-sm px-6 py-2.5 transition-all duration-300 hover:shadow-lg nav-cta-btn">
           <i class="fas fa-arrow-right-to-bracket text-xs"></i> Masuk
         </a>
       <% } %>
@@ -45,13 +45,13 @@
     </div>
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
       <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-2xl bg-white/95 backdrop-blur-xl md:space-x-1 md:flex-row md:mt-0 md:border-0 md:bg-transparent shadow-xl md:shadow-none border border-gray-100 md:border-0">
-        <li><a href="/" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-home mr-2 md:hidden"></i>Beranda</a></li>
-        <li><a href="#program-keahlian" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-graduation-cap mr-2 md:hidden"></i>Jurusan</a></li>
-        <li><a href="#alur-pendaftaran" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-route mr-2 md:hidden"></i>Alur Pendaftaran</a></li>
-        <li><a href="#hubungi-kami" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-blue-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-phone mr-2 md:hidden"></i>Kontak</a></li>
+        <li><a href="/" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-emerald-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-home mr-2 md:hidden"></i>Beranda</a></li>
+        <li><a href="#program-keahlian" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-emerald-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-graduation-cap mr-2 md:hidden"></i>Kelas</a></li>
+        <li><a href="#alur-pendaftaran" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-emerald-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-route mr-2 md:hidden"></i>Alur Pendaftaran</a></li>
+        <li><a href="#hubungi-kami" class="flex items-center py-2.5 px-4 md:py-2 rounded-xl text-gray-700 md:text-white/80 hover:text-emerald-600 md:hover:text-white md:hover:bg-white/10 transition-all duration-300 text-sm font-medium"><i class="fas fa-phone mr-2 md:hidden"></i>Kontak</a></li>
         <% if (typeof user === 'undefined' || !user) { %>
         <li class="block md:hidden border-t border-gray-100 mt-2 pt-2">
-          <a href="/auth" class="flex items-center justify-center py-2.5 px-4 text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl font-semibold text-sm shadow-lg shadow-blue-500/20">
+          <a href="/auth" class="flex items-center justify-center py-2.5 px-4 text-white bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl font-semibold text-sm shadow-lg shadow-emerald-500/20">
             <i class="fas fa-arrow-right-to-bracket mr-2"></i>Masuk / Daftar
           </a>
         </li>

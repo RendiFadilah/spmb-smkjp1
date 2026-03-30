@@ -49,8 +49,8 @@ router.get('/', isAuthenticated, async (req, res) => {
         }));
 
         res.render('dashboard/cpdb/index', {
-            title: 'Dashboard CPDB - SPMB SMK Jakarta Pusat 1',
-            description: 'Dashboard CPDB SPMB SMK Jakarta Pusat 1',
+            title: 'Dashboard CPDB - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Dashboard CPDB SPMB SDIT Salsabila 3 Banguntapan',
             user: req.user,
             layout: 'layouts/dashboard-cpdb',
             currentPath: '/dashboard/cpdb',
@@ -68,8 +68,8 @@ router.get('/', isAuthenticated, async (req, res) => {
 // Settings page
 router.get('/settings', isAuthenticated, (req, res) => {
     res.render('dashboard/cpdb/settings', {
-        title: 'Pengaturan Akun - SPMB SMK Jakarta Pusat 1',
-        description: 'Pengaturan akun CPDB SPMB SMK Jakarta Pusat 1',
+        title: 'Pengaturan Akun - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Pengaturan akun CPDB SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard-cpdb',
         currentPath: '/dashboard/cpdb/settings',

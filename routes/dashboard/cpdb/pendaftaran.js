@@ -46,8 +46,8 @@ router.get('/', isAuthenticated, async (req, res) => {
         }
 
         res.render('dashboard/cpdb/pendaftaran', {
-            title: 'Pendaftaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Pendaftaran CPDB SPMB SMK Jakarta Pusat 1',
+            title: 'Pendaftaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Pendaftaran CPDB SPMB SDIT Salsabila 3 Banguntapan',
             user: user,
             layout: 'layouts/dashboard-cpdb',
             currentPath: '/dashboard/cpdb/pendaftaran',
@@ -100,8 +100,8 @@ router.get('/preview-formulir', isAuthenticated, async (req, res) => {
         const dataPeriodik = await DataPeriodik.findByFormulirId(user.formulir.id_formulir);
 
         res.render('dashboard/cpdb/pendaftaran', {
-            title: 'Pendaftaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Pendaftaran CPDB SPMB SMK Jakarta Pusat 1',
+            title: 'Pendaftaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Pendaftaran CPDB SPMB SDIT Salsabila 3 Banguntapan',
             user: user,
             layout: 'layouts/dashboard-cpdb',
             currentPath: '/dashboard/cpdb/pendaftaran',
@@ -158,8 +158,8 @@ router.get('/isi-formulir/:section', isAuthenticated, async (req, res) => {
         }
 
         res.render('dashboard/cpdb/pendaftaran', {
-            title: 'Pendaftaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Pendaftaran CPDB SPMB SMK Jakarta Pusat 1',
+            title: 'Pendaftaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Pendaftaran CPDB SPMB SDIT Salsabila 3 Banguntapan',
             user: user,
             layout: 'layouts/dashboard-cpdb',
             currentPath: '/dashboard/cpdb/pendaftaran',
@@ -264,8 +264,8 @@ router.get('/pembayaran', isAuthenticated, async (req, res) => {
         }
 
         res.render('dashboard/cpdb/pendaftaran', {
-            title: 'Pembayaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Pendaftaran CPDB SPMB SMK Jakarta Pusat 1',
+            title: 'Pembayaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Pendaftaran CPDB SPMB SDIT Salsabila 3 Banguntapan',
             user: user,
             layout: 'layouts/dashboard-cpdb',
             currentPath: '/dashboard/cpdb/pendaftaran',
@@ -328,8 +328,8 @@ router.get('/:step', isAuthenticated, async (req, res) => {
         }
         
         res.render('dashboard/cpdb/pendaftaran', {
-            title: 'Pendaftaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Pendaftaran CPDB SPMB SMK Jakarta Pusat 1',
+            title: 'Pendaftaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Pendaftaran CPDB SPMB SDIT Salsabila 3 Banguntapan',
             user: user,
             layout: 'layouts/dashboard-cpdb',
             currentPath: '/dashboard/cpdb/pendaftaran',

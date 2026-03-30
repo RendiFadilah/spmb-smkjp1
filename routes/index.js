@@ -34,8 +34,8 @@ router.get('/', (req, res) => {
 
     // If not authenticated, show homepage
     res.render('index', {
-        title: 'SPMB SMK Jakarta Pusat 1',
-        description: 'Sistem Penerimaan Peserta Didik Baru SMK JT 1',
+        title: 'SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Sistem Penerimaan Murid Baru SDIT Salsabila 3 Banguntapan',
         layout: 'layouts/main'
     });
 });
@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
 // Catch-all route for handling 404s
 router.use((req, res) => {
     res.status(404).render('error', {
-        title: '404 Not Found - SPMB SMK Jakarta Pusat 1',
+        title: '404 Not Found - SPMB SDIT Salsabila 3 Banguntapan',
         message: 'Halaman Tidak Ditemukan',
         error: {
             status: 404,

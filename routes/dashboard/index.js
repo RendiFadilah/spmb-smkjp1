@@ -14,8 +14,8 @@ router.use('/cpdb', cpdbRoutes);
 // GET /dashboard/bendahara - Bendahara Dashboard
 router.get('/bendahara', (req, res) => {
     res.render('dashboard/bendahara/index', {
-        title: 'Dashboard Bendahara - SPMB SMK Jakarta Pusat 1',
-        description: 'Dashboard Bendahara SPMB SMK Jakarta Pusat 1',
+        title: 'Dashboard Bendahara - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Dashboard Bendahara SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard'
     });
@@ -24,8 +24,8 @@ router.get('/bendahara', (req, res) => {
 // GET /dashboard/petugas - Petugas Dashboard
 router.get('/petugas', (req, res) => {
     res.render('dashboard/petugas/index', {
-        title: 'Dashboard Petugas - SPMB SMK Jakarta Pusat 1',
-        description: 'Dashboard Petugas SPMB SMK Jakarta Pusat 1',
+        title: 'Dashboard Petugas - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Dashboard Petugas SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard'
     });

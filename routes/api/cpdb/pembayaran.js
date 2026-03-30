@@ -52,7 +52,7 @@ router.get('/biaya/:idJurusan', async function(req, res) {
         if (!biaya) {
             return res.status(404).json({
                 success: false,
-                message: 'Biaya tidak ditemukan untuk jurusan ini pada periode aktif'
+                message: 'Biaya tidak ditemukan untuk kelas ini pada periode aktif'
             });
         }
 

@@ -29,7 +29,7 @@
             <p class="text-lg font-semibold text-gray-800"><%= payment.nama_lengkap %></p>
         </div>
         <div class="p-4 bg-gray-50 rounded-lg">
-            <p class="text-sm font-medium text-gray-500 mb-1">Jurusan</p>
+            <p class="text-sm font-medium text-gray-500 mb-1">Kelas</p>
             <p class="text-lg font-semibold text-gray-800"><%= payment.jurusan %></p>
         </div>
         <!-- Updated biaya section to show base price and discount -->
@@ -143,7 +143,7 @@
                         <td class="px-6 py-4">
                             <% if (trx.bukti_pembayaran) { %>
                                 <button onclick="showProofModal('<%= trx.bukti_pembayaran %>')"
-                                        class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 transition-colors duration-150">
+                                        class="inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 transition-colors duration-150">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -252,7 +252,7 @@
                 Catatan (opsional)
             </label>
             <textarea id="catatan" 
-                      class="w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-150"
+                      class="w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow duration-150"
                       rows="4"
                       placeholder="Masukkan catatan verifikasi..."></textarea>
         </div>
@@ -262,7 +262,7 @@
                 Batal
             </button>
             <button onclick="submitVerification()"
-                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150">
+                    class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-150">
                 Simpan
             </button>
         </div>

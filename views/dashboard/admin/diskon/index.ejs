@@ -1,7 +1,7 @@
 <!-- Page Title -->
 <div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
     <h1 class="text-3xl font-bold text-gray-800">Manajemen Diskon Periode</h1>
-    <p class="mt-2 text-gray-600">Kelola data diskon per periode dan jurusan</p>
+    <p class="mt-2 text-gray-600">Kelola data diskon per periode dan kelas</p>
 </div>
 
 <!-- Search and Add Button -->
@@ -11,7 +11,7 @@
         <input type="text" 
                id="searchInput" 
                class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
-               placeholder="Cari berdasarkan periode atau jurusan...">
+               placeholder="Cari berdasarkan periode atau kelas...">
         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
             <i class="fas fa-search text-gray-400"></i>
         </div>
@@ -40,7 +40,7 @@
                         Periode
                     </th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Jurusan
+                        Kelas
                     </th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Nominal Diskon
@@ -85,7 +85,7 @@
                         </select>
                     </div>
                     <div id="jurusanWrapper" style="display: none;">
-                        <label for="id_jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan</label>
+                        <label for="id_jurusan" class="block mb-2 text-sm font-medium text-gray-900">Kelas</label>
                         <select id="id_jurusan" 
                                 name="id_jurusan" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200 cursor-not-allowed opacity-75" 
@@ -94,7 +94,7 @@
                                 readonly
                                 disabled>
                         </select>
-                        <p class="mt-1 text-sm text-gray-500">Jurusan akan otomatis dipilih sesuai periode</p>
+                        <p class="mt-1 text-sm text-gray-500">Kelas akan otomatis dipilih sesuai periode</p>
                     </div>
                     <div>
                         <label for="nominal_diskon" class="block mb-2 text-sm font-medium text-gray-900">Nominal Diskon</label>

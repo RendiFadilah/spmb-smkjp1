@@ -54,7 +54,7 @@ router.get('/periode/:id_periode/jurusan/:id_jurusan', isAdmin, async (req, res)
         if (!diskon) {
             return res.status(404).json({
                 success: false,
-                message: 'Tidak ada diskon untuk periode dan jurusan ini'
+                message: 'Tidak ada diskon untuk periode dan kelas ini'
             });
         }
         
@@ -100,7 +100,7 @@ router.get('/jurusan/:id_periode', isAdmin, async (req, res) => {
         console.error('Error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat mengambil data jurusan'
+            message: 'Terjadi kesalahan saat mengambil data kelas'
         });
     }
 });
@@ -127,7 +127,7 @@ router.post('/', isAdmin, async (req, res) => {
             if (existingDiskon) {
                 return res.status(400).json({
                     success: false,
-                    message: `Diskon untuk periode ini dan jurusan dengan ID ${jurusanId} sudah ada`
+                    message: `Diskon untuk periode ini dan kelas dengan ID ${jurusanId} sudah ada`
                 });
             }
         }

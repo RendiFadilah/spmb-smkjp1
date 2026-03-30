@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     new Typed('#typed-text', {
-        strings: ['SMK Jakarta Pusat 1'],
+        strings: ['SDIT Salsabila 3 Banguntapan'],
         typeSpeed: 50,
         backSpeed: 30,
         backDelay: 2000,

@@ -217,7 +217,7 @@ router.get('/:id/diskon/:jurusanId', isAdmin, async (req, res) => {
                     id_jurusan: jurusanId,
                     nominal_diskon: 0
                 },
-                message: 'Tidak ada diskon untuk periode dan jurusan ini'
+                message: 'Tidak ada diskon untuk periode dan kelas ini'
             });
         }
 

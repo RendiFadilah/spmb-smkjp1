@@ -88,8 +88,8 @@ router.get('/', async (req, res) => {
         }));
 
         res.render('dashboard/admin/index', {
-            title: 'Dashboard Admin - SPMB SMK Jakarta Pusat 1',
-            description: 'Dashboard Admin SPMB SMK Jakarta Pusat 1',
+            title: 'Dashboard Admin - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Dashboard Admin SPMB SDIT Salsabila 3 Banguntapan',
             user: req.user,
             layout: 'layouts/dashboard',
             currentPath: '/dashboard/admin',
@@ -112,19 +112,19 @@ router.get('/', async (req, res) => {
 // GET /dashboard/admin/petugas - Petugas Management
 router.get('/petugas', (req, res) => {
     res.render('dashboard/admin/petugas/index', {
-        title: 'Manajemen Petugas - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Petugas SPMB SMK Jakarta Pusat 1',
+        title: 'Manajemen Petugas - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Petugas SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/petugas'
     });
 });
 
-// GET /dashboard/admin/jurusan - Jurusan Management
+// GET /dashboard/admin/jurusan - Kelas Management
 router.get('/jurusan', (req, res) => {
     res.render('dashboard/admin/jurusan/index', {
-        title: 'Manajemen Jurusan - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Jurusan SPMB SMK Jakarta Pusat 1',
+        title: 'Manajemen Kelas - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Kelas SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/jurusan'
@@ -134,8 +134,8 @@ router.get('/jurusan', (req, res) => {
 // GET /dashboard/admin/cpdb-awal - CPDB Awal Management
 router.get('/cpdb-awal', (req, res) => {
     res.render('dashboard/admin/cpdb-awal/index', {
-        title: 'Manajemen CPDB Awal - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Calon Peserta Didik Baru SPMB SMK Jakarta Pusat 1',
+        title: 'Manajemen CPDB Awal - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Calon Peserta Didik Baru SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/cpdb-awal'
@@ -145,7 +145,7 @@ router.get('/cpdb-awal', (req, res) => {
 // GET /dashboard/admin/cpdb-tetap - CPDB Tetap Management
 router.get('/cpdb-tetap', (req, res) => {
     res.render('dashboard/admin/cpdb-tetap/index', {
-        title: 'CPDB Tetap - SPMB SMK Jakarta Pusat 1',
+        title: 'CPDB Tetap - SPMB SDIT Salsabila 3 Banguntapan',
         description: 'Data Calon Peserta Didik Baru yang Sudah Terverifikasi',
         user: req.user,
         layout: 'layouts/dashboard',
@@ -156,8 +156,8 @@ router.get('/cpdb-tetap', (req, res) => {
 // GET /dashboard/admin/formulir/kode-pembayaran - Kode Pembayaran Management
 router.get('/formulir/kode-pembayaran', (req, res) => {
     res.render('dashboard/admin/formulir/kode-pembayaran/index', {
-        title: 'Manajemen Kode Pembayaran - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Kode Pembayaran SPMB SMK Jakarta Pusat 1',
+        title: 'Manajemen Kode Pembayaran - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Kode Pembayaran SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/formulir/kode-pembayaran'
@@ -167,8 +167,8 @@ router.get('/formulir/kode-pembayaran', (req, res) => {
 // GET /dashboard/admin/formulir - Formulir Management
 router.get('/formulir', (req, res) => {
     res.render('dashboard/admin/formulir/index', {
-        title: 'Manajemen Formulir - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Formulir SPMB SMK Jakarta Pusat 1',
+        title: 'Manajemen Formulir - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Formulir SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/formulir'
@@ -178,8 +178,8 @@ router.get('/formulir', (req, res) => {
 // GET /dashboard/admin/formulir/cetak-kuitansi - Print Receipt
 router.get('/formulir/cetak-kuitansi', (req, res) => {
     res.render('dashboard/admin/formulir/cetakKuitansi', {
-        title: 'Cetak Kuitansi Formulir - SPMB SMK Jakarta Pusat 1',
-        description: 'Cetak Kuitansi Formulir SPMB SMK Jakarta Pusat 1',
+        title: 'Cetak Kuitansi Formulir - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Cetak Kuitansi Formulir SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: false, // No layout for printing
         currentUser: req.user // Pass the logged-in user data
@@ -300,8 +300,8 @@ router.get('/pembayaran', async (req, res) => {
         console.log('Master Biaya:', masterBiaya);
 
         res.render('dashboard/admin/pembayaran/index', {
-            title: 'Manajemen Pembayaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Manajemen Pembayaran SPMB SMK Jakarta Pusat 1',
+            title: 'Manajemen Pembayaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Manajemen Pembayaran SPMB SDIT Salsabila 3 Banguntapan',
             user: req.user,
             layout: 'layouts/dashboard',
             currentPath: '/dashboard/admin/pembayaran',
@@ -319,8 +319,8 @@ router.get('/pembayaran', async (req, res) => {
 // GET /dashboard/admin/reward-spmb - Rewards Management
 router.get('/reward-spmb', (req, res) => {
     res.render('dashboard/admin/rewards/index', {
-        title: 'Reward SPMB - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Reward SPMB SPMB SMK Jakarta Pusat 1',
+        title: 'Reward SPMB - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Reward SPMB SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/reward-spmb'
@@ -338,19 +338,19 @@ router.get('/reward-spmb/cetak/:id', isAdmin, (req, res) => {
 // GET /dashboard/admin/seragam - Seragam Management
 router.get('/seragam', (req, res) => {
     res.render('dashboard/admin/seragam/index', {
-        title: 'Manajemen Seragam - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Seragam SPMB SMK Jakarta Pusat 1',
+        title: 'Manajemen Seragam - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Seragam SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/seragam'
     });
 });
 
-// GET /dashboard/admin/biaya - Master Biaya Jurusan Management
+// GET /dashboard/admin/biaya - Master Biaya Kelas Management
 router.get('/biaya', (req, res) => {
     res.render('dashboard/admin/biaya/index', {
-        title: 'Master Biaya Jurusan - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Biaya per Jurusan SPMB SMK Jakarta Pusat 1',
+        title: 'Master Biaya Kelas - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Biaya per Kelas SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/biaya'
@@ -360,8 +360,8 @@ router.get('/biaya', (req, res) => {
 // GET /dashboard/admin/periode - Periode Pendaftaran Management
 router.get('/periode', (req, res) => {
     res.render('dashboard/admin/periode/index', {
-        title: 'Periode Pendaftaran - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Periode Pendaftaran SPMB SMK Jakarta Pusat 1',
+        title: 'Periode Pendaftaran - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Periode Pendaftaran SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/periode'
@@ -371,8 +371,8 @@ router.get('/periode', (req, res) => {
 // GET /dashboard/admin/diskon - Diskon Periode Management
 router.get('/diskon', (req, res) => {
     res.render('dashboard/admin/diskon/index', {
-        title: 'Diskon Periode - SPMB SMK Jakarta Pusat 1',
-        description: 'Manajemen Diskon Periode SPMB SMK Jakarta Pusat 1',
+        title: 'Diskon Periode - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Manajemen Diskon Periode SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/diskon'
@@ -382,8 +382,8 @@ router.get('/diskon', (req, res) => {
 // GET /dashboard/admin/settings - Settings Page
 router.get('/settings', (req, res) => {
     res.render('dashboard/admin/settings/index', {
-        title: 'Pengaturan - SPMB SMK Jakarta Pusat 1',
-        description: 'Pengaturan Akun SPMB SMK Jakarta Pusat 1',
+        title: 'Pengaturan - SPMB SDIT Salsabila 3 Banguntapan',
+        description: 'Pengaturan Akun SPMB SDIT Salsabila 3 Banguntapan',
         user: req.user,
         layout: 'layouts/dashboard',
         currentPath: '/dashboard/admin/settings'
@@ -401,8 +401,8 @@ router.get('/pembayaran/cetak-kuitansi/:id', isAdmin, async (req, res) => {
         }
 
         res.render('dashboard/admin/pembayaran/cetakKuitansi', {
-            title: 'Cetak Kuitansi Pembayaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Cetak Kuitansi Pembayaran SPMB SMK Jakarta Pusat 1',
+            title: 'Cetak Kuitansi Pembayaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Cetak Kuitansi Pembayaran SPMB SDIT Salsabila 3 Banguntapan',
             layout: false,
             id_pembayaran: id
         });
@@ -469,8 +469,8 @@ router.get('/pembayaran/:id', async (req, res) => {
         const secondPayment = verifiedTransactions[1] || null;
 
         res.render('dashboard/admin/pembayaran/detail', {
-            title: 'Detail Pembayaran - SPMB SMK Jakarta Pusat 1',
-            description: 'Detail Pembayaran SPMB SMK Jakarta Pusat 1',
+            title: 'Detail Pembayaran - SPMB SDIT Salsabila 3 Banguntapan',
+            description: 'Detail Pembayaran SPMB SDIT Salsabila 3 Banguntapan',
             user: req.user,
             layout: 'layouts/dashboard',
             currentPath: '/dashboard/admin/pembayaran',

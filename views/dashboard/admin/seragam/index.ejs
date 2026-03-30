@@ -37,7 +37,7 @@
     <div class="flex gap-2">
         <a href="/api/admin/seragam/export/today" 
            onclick="showToast('Mengunduh file Excel...')"
-           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+           class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
             <i class="fas fa-file-excel mr-2"></i>
             Export Hari Ini
         </a>
@@ -74,10 +74,10 @@
                             Nama CPDB
                         </th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">
-                            Jurusan
+                            Kelas
                             <select id="jurusanFilter" class="ml-2 border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200">
                                 <option value="">Semua</option>
-                                <!-- Jurusan options will be dynamically populated -->
+                                <!-- Kelas options will be dynamically populated -->
                             </select>
                         </th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">
@@ -146,10 +146,10 @@ function loadSeragamData(tab = 'today') {
         allData = data;
         
         // Update jurusan filter options
-        const uniqueJurusan = [...new Set(data.map(item => item.jurusan))].sort();
+        const uniqueKelas = [...new Set(data.map(item => item.jurusan))].sort();
         const select = $('#jurusanFilter');
         select.empty().append('<option value="">Semua</option>');
-        uniqueJurusan.forEach(jurusan => {
+        uniqueKelas.forEach(jurusan => {
             if (jurusan) {
                 select.append(`<option value="${jurusan}">${jurusan}</option>`);
             }

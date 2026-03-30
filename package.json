@@ -1,7 +1,7 @@
 {
-  "name": "ppdb-smkjt1",
+  "name": "ppdb-sdit-salsabila",
   "version": "1.0.0",
-  "description": "Aplikasi PPDB Digital untuk SMK Jakarta Pusat 1",
+  "description": "Aplikasi PPDB Digital untuk SDIT Salsabila 3 Banguntapan",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

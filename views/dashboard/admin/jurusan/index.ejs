@@ -1,26 +1,26 @@
 <!-- Page Header -->
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900">Manajemen Jurusan</h1>
-        <p class="mt-1 text-sm text-gray-500">Kelola data jurusan dan kapasitas penerimaan</p>
+        <h1 class="text-2xl font-bold text-gray-900">Manajemen Kelas</h1>
+        <p class="mt-1 text-sm text-gray-500">Kelola data kelas dan kapasitas penerimaan</p>
     </div>
     <button type="button" onclick="openAddModal()"
         class="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-brand-500/25 hover:shadow-xl hover:shadow-brand-500/30 transition-all duration-200 hover:-translate-y-0.5">
         <i class="fas fa-plus text-xs"></i>
-        Tambah Jurusan
+        Tambah Kelas
     </button>
 </div>
 
 <!-- Statistics Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <!-- Total Jurusan -->
+    <!-- Total Kelas -->
     <div class="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-lg hover:shadow-gray-100/50 transition-all duration-300">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center shrink-0">
                 <i class="fas fa-graduation-cap text-brand-600"></i>
             </div>
             <div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Jurusan</p>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Kelas</p>
                 <p class="text-2xl font-bold text-gray-900 mt-0.5" id="totalJurusan">-</p>
             </div>
         </div>
@@ -28,8 +28,8 @@
     <!-- Total Kapasitas -->
     <div class="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-lg hover:shadow-gray-100/50 transition-all duration-300">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-                <i class="fas fa-users text-blue-600"></i>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                <i class="fas fa-users text-emerald-600"></i>
             </div>
             <div>
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Kapasitas</p>
@@ -59,7 +59,7 @@
         </div>
         <input type="text" id="searchInput"
             class="w-full pl-11 pr-10 py-2.5 bg-white border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all duration-200"
-            placeholder="Cari jurusan atau kode...">
+            placeholder="Cari kelas atau kode...">
         <button id="clearSearch" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors hidden">
             <i class="fas fa-times text-sm"></i>
         </button>
@@ -72,7 +72,7 @@
         <table class="w-full">
             <thead>
                 <tr class="border-b border-gray-100">
-                    <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Jurusan</th>
+                    <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Kelas</th>
                     <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Kode</th>
                     <th class="px-6 py-4 text-center text-[11px] font-bold text-gray-400 uppercase tracking-wider">Kapasitas</th>
                     <th class="px-6 py-4 text-center text-[11px] font-bold text-gray-400 uppercase tracking-wider">Sisa Kapasitas</th>
@@ -90,8 +90,8 @@
         <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-4">
             <i class="fas fa-graduation-cap text-2xl text-gray-300"></i>
         </div>
-        <p class="text-sm font-medium text-gray-400">Belum ada data jurusan</p>
-        <p class="text-xs text-gray-300 mt-1">Klik "Tambah Jurusan" untuk menambahkan</p>
+        <p class="text-sm font-medium text-gray-400">Belum ada data kelas</p>
+        <p class="text-xs text-gray-300 mt-1">Klik "Tambah Kelas" untuk menambahkan</p>
     </div>
 </div>
 
@@ -103,8 +103,8 @@
             <!-- Header -->
             <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-900" id="modalTitle">Tambah Jurusan</h3>
-                    <p class="text-xs text-gray-400 mt-0.5" id="modalSubtitle">Isi data jurusan baru</p>
+                    <h3 class="text-lg font-bold text-gray-900" id="modalTitle">Tambah Kelas</h3>
+                    <p class="text-xs text-gray-400 mt-0.5" id="modalSubtitle">Isi data kelas baru</p>
                 </div>
                 <button type="button" onclick="closeModal('jurusanModal')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fas fa-times text-sm"></i>
@@ -114,19 +114,19 @@
             <form id="jurusanForm" onsubmit="handleSubmit(event)">
                 <input type="hidden" id="jurusanId" name="id_jurusan">
                 <div class="px-6 py-6 space-y-5">
-                    <!-- Nama Jurusan -->
+                    <!-- Nama Kelas -->
                     <div>
-                        <label for="jurusan" class="block text-sm font-semibold text-gray-700 mb-1.5">Nama Jurusan</label>
+                        <label for="jurusan" class="block text-sm font-semibold text-gray-700 mb-1.5">Nama Kelas</label>
                         <input type="text" name="jurusan" id="jurusan" required
                             class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 focus:bg-white transition-all duration-200"
-                            placeholder="Contoh: Rekayasa Perangkat Lunak">
+                            placeholder="Contoh: Kelas 1A">
                     </div>
-                    <!-- Kode Jurusan -->
+                    <!-- Kode Kelas -->
                     <div>
-                        <label for="kode" class="block text-sm font-semibold text-gray-700 mb-1.5">Kode Jurusan</label>
+                        <label for="kode" class="block text-sm font-semibold text-gray-700 mb-1.5">Kode Kelas</label>
                         <input type="text" name="kode" id="kode" required
                             class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 focus:bg-white transition-all duration-200 uppercase"
-                            placeholder="Contoh: RPL" maxlength="10">
+                            placeholder="Contoh: 1A" maxlength="10">
                     </div>
                     <!-- Kapasitas & Sisa Kapasitas -->
                     <div class="grid grid-cols-2 gap-4">
@@ -174,8 +174,8 @@
                 <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-5">
                     <i class="fas fa-trash-can text-2xl text-red-500"></i>
                 </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Hapus Jurusan?</h3>
-                <p class="text-sm text-gray-500 mb-8">Data yang dihapus tidak dapat dikembalikan. Pastikan jurusan ini tidak memiliki siswa terdaftar.</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Hapus Kelas?</h3>
+                <p class="text-sm text-gray-500 mb-8">Data yang dihapus tidak dapat dikembalikan. Pastikan kelas ini tidak memiliki siswa terdaftar.</p>
                 <div class="flex items-center gap-3 justify-center">
                     <button type="button" onclick="closeModal('deleteModal')"
                         class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200">
@@ -197,9 +197,9 @@ let selectedId = null;
 let allData = [];
 
 const colorMap = {
-    'RPL': { bg: 'bg-indigo-50', text: 'text-indigo-700', badge: 'bg-indigo-100 text-indigo-700', bar: 'bg-indigo-500' },
-    'AK':  { bg: 'bg-blue-50',   text: 'text-blue-700',   badge: 'bg-blue-100 text-blue-700',   bar: 'bg-blue-500' },
-    'AKL': { bg: 'bg-blue-50',   text: 'text-blue-700',   badge: 'bg-blue-100 text-blue-700',   bar: 'bg-blue-500' },
+    'RPL': { bg: 'bg-indigo-50', text: 'text-teal-700', badge: 'bg-indigo-100 text-teal-700', bar: 'bg-teal-500' },
+    'AK':  { bg: 'bg-emerald-50',   text: 'text-emerald-700',   badge: 'bg-emerald-100 text-emerald-700',   bar: 'bg-emerald-500' },
+    'AKL': { bg: 'bg-emerald-50',   text: 'text-emerald-700',   badge: 'bg-emerald-100 text-emerald-700',   bar: 'bg-emerald-500' },
     'MP':  { bg: 'bg-emerald-50', text: 'text-emerald-700', badge: 'bg-emerald-100 text-emerald-700', bar: 'bg-emerald-500' },
     'BR':  { bg: 'bg-violet-50', text: 'text-violet-700', badge: 'bg-violet-100 text-violet-700', bar: 'bg-violet-500' },
     'BD':  { bg: 'bg-amber-50',  text: 'text-amber-700',  badge: 'bg-amber-100 text-amber-700',  bar: 'bg-amber-500' },
@@ -234,7 +234,7 @@ function loadJurusanData() {
         updateStats();
         filterData();
     }).fail(function () {
-        showToast('Gagal memuat data jurusan', 'error');
+        showToast('Gagal memuat data kelas', 'error');
     });
 }
 
@@ -341,8 +341,8 @@ function renderTable(data) {
 
 // ===== Modal Functions =====
 function openAddModal() {
-    $('#modalTitle').text('Tambah Jurusan');
-    $('#modalSubtitle').text('Isi data jurusan baru');
+    $('#modalTitle').text('Tambah Kelas');
+    $('#modalSubtitle').text('Isi data kelas baru');
     $('#jurusanForm')[0].reset();
     $('#jurusanId').val('');
     $('#sisaKapasitasField').addClass('hidden');
@@ -351,8 +351,8 @@ function openAddModal() {
 
 function editJurusan(id) {
     selectedId = id;
-    $('#modalTitle').text('Edit Jurusan');
-    $('#modalSubtitle').text('Ubah data dan kapasitas jurusan');
+    $('#modalTitle').text('Edit Kelas');
+    $('#modalSubtitle').text('Ubah data dan kapasitas kelas');
 
     $.get(`/api/admin/jurusan/${id}`, function (data) {
         $('#jurusanId').val(data.id_jurusan);
@@ -363,7 +363,7 @@ function editJurusan(id) {
         $('#sisaKapasitasField').removeClass('hidden');
         openModal('jurusanModal');
     }).fail(function () {
-        showToast('Gagal memuat data jurusan', 'error');
+        showToast('Gagal memuat data kelas', 'error');
     });
 }
 
@@ -380,10 +380,10 @@ function confirmDelete() {
         success: function () {
             closeModal('deleteModal');
             loadJurusanData();
-            showToast('Jurusan berhasil dihapus');
+            showToast('Kelas berhasil dihapus');
         },
         error: function () {
-            showToast('Gagal menghapus jurusan', 'error');
+            showToast('Gagal menghapus kelas', 'error');
         }
     });
 }
@@ -410,7 +410,7 @@ function handleSubmit(event) {
         success: function () {
             closeModal('jurusanModal');
             loadJurusanData();
-            showToast(`Jurusan berhasil ${isEdit ? 'diperbarui' : 'ditambahkan'}`);
+            showToast(`Kelas berhasil ${isEdit ? 'diperbarui' : 'ditambahkan'}`);
         },
         error: function (xhr) {
             showToast(xhr.responseJSON?.message || 'Terjadi kesalahan', 'error');

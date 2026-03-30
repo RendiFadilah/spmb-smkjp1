@@ -163,7 +163,7 @@ router.get('/export/all', async (req, res) => {
         // Add title rows
         const titles = [
             'Laporan Pemberian Seragam',
-            'PPDB SMK Jakarta Pusat 1',
+            'PPDB SDIT Salsabila 3 Banguntapan',
             'Tahun 2026/2027'
         ];
 
@@ -188,7 +188,7 @@ router.get('/export/all', async (req, res) => {
         const headers = [
             'Tanggal Pemberian',
             'Nama CPDB',
-            'Jurusan',
+            'Kelas',
             'Gender',
             'Seragam Batik',
             'Seragam Olahraga',
@@ -306,7 +306,7 @@ router.get('/export/today', async (req, res) => {
         // Add title rows
         const titles = [
             'Laporan Pemberian Seragam',
-            'PPDB SMK Jakarta Pusat 1',
+            'PPDB SDIT Salsabila 3 Banguntapan',
             'Tahun 2026/2027',
             formattedDate
         ];
@@ -332,7 +332,7 @@ router.get('/export/today', async (req, res) => {
         const headers = [
             'Tanggal Pemberian',
             'Nama CPDB',
-            'Jurusan',
+            'Kelas',
             'Gender',
             'Seragam Batik',
             'Seragam Olahraga',

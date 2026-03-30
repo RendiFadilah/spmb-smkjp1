@@ -21,7 +21,7 @@ router.get('/stats', async (req, res) => {
         res.json(stats);
     } catch (error) {
         console.error('Error fetching jurusan stats:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil statistik jurusan' });
+        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil statistik kelas' });
     }
 });
 
@@ -42,8 +42,8 @@ router.get('/export', async (req, res) => {
             { header: 'Asal SMP', key: 'asal_smp', width: 30 },
             { header: 'Nomor WhatsApp', key: 'nomor_whatsapp', width: 20 },
             { header: 'Jenis Kelamin', key: 'jenis_kelamin', width: 15 },
-            { header: 'Jurusan', key: 'jurusan', width: 20 },
-            { header: 'Kode Jurusan', key: 'kode', width: 15 },
+            { header: 'Kelas', key: 'jurusan', width: 20 },
+            { header: 'Kode Kelas', key: 'kode', width: 15 },
             { header: 'Nominal Pembayaran', key: 'nominal_pembayaran', width: 15 },
             { header: 'Status Pelunasan', key: 'status_pelunasan', width: 20 },
             { header: 'Tanggal Daftar', key: 'tanggal_daftar', width: 15 },

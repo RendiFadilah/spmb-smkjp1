@@ -1,7 +1,7 @@
 <!-- Page Title -->
 <div class="mb-8 bg-white p-6 rounded-xl border border-green-100">
-    <h1 class="text-3xl font-bold text-gray-800">Master Biaya Jurusan</h1>
-    <p class="mt-2 text-gray-600">Kelola data biaya per jurusan</p>
+    <h1 class="text-3xl font-bold text-gray-800">Master Biaya Kelas</h1>
+    <p class="mt-2 text-gray-600">Kelola data biaya per kelas</p>
 </div>
 
 <!-- Search and Add Button -->
@@ -11,7 +11,7 @@
         <input type="text" 
                id="searchInput" 
                class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
-               placeholder="Cari berdasarkan tahun ajaran atau jurusan...">
+               placeholder="Cari berdasarkan tahun ajaran atau kelas...">
         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
             <i class="fas fa-search text-gray-400"></i>
         </div>
@@ -40,7 +40,7 @@
                         Tahun Ajaran
                     </th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Jurusan
+                        Kelas
                     </th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Total Biaya
@@ -82,9 +82,9 @@
                 <input type="hidden" id="biayaId" name="id_biaya">
                 <div class="grid gap-6 mb-6">
                     <div>
-                        <label for="id_jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan</label>
+                        <label for="id_jurusan" class="block mb-2 text-sm font-medium text-gray-900">Kelas</label>
                         <select id="id_jurusan" name="id_jurusan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all duration-200" required>
-                            <option value="">Pilih Jurusan</option>
+                            <option value="">Pilih Kelas</option>
                         </select>
                     </div>
                     <div>
@@ -257,7 +257,7 @@ function openAddModal() {
     // Load jurusan
     $.get('/api/admin/biaya/data/jurusan', function(response) {
         const select = $('#id_jurusan');
-        select.empty().append('<option value="">Pilih Jurusan</option>');
+        select.empty().append('<option value="">Pilih Kelas</option>');
         const jurusanData = response.data || [];
         jurusanData.forEach(jurusan => {
             select.append(`<option value="${jurusan.id_jurusan}">${jurusan.nama_jurusan}</option>`);
@@ -274,7 +274,7 @@ function editBiaya(id) {
     // Load jurusan first
     $.get('/api/admin/biaya/data/jurusan', function(response) {
         const select = $('#id_jurusan');
-        select.empty().append('<option value="">Pilih Jurusan</option>');
+        select.empty().append('<option value="">Pilih Kelas</option>');
         const jurusanData = response.data || [];
         jurusanData.forEach(jurusan => {
             select.append(`<option value="${jurusan.id_jurusan}">${jurusan.nama_jurusan}</option>`);

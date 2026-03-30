@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         res.json(jurusan);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data jurusan' });
+        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data kelas' });
     }
 });
 
@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
         res.json(jurusan);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data jurusan' });
+        res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data kelas' });
     }
 });
 
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
         res.status(201).json(jurusan);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat membuat jurusan' });
+        res.status(500).json({ message: 'Terjadi kesalahan saat membuat kelas' });
     }
 });
 
@@ -62,7 +62,7 @@ router.put('/:id', async (req, res) => {
         res.json(jurusan);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui jurusan' });
+        res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui kelas' });
     }
 });
 
@@ -76,7 +76,7 @@ router.delete('/:id', async (req, res) => {
         res.json({ message: 'Jurusan berhasil dihapus' });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat menghapus jurusan' });
+        res.status(500).json({ message: 'Terjadi kesalahan saat menghapus kelas' });
     }
 });
 

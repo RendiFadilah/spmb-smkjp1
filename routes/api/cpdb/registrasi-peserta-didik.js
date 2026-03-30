@@ -128,7 +128,7 @@ router.get('/jurusan', async function(req, res) {
     console.error('Error in fetching jurusan:', error);
     res.status(500).json({ 
       success: false,
-      message: 'Terjadi kesalahan saat mengambil data jurusan',
+      message: 'Terjadi kesalahan saat mengambil data kelas',
       error: error.message 
     });
   }

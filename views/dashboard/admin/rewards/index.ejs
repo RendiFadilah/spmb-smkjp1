@@ -76,13 +76,13 @@
     <div class="flex gap-2">
         <!-- Export Today Button -->
         <a href="/api/admin/rewards/export/today" 
-           class="inline-flex items-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+           class="inline-flex items-center px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             <i class="fas fa-file-excel mr-2"></i>
             Export Hari Ini
         </a>
         <!-- Export All Button -->
         <a href="/api/admin/rewards/export/all" 
-           class="inline-flex items-center px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+           class="inline-flex items-center px-4 py-3 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             <i class="fas fa-file-excel mr-2"></i>
             Export Semua
         </a>
@@ -367,7 +367,7 @@ function renderTable(data) {
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a href="/dashboard/admin/reward-spmb/cetak/${reward.id_reward}" 
                            target="_blank"
-                           class="text-blue-600 hover:text-blue-800 mr-3 transition-colors duration-200">
+                           class="text-emerald-600 hover:text-emerald-800 mr-3 transition-colors duration-200">
                             <i class="fas fa-print"></i>
                         </a>
                         <button onclick="editReward(${reward.id_reward})" 

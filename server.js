@@ -32,7 +32,7 @@ const sessionStore = new MySQLStore({
 // Session middleware
 app.use(session({
   key: 'session_cookie_name',
-  secret: process.env.SESSION_SECRET || 'spmb-smkjp1-fallback-secret-key-change-in-production',
+  secret: process.env.SESSION_SECRET || 'spmb-sdit-salsabila-fallback-secret-key-change-in-production',
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
@@ -71,7 +71,7 @@ app.use('/api', apiRouter);
 // 404 handler
 app.use((req, res) => {
   res.status(404).render('error', {
-    title: '404 Not Found - SPMB SMK Jakarta Pusat 1',
+    title: '404 Not Found - SPMB SDIT Salsabila 3 Banguntapan',
     message: 'Halaman Tidak Ditemukan',
     error: {
       status: 404,
@@ -86,7 +86,7 @@ app.use(handleExpiredSession);
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).render('error', {
-    title: 'Error - SPMB SMK Jakarta Pusat 1',
+    title: 'Error - SPMB SDIT Salsabila 3 Banguntapan',
     message: err.message || 'Terjadi Kesalahan',
     error: process.env.NODE_ENV === 'development' ? err : {
       status: err.status || 500,

@@ -71,7 +71,7 @@ router.get('/export/:type', async (req, res) => {
             { header: 'Tanggal Pembayaran', key: 'tanggal_pembayaran', width: 20 },
             { header: 'No Formulir', key: 'no_formulir', width: 15 },
             { header: 'Nama CPDB', key: 'nama_lengkap', width: 25 },
-            { header: 'Jurusan', key: 'jurusan', width: 20 },
+            { header: 'Kelas', key: 'jurusan', width: 20 },
             { header: 'Total Biaya', key: 'total_biaya', width: 15 },
             { header: 'Nominal Pembayaran', key: 'nominal_pembayaran', width: 15 },
             { header: 'Sisa Pembayaran', key: 'sisa_pembayaran', width: 15 },
@@ -309,7 +309,7 @@ router.post('/', upload.single('bukti_pembayaran'), async (req, res) => {
         let payment_id = formulirData[0].id_pembayaran;
 
         if (!payment_id && sisa_kapasitas <= 0) {
-            return res.status(400).json({ message: 'Kapasitas jurusan sudah penuh' });
+            return res.status(400).json({ message: 'Kapasitas kelas sudah penuh' });
         }
 
         // Calculate total biaya with discount
