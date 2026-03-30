@@ -110,7 +110,7 @@
         <input type="text" 
                id="searchInput" 
                class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 group-hover:border-green-300"
-               placeholder="Cari berdasarkan nama, NISN, NIK, atau asal SMP...">
+               placeholder="Cari berdasarkan nama, NISN, NIK, atau asal sekolah...">
         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none group-hover:text-green-500 transition-colors duration-200">
             <i class="fas fa-search text-gray-400"></i>
         </div>
@@ -139,7 +139,7 @@
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No Formulir</th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal</th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama</th>
-                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Asal SMP</th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Asal Sekolah</th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kelas</th>
                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nomor WhatsApp</th>
                     <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Status Pelunasan</th>
@@ -588,7 +588,7 @@ function showDetail(cpdbData) {
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Asal Sekolah</p>
-                        <p class="font-medium">${cpdb.asal_sekolah || '-'}</p>
+                        <p class="font-medium">${cpdb.asal_smp || '-'}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">No. Peserta Ujian</p>
