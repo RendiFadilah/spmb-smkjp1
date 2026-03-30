@@ -82,7 +82,7 @@
                     <img src="/images/logo-sdit-salsabila.png" alt="Logo SDIT Salsabila 3" class="w-10 h-10 object-contain">
                     <div>
                         <h1 class="text-base font-bold text-gray-900 leading-tight">SDIT Salsabila 3 Banguntapan</h1>
-                        <p class="text-[10px] text-gray-600 leading-tight">Jl. Abdul Muis No. 44, Jakarta Pusat | WhatsApp : 085213819519</p>
+                        <p class="text-[10px] text-gray-600 leading-tight">Jl. Jurugentong RT 10 RW 34, Banguntapan, Bantul | WhatsApp : 081327436137</p>
                     </div>
                 </div>
                 <div class="text-right">
@@ -134,7 +134,7 @@
                 <!-- Signature -->
                 <div class="flex justify-between mt-4">
                     <div class="text-center">
-                        <p class="text-xs text-gray-600" id="tanggalTTD">Jakarta, </p>
+                        <p class="text-xs text-gray-600" id="tanggalTTD">Banguntapan, </p>
                         <p class="text-xs font-medium text-gray-500 mt-2 mb-8">Penerima</p>
                         <p class="text-xs font-semibold text-gray-900" id="namaPembawa"></p>
                     </div>
@@ -201,7 +201,7 @@
                 document.getElementById('namaCPDB').textContent = data.jurusan ? `${data.nama_cpdb} - ${data.jurusan}` : data.nama_cpdb;
                 document.getElementById('nominal').textContent = 'Rp ' + parseInt(data.nominal).toLocaleString('id-ID');
                 document.getElementById('terbilang').textContent = numberToWords(parseInt(data.nominal)) + ' Rupiah';
-                document.getElementById('tanggalTTD').textContent = 'Jakarta, ' + formatDate(data.tanggal_reward);
+                document.getElementById('tanggalTTD').textContent = 'Banguntapan, ' + formatDate(data.tanggal_reward);
                 document.getElementById('namaPetugas').textContent = data.nama_petugas;
                 document.getElementById('namaPembawa').textContent = data.nama_pembawa;
                 document.getElementById('keterangan').textContent = data.keterangan_pembawa;

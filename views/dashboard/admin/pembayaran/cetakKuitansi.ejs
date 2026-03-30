@@ -82,7 +82,7 @@
                     <img src="/images/logo-sdit-salsabila.png" alt="Logo SDIT Salsabila 3" class="w-10 h-10 object-contain">
                     <div>
                         <h1 class="text-base font-bold text-gray-900 leading-tight">SDIT Salsabila 3 Banguntapan</h1>
-                        <p class="text-[10px] text-gray-600 leading-tight">Jl. Abdul Muis No. 44, Jakarta Pusat | WhatsApp : 085213819519</p>
+                        <p class="text-[10px] text-gray-600 leading-tight">Jl. Jurugentong RT 10 RW 34, Banguntapan, Bantul | WhatsApp : 081327436137</p>
                     </div>
                 </div>
                 <div class="text-right">
@@ -140,7 +140,7 @@
                 <!-- Signature -->
                 <div class="flex justify-end mt-2">
                     <div class="text-center">
-                        <p class="text-xs text-gray-600" id="tanggalTTD">Jakarta, </p>
+                        <p class="text-xs text-gray-600" id="tanggalTTD">Banguntapan, </p>
                         <p class="text-xs font-medium text-gray-500 mt-2 mb-8">Petugas</p>
                         <p class="text-xs font-semibold text-gray-900" id="namaPetugas"></p>
                     </div>
@@ -202,7 +202,7 @@
                 document.getElementById('namaCPDB').textContent = `${data.nama_lengkap} - ${data.nama_jurusan}`;
                 document.getElementById('nominal').textContent = 'Rp ' + parseInt(data.total_pembayaran).toLocaleString('id-ID');
                 document.getElementById('terbilang').textContent = numberToWords(parseInt(data.total_pembayaran)) + ' Rupiah';
-                document.getElementById('tanggalTTD').textContent = 'Jakarta, ' + formatDate(new Date());
+                document.getElementById('tanggalTTD').textContent = 'Banguntapan, ' + formatDate(new Date());
                 document.getElementById('namaPetugas').textContent = data.verifikator;
 
                 // Fill in payment details
