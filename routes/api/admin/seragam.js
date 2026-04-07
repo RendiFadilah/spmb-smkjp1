@@ -163,7 +163,7 @@ router.get('/export/all', async (req, res) => {
         // Add title rows
         const titles = [
             'Laporan Pemberian Seragam',
-            'PPDB SMK Jakarta Pusat 1',
+            'PPDB SMK YP 17 Baradatu',
             'Tahun 2026/2027'
         ];
 
@@ -306,7 +306,7 @@ router.get('/export/today', async (req, res) => {
         // Add title rows
         const titles = [
             'Laporan Pemberian Seragam',
-            'PPDB SMK Jakarta Pusat 1',
+            'PPDB SMK YP 17 Baradatu',
             'Tahun 2026/2027',
             formattedDate
         ];

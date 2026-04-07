@@ -8,7 +8,7 @@ const db = require('../../../config/database');
 router.post('/', async function(req, res) {
   try {
     const {
-      jurusan, jenis_pendaftaran, tanggal_masuk_sekolah,
+      jurusan, jurusan_alternatif, jenis_pendaftaran, tanggal_masuk_sekolah,
       asal_sekolah, nomor_peserta_ujian, no_seri_ijazah,
       no_seri_skhus
     } = req.body;
@@ -36,6 +36,7 @@ router.post('/', async function(req, res) {
       // Update existing data
       result = await RegistrasiPesertaDidik.update(formulir.id_formulir, {
         jurusan,
+        jurusan_alternatif,
         jenis_pendaftaran,
         tanggal_masuk_sekolah,
         asal_sekolah,
@@ -52,6 +53,7 @@ router.post('/', async function(req, res) {
       result = await RegistrasiPesertaDidik.create({
         id_formulir: formulir.id_formulir,
         jurusan,
+        jurusan_alternatif,
         jenis_pendaftaran,
         tanggal_masuk_sekolah,
         asal_sekolah,

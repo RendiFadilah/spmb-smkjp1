@@ -344,7 +344,7 @@ router.get('/export/all', async (req, res) => {
         // Merge and style title cells
         const titles = [
             'Laporan Pembelian Formulir',
-            'SPMB - SMK Jakarta Pusat 1',
+            'SPMB - SMK YP 17 Baradatu',
             'Tahun 2026/2027'
         ];
 
@@ -528,7 +528,7 @@ router.get('/export/today', async (req, res) => {
         // Merge and style title cells
         const todayTitles = [
             'Laporan Pembelian Formulir',
-            'SPMB - SMK Jakarta Pusat 1',
+            'SPMB - SMK YP 17 Baradatu',
             'Tahun 2026/2027',
             formattedDate
         ];

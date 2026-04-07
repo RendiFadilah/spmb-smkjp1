@@ -1,7 +1,7 @@
 {
-  "name": "ppdb-smkjt1",
+  "name": "ppdb-smkyp17",
   "version": "1.0.0",
-  "description": "Aplikasi PPDB Digital untuk SMK Jakarta Pusat 1",
+  "description": "Aplikasi PPDB Digital untuk SMK YP 17 Baradatu",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

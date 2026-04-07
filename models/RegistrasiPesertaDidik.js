@@ -11,13 +11,14 @@ class RegistrasiPesertaDidik {
         // Insert registrasi peserta didik data
         const [result] = await connection.execute(
           `INSERT INTO registrasi_peserta_didik (
-            id_formulir, jurusan, jenis_pendaftaran, 
+            id_formulir, jurusan, jurusan_alternatif, jenis_pendaftaran, 
             tanggal_masuk_sekolah, asal_sekolah, 
             nomor_peserta_ujian, no_seri_ijazah, no_seri_skhus
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             data.id_formulir,
             data.jurusan,
+            data.jurusan_alternatif || null,
             data.jenis_pendaftaran,
             data.tanggal_masuk_sekolah,
             data.asal_sekolah,
@@ -56,11 +57,13 @@ class RegistrasiPesertaDidik {
         SELECT 
           r.*,
           j.jurusan as nama_jurusan,
+          j2.jurusan as nama_jurusan_alternatif,
           f.status_formulir,
           f.id_user
         FROM registrasi_peserta_didik r
         INNER JOIN formulir f ON r.id_formulir = f.id_formulir
         INNER JOIN jurusan j ON r.jurusan = j.id_jurusan
+        LEFT JOIN jurusan j2 ON r.jurusan_alternatif = j2.id_jurusan
         WHERE r.id_formulir = ?
       `;
       const [rows] = await db.execute(query, [id_formulir]);
@@ -77,6 +80,7 @@ class RegistrasiPesertaDidik {
       const [result] = await db.execute(
         `UPDATE registrasi_peserta_didik SET
           jurusan = ?,
+          jurusan_alternatif = ?,
           jenis_pendaftaran = ?,
           tanggal_masuk_sekolah = ?,
           asal_sekolah = ?,
@@ -86,6 +90,7 @@ class RegistrasiPesertaDidik {
         WHERE id_formulir = ?`,
         [
           data.jurusan,
+          data.jurusan_alternatif || null,
           data.jenis_pendaftaran,
           data.tanggal_masuk_sekolah,
           data.asal_sekolah,

@@ -253,9 +253,9 @@ router.get('/:id', isAuthenticated, async (req, res) => {
                     <div class="pattern"></div>
                     <div class="receipt-header">
                         <div class="school-info">
-                            <img src="data:image/png;base64,${logoBase64}" alt="Logo SMK JT1" class="logo">
+                            <img src="data:image/png;base64,${logoBase64}" alt="Logo SMK YP 17 Baradatu" class="logo">
                             <div class="school-details">
-                                <h1>SMK Jakarta Pusat 1</h1>
+                                <h1>SMK YP 17 Baradatu</h1>
                                 <p>Jl. Cipinang Muara I No.1, Jakarta Timur | Telp: (021) 8194466</p>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 
                         <div class="info-item" style="margin-bottom: 20px;">
                             <div class="info-label">Untuk Pembayaran</div>
-                            <div class="info-value">Formulir SPMB SMK Jakarta Pusat 1 Tahun 2026/2027</div>
+                            <div class="info-value">Formulir SPMB SMK YP 17 Baradatu Tahun 2026/2027</div>
                         </div>
 
                         <div class="amount-section">

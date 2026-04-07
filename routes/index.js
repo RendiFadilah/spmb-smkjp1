@@ -34,8 +34,8 @@ router.get('/', (req, res) => {
 
     // If not authenticated, show homepage
     res.render('index', {
-        title: 'SPMB SMK Jakarta Pusat 1',
-        description: 'Sistem Penerimaan Peserta Didik Baru SMK JT 1',
+        title: 'SPMB SMK YP 17 Baradatu',
+        description: 'Sistem Penerimaan Peserta Didik Baru SMK YP 17 Baradatu',
         layout: 'layouts/main'
     });
 });
@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
 // Catch-all route for handling 404s
 router.use((req, res) => {
     res.status(404).render('error', {
-        title: '404 Not Found - SPMB SMK Jakarta Pusat 1',
+        title: '404 Not Found - SPMB SMK YP 17 Baradatu',
         message: 'Halaman Tidak Ditemukan',
         error: {
             status: 404,
